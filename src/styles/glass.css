@@ -1,0 +1,44 @@
+/* Shared glass surface: translucent fill, bright rim, refraction-like inner shadows. */
+.glass-control {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgb(255 255 255 / .88);
+  background: linear-gradient(150deg, rgb(255 255 255 / .76), rgb(231 224 242 / .3) 48%, rgb(255 255 255 / .52));
+  box-shadow: 0 5px 18px #2513330c, 0 1px 3px #2513330a, inset 0 1px 0 #fff, inset 0 -1px 1px #c6bad952;
+  backdrop-filter: blur(16px) saturate(1.7);
+  -webkit-backdrop-filter: blur(16px) saturate(1.7);
+}
+.glass-control::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(175deg, #ffffff80, transparent 48%);
+  z-index: -1;
+}
+.glass-button { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 12px 20px; min-height: 44px; color: var(--ink); transition: box-shadow .25s, background .25s, transform .25s; }
+.glass-button:hover { transform: translateY(-2px); background-color: #e3d7f04d; box-shadow: 0 8px 24px #6337a51a, inset 0 1px 1px #fff, inset 0 -1px 2px #bdb0ce66; }
+.glass-button:active { transform: translateY(0); }
+.glass-cursor { border: 1px solid #ffffffd9; background: linear-gradient(155deg, #ffffffb8, #cbb8e440 65%, #ffffffa6); box-shadow: 0 2px 7px #38204712, inset 0 1px 1px #fff, inset 0 -1px 2px #ac95ca52; }
+.nav-glass { padding: 5px; }
+.header .nav-glass { transition: background .35s ease, border-color .35s ease, box-shadow .35s ease; }
+.header .pill-link { transition: color .35s ease; }
+.header[data-tone="dark"] .nav-glass {
+  border-color: #ffffff50;
+  background: linear-gradient(150deg, #ffffff29, #231a343d 48%, #ffffff14);
+  box-shadow: 0 5px 18px #0003, inset 0 1px 0 #ffffff70, inset 0 -1px 1px #b79bd63b;
+}
+.header[data-tone="dark"] .nav-glass::before { background: linear-gradient(175deg, #ffffff26, transparent 48%); }
+.header[data-tone="dark"] .pill-link { color: #f5efff; }
+.header[data-tone="dark"] .pill-link:hover, .header[data-tone="dark"] .pill-link:focus-visible { color: #d8b9ff; }
+.header[data-tone="dark"] .glass-cursor { background: linear-gradient(155deg, #ffffff30, #ad82e32b 65%, #ffffff1a); border-color: #ffffff55; box-shadow: inset 0 1px 1px #ffffff70, 0 2px 7px #0002; }
+.header[data-tone="violet"] .nav-glass { background: linear-gradient(150deg, #f5eaffb8, #dcc4f64d 48%, #f8f2ff85); border-color: #fff9; }
+.header[data-tone="violet"] .pill-link { color: #29133d; }
+@supports not (backdrop-filter: blur(1px)) {
+  .header[data-tone="dark"] .nav-glass { background: #211a2e; }
+  .header[data-tone="violet"] .nav-glass { background: #e6d5f5; }
+}
+.header-location.glass-button { padding: 10px 15px; }
+.footer > .glass-button { padding-inline: 20px; }
+@supports not (backdrop-filter: blur(1px)) { .glass-control { background-color: #eeebf3; } }
