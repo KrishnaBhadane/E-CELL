@@ -1,6 +1,4 @@
-import { WorksWheel, type WorksWheelItem } from '@/components/ui/works-wheel';
-
-const events: WorksWheelItem[] = [
+const events = [
   { title: 'Eureka 2026', image: '/assets/events/gallery-01.jpg', fit: 'contain' },
   { title: 'The Eureka team', image: '/assets/events/gallery-02.jpg' },
   { title: 'DevSpark', image: '/assets/events/gallery-03.jpg' },
@@ -13,7 +11,14 @@ export default function Events() {
       <div className="events-heading">
         <h2 id="events-title">EVENTS</h2>
       </div>
-      <WorksWheel items={events} label="Our events" action="" className="events-wheel" />
+      <div className="events-gallery" role="region" aria-label="Our events" tabIndex={0}>
+        {events.map(event => (
+          <figure className="event-card" key={event.title}>
+            <img src={event.image} alt={event.title} loading="lazy" decoding="async" style={{ objectFit: event.fit === 'contain' ? 'contain' : 'cover' }} />
+            <figcaption>{event.title}</figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
