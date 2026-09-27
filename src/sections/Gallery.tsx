@@ -1,8 +1,12 @@
+import { useEffect, useRef } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+
 const photos = [
   { image: 'gallery-02.jpg', caption: 'The Eureka team' },
   { image: 'gallery-03.jpg', caption: 'DevSpark, together' },
   { image: 'gallery-09.jpg', caption: 'People behind the ideas' },
 ];
+const groups = [photos, [photos[2], photos[0], photos[1]]];
 
 export default function Gallery() {
   const root = useRef<HTMLElement>(null);
@@ -11,15 +15,15 @@ export default function Gallery() {
     const section = root.current;
     if (!section || reduced) return;
     const stage = section.querySelector<HTMLElement>('.gallery-stage')!;
-    const cards = section.querySelectorAll<HTMLElement>('figure');
+    const batches = section.querySelectorAll<HTMLElement>('.gallery-batch');
     let frame = 0;
     const draw = () => {
       frame = 0;
       const bounds = section.getBoundingClientRect();
       const height = stage.clientHeight;
       const progress = Math.max(0, Math.min(1, -bounds.top / (bounds.height - height)));
-      cards.forEach((card, i) => {
-        card.style.transform = `translateY(${(1.05 + i * 1.15 - progress * (photos.length * 1.15 + 1.2)) * height}px)`;
+      batches.forEach((batch, i) => {
+        batch.style.transform = `translateY(${(i - progress) * height}px)`;
       });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(draw); };
@@ -38,12 +42,10 @@ export default function Gallery() {
     <div className="space-drift" aria-hidden="true" />
     <div className="gallery-orbit" aria-hidden="true" />
     <h2 id="gallery-title">GALLERY</h2>
-    <div className="gallery-photos">{photos.map(photo => <figure key={photo.image}>
+    <div className="gallery-photos">{groups.map((group, index) => <div className="gallery-batch" key={index}>{group.map(photo => <figure key={photo.image}>
       <img src={`/assets/events/${photo.image}`} alt={photo.caption} loading="lazy" decoding="async" width="1200" height="675" />
       <figcaption>{photo.caption}</figcaption>
-    </figure>)}</div>
+    </figure>)}</div>)}</div>
     </div>
   </section>;
 }
-import { useEffect, useRef } from 'react';
-import { useReducedMotion } from '@/hooks/useReducedMotion';

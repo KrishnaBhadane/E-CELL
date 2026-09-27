@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+
 const events = [
   { title: 'Eureka 2026', image: '/assets/events/gallery-01.jpg', fit: 'contain' },
   { title: 'The Eureka team', image: '/assets/events/gallery-02.jpg' },
@@ -8,10 +11,9 @@ const events = [
 export default function Events() {
   const rail = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const [paused, setPaused] = useState(false);
   useEffect(() => {
     const element = rail.current;
-    if (!element || reduced || paused) return;
+    if (!element || reduced) return;
     let visible = false;
     let resumeAt = 0;
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
@@ -27,12 +29,11 @@ export default function Events() {
       element.scrollTo({ left: ((current % events.length) + 1) * step, behavior: 'smooth' });
     }, 3500);
     return () => { clearInterval(timer); observer.disconnect(); element.removeEventListener('pointerdown', postpone); element.removeEventListener('wheel', postpone); };
-  }, [paused, reduced]);
+  }, [reduced]);
   return (
     <section id="events" className="events" aria-labelledby="events-title" data-nav-tone="light">
       <div className="events-heading">
         <h2 id="events-title">Our Initiatives</h2>
-        {!reduced && <button className="glass-control glass-button" type="button" onClick={() => setPaused(value => !value)}>{paused ? 'Play slideshow' : 'Pause slideshow'}</button>}
       </div>
       <div ref={rail} className="events-gallery" role="region" aria-label="Our events" tabIndex={0}>
         {(reduced ? events : [...events, ...events]).map((event, index) => (
@@ -45,5 +46,3 @@ export default function Events() {
     </section>
   );
 }
-import { useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from '@/hooks/useReducedMotion';

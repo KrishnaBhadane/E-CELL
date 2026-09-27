@@ -1,19 +1,28 @@
-.space-gallery { position: relative; height: 500svh; background: #090b16; color: #f9f5ff; }
+.space-gallery { position: relative; height: 300svh; background: #090b16; color: #f9f5ff; }
 .gallery-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; padding: 120px var(--gutter) 0; }
-.space-drift { position: absolute; inset: -10%; z-index: -2; background: radial-gradient(ellipse at 80% 20%, #52257580, transparent 55%), radial-gradient(ellipse at 10% 90%, #203c6680, transparent 50%), #090b16; animation: nebula-drift 45s ease-in-out infinite alternate; }
-.space-drift::after { content: ''; position: absolute; inset: -5%; opacity: .65; background-image: radial-gradient(1px 1px at 15% 20%, white 99%, transparent), radial-gradient(1.5px 1.5px at 70% 60%, #d9c8ff 99%, transparent), radial-gradient(1px 1px at 45% 85%, white 99%, transparent); background-size: 173px 137px, 251px 197px, 311px 227px; animation: stars-drift 60s linear infinite alternate; }
-.space-drift, .space-drift::after { animation-play-state: paused; }
-.space-active .space-drift, .space-active .space-drift::after { animation-play-state: running; }
-.gallery-orbit { position: absolute; z-index: -1; width: 650px; height: 650px; top: -450px; right: -180px; border-radius: 50%; border: 1px solid #bd97ff45; box-shadow: 0 0 70px #9168c71a, inset 0 0 80px #9966c72a; }
+.space-drift { position: absolute; inset: -20%; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 75% 25%, #713baa99, transparent 45%), radial-gradient(ellipse at 15% 80%, #28649299, transparent 45%), #090b16; animation: nebula-drift 28s ease-in-out infinite alternate; }
+.space-drift::before, .space-drift::after { content: ''; position: absolute; inset: -15%; background-image: radial-gradient(2px 2px at 15% 20%, #fff 90%, transparent), radial-gradient(1.5px 1.5px at 70% 60%, #d9c8ff 90%, transparent), radial-gradient(1px 1px at 45% 85%, #fff 90%, transparent); background-size: 173px 137px, 251px 197px, 311px 227px; animation: stars-drift 24s linear infinite alternate; }
+.space-drift::before { opacity: .35; background-size: 283px 237px, 351px 297px, 411px 327px; animation-duration: 40s; animation-direction: alternate-reverse; }
+.space-drift::after { opacity: .8; }
+.space-drift, .space-drift::before, .space-drift::after { animation-play-state: paused; }
+.space-active .space-drift, .space-active .space-drift::before, .space-active .space-drift::after { animation-play-state: running; }
+.gallery-orbit { position: absolute; z-index: 0; width: 650px; height: 650px; top: -450px; right: -180px; border-radius: 50%; border: 1px solid #bd97ff45; box-shadow: 0 0 70px #9168c71a, inset 0 0 80px #9966c72a; pointer-events: none; }
 .space-gallery h2 { font: 400 clamp(40px, 5vw, 76px)/1.1 var(--display); position: relative; z-index: 2; }
-.gallery-photos { position: absolute; inset: 0; }
-.gallery-photos figure { position: absolute; top: 0; left: 50%; width: min(76%, 800px); margin: 0 0 0 max(-38%, -400px); transform: translateY(110svh); }
-.gallery-photos img { display: block; width: 100%; max-height: 65svh; object-fit: contain; border-radius: 12px; }
-.gallery-photos figcaption { font-size: 12px; padding-top: 12px; color: #e6d8f5; text-align: center; }
-@keyframes nebula-drift { to { transform: translate3d(3%, -3%, 0) scale(1.05); } }
-@keyframes stars-drift { to { transform: translate3d(-4%, 6%, 0); } }
+.gallery-photos { position: absolute; inset: 0; z-index: 1; }
+.gallery-batch { position: absolute; top: 220px; left: var(--gutter); right: var(--gutter); height: calc(100svh - 260px); display: grid; grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; }
+.gallery-batch + .gallery-batch { transform: translateY(100svh); }
+.gallery-batch figure { margin: 0; min-height: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.gallery-batch figure:first-child { grid-row: span 2; }
+.gallery-batch img { display: block; width: 100%; height: 0; flex: 1; min-height: 0; object-fit: cover; border-radius: 12px; }
+.gallery-batch figcaption { font-size: 12px; color: #e6d8f5; }
+@keyframes nebula-drift { to { transform: translate3d(8%, -6%, 0) scale(1.08); } }
+@keyframes stars-drift { to { transform: translate3d(-12%, 10%, 0); } }
 .gallery-static { height: auto; }
 .gallery-static .gallery-stage { position: relative; height: auto; padding-bottom: 48px; }
 .gallery-static .gallery-photos { position: relative; display: grid; gap: 30px; margin-top: 30px; }
-.gallery-static .gallery-photos figure { position: static; width: 100%; margin: 0; transform: none !important; }
-@media (max-width: 760px) { .gallery-photos figure { width: 88%; margin-left: -44%; } }
+.gallery-static .gallery-batch { position: static; height: 65svh; transform: none !important; }
+@media (max-width: 760px) {
+  .gallery-batch { top: 185px; height: calc(100svh - 215px); grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); gap: 12px; }
+  .gallery-batch figure:first-child { grid-row: auto; }
+  .gallery-batch figcaption { font-size: 10px; }
+}

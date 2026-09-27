@@ -8,7 +8,7 @@ test('community sections follow the requested order and text reveals on scroll',
   const title = page.locator('#gallery-title');
   await title.scrollIntoViewIfNeeded();
   await expect(title).toHaveClass(/text-visible/);
-  await expect(page.locator('#gallery img')).toHaveCount(3);
+  await expect(page.locator('#gallery img')).toHaveCount(6);
   await expect(page.locator('.header .social-icon')).toHaveCount(3);
   await expect(page.locator('#testimonials')).toContainText('testimonials coming soon');
 });
