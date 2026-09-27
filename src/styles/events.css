@@ -1,6 +1,8 @@
 .events { position: relative; z-index: 2; padding: 64px var(--gutter) 28px; background: var(--paper); }
 .events::before { content: ''; position: absolute; top: -8px; left: 0; right: 0; height: 20px; background: linear-gradient(transparent, var(--paper)); filter: blur(5px); pointer-events: none; }
 .events-heading h2 { font-family: var(--display); font-size: clamp(40px, 5vw, 76px); line-height: 1.1; }
+.events-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.events-heading button { font-size: 11px; }
 .events-gallery { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; margin-top: 24px; padding: 12px 0 24px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
 .events-gallery:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .event-card { position: relative; flex: 0 0 85%; max-width: 720px; aspect-ratio: 1.45; margin: 0; overflow: hidden; border-radius: 8px; background: var(--muted-background); scroll-snap-align: start; }

@@ -8,7 +8,7 @@ for (const width of [390, 1440]) {
     expect(await page.locator('#about').evaluate(el => el.nextElementSibling?.id)).toBe('events');
     await page.locator('#events').scrollIntoViewIfNeeded();
     const gallery = page.getByRole('region', { name: 'Our events' });
-    await expect(gallery.locator('figure')).toHaveCount(4);
+    await expect(gallery.locator('figure:not([aria-hidden])')).toHaveCount(4);
     await expect(gallery.locator('figure').first()).toBeVisible();
     await expect(gallery.locator('figure').first()).toHaveCSS('transform', 'none');
     await gallery.evaluate(el => { el.scrollLeft = el.clientWidth; });

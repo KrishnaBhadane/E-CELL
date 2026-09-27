@@ -22,5 +22,5 @@ export default function CountUp({ value }: { value: number }) {
     if (ref.current) observer.observe(ref.current);
     return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [value, reduced]);
-  return <strong ref={ref} aria-label={`${value} plus`}><span aria-hidden="true" className="count-value">+{display.toLocaleString('en-IN')}</span></strong>;
+  return <strong ref={ref} aria-label={`${value} plus`}><span aria-hidden="true" className="count-value">{display.toLocaleString('en-IN')}+</span></strong>;
 }

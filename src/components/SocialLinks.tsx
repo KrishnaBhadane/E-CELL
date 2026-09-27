@@ -5,7 +5,7 @@ const profiles = [
 ];
 
 export default function SocialLinks() {
-  return <div className="social-links" aria-label="Social profiles">
+  return <div className="social-links glass-control nav-glass" aria-label="Social profiles">
     {profiles.map(profile => <span key={profile.name} className="social-icon" role="img" aria-label={`${profile.name} — profile link coming soon`} title={`${profile.name} — profile link coming soon`}>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={profile.path} /></svg>
     </span>)}

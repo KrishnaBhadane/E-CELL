@@ -76,7 +76,7 @@ test('impact counters finish with plus signs and the geographic map renders', as
   await page.goto('/');
   await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await page.locator('.impact-facts').scrollIntoViewIfNeeded();
-  await expect(page.locator('.count-value').first()).toHaveText('+1,200');
+  await expect(page.locator('.count-value').first()).toHaveText('1,200+');
   await expect(page.getByRole('img', { name: 'Glowing India map' })).toBeVisible();
   await expect(page.locator('.mission-grid p').first()).toHaveCSS('font-weight', '600');
 });

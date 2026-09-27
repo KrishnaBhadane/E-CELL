@@ -23,8 +23,8 @@ export default function App() {
         <About />
         <Events />
         <Gallery />
-        <Members />
         <Testimonials />
+        <Members />
         </ScrollReveal>
       </main>
       <footer className="footer">

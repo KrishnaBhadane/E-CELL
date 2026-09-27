@@ -4,7 +4,7 @@ test('glass navigation adapts its colors without changing shape', async ({ page 
   await page.goto('/');
   await expect(page.locator('.welcome-screen')).toHaveCount(0);
   const header = page.locator('.header');
-  const glass = page.locator('.nav-glass');
+  const glass = page.locator('.pill-navigation .nav-glass');
   await expect(header).toHaveAttribute('data-tone', 'dark');
   const radius = await glass.evaluate(el => getComputedStyle(el).borderRadius);
   for (const [selector, tone] of [['#events', 'light'], ['#impact', 'violet'], ['#members', 'light']]) {
