@@ -1,26 +1,10 @@
 import { expect, test } from '@playwright/test';
 
-test('gallery pins while photos rise and releases after the last photo', async ({ page }) => {
+test('gallery restores the original static three-photo layout', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.welcome-screen')).toHaveCount(0);
-  const gallery = page.locator('#gallery');
-  const top = await gallery.evaluate(el => el.getBoundingClientRect().top + scrollY);
-  await page.evaluate(top => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, top); }, top);
-  const card = gallery.locator('figure').first();
-  await expect(gallery.locator('.gallery-batch')).toHaveCount(2);
-  await expect(gallery.locator('.gallery-batch').first().locator('figure')).toHaveCount(3);
-  const stars = gallery.locator('.space-drift');
-  await expect(stars).toHaveCSS('animation-play-state', 'running');
-  const initialTransform = await stars.evaluate(el => getComputedStyle(el).transform);
-  await expect.poll(() => stars.evaluate(el => getComputedStyle(el).transform)).not.toBe(initialTransform);
-  const start = (await card.boundingBox())!.y;
-  await page.evaluate(top => scrollTo(0, top + innerHeight), top);
-  await expect.poll(async () => (await card.boundingBox())!.y).toBeLessThan(start - 100);
-  expect(Math.abs((await page.locator('.gallery-stage').boundingBox())!.y)).toBeLessThan(2);
-  await page.evaluate(top => scrollTo(0, top + 2 * innerHeight), top);
-  await expect.poll(async () => (await gallery.locator('.gallery-batch').nth(1).boundingBox())!.y).toBeLessThan(230);
-  await page.locator('#testimonials').scrollIntoViewIfNeeded();
-  expect((await page.locator('.gallery-stage').boundingBox())!.y).toBeLessThan(0);
+  await expect(page.locator('#gallery figure')).toHaveCount(3);
+  await expect(page.locator('.gallery-stage, .gallery-batch, .space-drift')).toHaveCount(0);
+  await expect(page.locator('.gallery-photos')).toHaveCSS('display', 'grid');
 });
 
 test('initiatives advances and loops without a pause button', async ({ page }) => {
@@ -44,7 +28,7 @@ test('initiatives advances and loops without a pause button', async ({ page }) =
 test('reduced motion displays all photos without pinning or autoplay', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.locator('.gallery-stage')).toHaveCSS('position', 'relative');
+  await expect(page.locator('#gallery figure')).toHaveCount(3);
   await expect(page.getByRole('button', { name: 'Pause slideshow' })).toHaveCount(0);
   await expect(page.locator('.events-gallery figure')).toHaveCount(4);
 });
