@@ -41,9 +41,9 @@ void main() {
   p += .24 * (vec2(fbm(p * 2.112 + 9.), fbm(p * 2.112 + vec2(5.2, 1.3))) - .5);
   float a = fbm(p * 2. + 9.) * 6.2831;
   float v = fbm(p * 3. + vec2(cos(a), sin(a)) * .78 + u_time * .12);
-  // Lavender shades shared with the About / Impact panels.
-  vec3 color = mix(vec3(.525, .345, .761), vec3(.737, .592, .925), smoothstep(.18, .62, v));
-  color = mix(color, vec3(.90, .83, .97), smoothstep(.56, .85, v));
+  // Black smoke with soft charcoal highlights.
+  vec3 color = mix(vec3(.015), vec3(.18), smoothstep(.18, .62, v));
+  color = mix(color, vec3(.36), smoothstep(.56, .85, v));
   gl_FragColor = vec4(color, 1.);
 }`;
 

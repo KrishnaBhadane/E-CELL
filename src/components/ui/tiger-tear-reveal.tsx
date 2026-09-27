@@ -232,9 +232,9 @@ const ALMOND = "M-78 10 C-52 -40 30 -56 80 -8 C44 40 -30 50 -78 10Z"
 
 // ---------------------------------------------------------------- the tiger
 
-const Fur = React.memo(function Fur({ id, fur }: { id: string; fur: string }) {
+const Fur = React.memo(function Fur({ id, fur, lite = false }: { id: string; fur: string; lite?: boolean }) {
   const stripes = React.useMemo(buildStripes, [])
-  const hairs = React.useMemo(buildHairs, [])
+  const hairs = React.useMemo(() => lite ? ['', '', ''] : buildHairs(), [lite])
   return (
     <g>
       <rect x={-2600} y={-420} width={5200} height={840} fill={fur} />
@@ -427,6 +427,13 @@ export default function TigerTearReveal({
 }: TigerTearRevealProps) {
   const rootRef = React.useRef<HTMLElement | null>(null)
   const stageRef = React.useRef<HTMLDivElement | null>(null)
+  const [lite, setLite] = React.useState(() => window.matchMedia('(max-width: 760px), (pointer: coarse)').matches)
+  React.useEffect(() => {
+    const media = window.matchMedia('(max-width: 760px), (pointer: coarse)')
+    const update = () => setLite(media.matches)
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
+  }, [])
   const [frameBox, setFrameBox] = React.useState({ x: 36, y: 44, width: 928, height: 468 })
   React.useEffect(() => {
     const stage = stageRef.current
@@ -450,8 +457,8 @@ export default function TigerTearReveal({
   const [f, setF] = React.useState<Frame>({ p: progress ?? 0, look: [0, 0], blink: 0, squint: 0 })
 
   const controlled = progress !== undefined
-  const cfg = React.useRef({ progress, controlled, reduced })
-  cfg.current = { progress, controlled, reduced }
+  const cfg = React.useRef({ progress, controlled, reduced, lite })
+  cfg.current = { progress, controlled, reduced, lite }
   const pointer = React.useRef<{ x: number; y: number } | null>(null)
   const squintAt = React.useRef(-1e9)
 
@@ -514,7 +521,9 @@ export default function TigerTearReveal({
 
       // where the eyes look: the pointer if there is one, else a wandering gaze
       let want: Pt
-      if (pointer.current) {
+      if (c.lite) {
+        want = [0, 0]
+      } else if (pointer.current) {
         const r = bounds
         want = [
           Math.max(-1, Math.min(1, (pointer.current.x - r.left - r.width / 2) / (r.width * 0.35))),
@@ -532,12 +541,12 @@ export default function TigerTearReveal({
 
       // blinks: a quick close and open every few seconds
       let blink = 0
-      if (!c.reduced) {
+      if (!c.reduced && !c.lite) {
         const since = now - nextBlink
         if (since > 0) blink = since < 90 ? since / 90 : since < 200 ? 1 - (since - 90) / 110 : 0
         if (since > 200) nextBlink = now + 2600 + Math.random() * 3200
       }
-      const squint = c.reduced ? 0 : Math.max(0, 1 - (now - squintAt.current) / 900)
+      const squint = c.reduced || c.lite ? 0 : Math.max(0, 1 - (now - squintAt.current) / 900)
 
       const next: Frame = { p, look, blink, squint }
       if (
@@ -551,7 +560,7 @@ export default function TigerTearReveal({
         last = next
         setF(next)
       }
-      raf = requestAnimationFrame(tick)
+      if (!c.lite || p !== target) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
     return () => {
@@ -561,7 +570,7 @@ export default function TigerTearReveal({
       window.removeEventListener('scroll', invalidate)
       window.removeEventListener('resize', invalidate)
     }
-  }, [reduced, reduced ? progress : undefined])
+  }, [reduced, lite, reduced ? progress : undefined])
 
   const s = stages(f.p)
   const pop = reduced ? s.pop : easeOutBack(s.pop)
@@ -570,7 +579,7 @@ export default function TigerTearReveal({
   // the eyes are shut until the tiger is up, then they open
   const blink = Math.max(1 - clamp01(pop), f.blink, f.squint * 0.45)
   const rise = (1 - s.rise) * 150
-  const shake = reduced ? 0 : Math.sin(f.p * 900) * 6 * s.shake
+  const shake = reduced || lite ? 0 : Math.sin(f.p * 900) * 6 * s.shake
   const crackReach = s.crack * 620
   const crack = line.filter(([x]) => Math.abs(x - CX) <= crackReach)
   const tiger =
@@ -579,7 +588,7 @@ export default function TigerTearReveal({
   const sheet = React.useMemo(() => (
     <>
       <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill={paper} />
-      {paperArtwork && <foreignObject x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height}>{paperArtwork}</foreignObject>}
+      {lite ? <rect x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height} fill={`url(#${id}-mobile-paper)`} /> : paperArtwork && <foreignObject x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height}>{paperArtwork}</foreignObject>}
       {tagline ? (
         <text
           x={CX}
@@ -603,7 +612,7 @@ export default function TigerTearReveal({
         {word}
       </text>
     </>
-  ), [paper, paperArtwork, frameBox, tagline, taglineColor, inkGradient, id, ink, fontFamily, word])
+  ), [paper, paperArtwork, frameBox, tagline, taglineColor, inkGradient, id, ink, fontFamily, word, lite])
 
   return (
     <section
@@ -614,7 +623,7 @@ export default function TigerTearReveal({
     >
       <div
         ref={stageRef}
-        className="tiger-stage sticky w-full overflow-hidden"
+        className={`tiger-stage sticky w-full overflow-hidden${lite ? ' hero-lite' : ''}`}
         style={{ height, top: topOffset, cursor: s.pop > 0.9 ? "crosshair" : undefined }}
         onPointerMove={(e) => (pointer.current = { x: e.clientX, y: e.clientY })}
         onPointerLeave={() => (pointer.current = null)}
@@ -628,6 +637,7 @@ export default function TigerTearReveal({
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", maxWidth: "none", display: "block" }}
         >
           <defs>
+            <linearGradient id={`${id}-mobile-paper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#29252f" /><stop offset=".6" stopColor={paper} /><stop offset="1" stopColor="#17111e" /></linearGradient>
             {inkGradient && <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={inkGradient[0]} /><stop offset="1" stopColor={inkGradient[1]} /></linearGradient>}
             <linearGradient id={id + "-shade"} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="#211b28" stopOpacity={0.45} />
@@ -680,7 +690,7 @@ export default function TigerTearReveal({
               </foreignObject>
             ) : s.open > 0 ? (
               <g transform={tiger}>
-                <Fur id={id} fur={furColor} />
+                <Fur id={id} fur={furColor} lite={lite} />
                 <g filter={s.pop > 0.02 ? "url(#" + id + "-glow)" : undefined}>
                   {EYES.map(([x, y], i) => (
                     <Eye

@@ -1,4 +1,6 @@
 .tear-hero { --tear-distance: 110svh; background: #09090b; position: relative; }
+.hero-lite svg [filter] { filter: none; }
+.tear-hero .hero-lite::after { animation: none; }
 .hero-club-logo { position: absolute; top: 20px; left: var(--gutter); z-index: 5; }
 .hero-club-logo .club-logo { width: 58px; height: 58px; background: #f4f4f2; }
 @media (max-width: 760px) { .hero-club-logo { top: 82px; left: 20px; } .hero-club-logo .club-logo { width: 46px; height: 46px; } }
