@@ -1,4 +1,5 @@
 import NavHeader from '@/components/ui/nav-header';
+import SocialLinks from './SocialLinks';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Header() {
@@ -35,6 +36,7 @@ export default function Header() {
   return (
     <header ref={header} className="header" data-tone={tone}>
       <NavHeader />
+      <SocialLinks />
     </header>
   );
 }

@@ -5,7 +5,7 @@ for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
     await expect(page.locator('.welcome-screen')).toHaveCount(0);
-    expect(await page.locator('.tear-hero').evaluate(el => el.nextElementSibling?.id)).toBe('events');
+    expect(await page.locator('#about').evaluate(el => el.nextElementSibling?.id)).toBe('events');
     await page.locator('#events').scrollIntoViewIfNeeded();
     const gallery = page.getByRole('region', { name: 'Our events' });
     await expect(gallery.locator('figure')).toHaveCount(4);

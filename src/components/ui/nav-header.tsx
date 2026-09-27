@@ -6,9 +6,9 @@ type Position = { left: number; width: number; opacity: number };
 type NavItem = { label: string; href: string };
 const defaultItems: NavItem[] = [
   { label: 'Home', href: '#top' },
-  { label: 'Events', href: '#events' },
   { label: 'About', href: '#about' },
   { label: 'Impact', href: '#impact' },
+  { label: 'Initiatives', href: '#events' },
   { label: 'Members', href: '#members' },
 ];
 

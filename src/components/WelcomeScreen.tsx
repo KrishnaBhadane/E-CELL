@@ -12,7 +12,7 @@ export default function WelcomeScreen() {
         setPhase('leaving');
         fade = setTimeout(() => setPhase('done'), reduced ? 0 : 250);
       }
-    }, reduced ? 0 : 2000);
+    }, reduced ? 0 : 900);
     return () => { disposed = true; clearTimeout(timer); clearTimeout(fade); };
   }, []);
   if (phase === 'done') return null;
@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
     <div className={`welcome-screen ${phase}`} role="status" aria-label="Welcome to E-Cell RCPIT">
       <span>WELCOME TO</span>
       <strong>E-CELL RCPIT</strong>
-      <div className="welcome-line" />
+      <svg className="welcome-ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" /><circle className="welcome-progress" cx="24" cy="24" r="20" pathLength="1" /></svg>
       <button type="button" onClick={() => setPhase('done')}>Enter site</button>
     </div>
   );

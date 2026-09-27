@@ -9,7 +9,7 @@ export default function Events() {
   return (
     <section id="events" className="events" aria-labelledby="events-title" data-nav-tone="light">
       <div className="events-heading">
-        <h2 id="events-title">EVENTS</h2>
+        <h2 id="events-title">Our Initiatives</h2>
       </div>
       <div className="events-gallery" role="region" aria-label="Our events" tabIndex={0}>
         {events.map(event => (

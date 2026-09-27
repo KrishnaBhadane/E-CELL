@@ -5,6 +5,7 @@
 @import './about.css';
 @import './welcome.css';
 @import './glass.css';
+@import './community.css';
 
 @font-face {
   font-family: 'Anton'; font-style: normal; font-weight: 400; font-display: swap;
