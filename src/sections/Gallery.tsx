@@ -7,7 +7,7 @@ const photos = [
 ];
 
 export default function Gallery() {
-  return <section id="gallery" className="space-gallery" data-nav-tone="dark" aria-labelledby="gallery-title">
+  return <section id="gallery" className="space-gallery" data-nav-tone="violet" aria-labelledby="gallery-title">
     <ShaderBackground className="gallery-shader" />
     <h2 id="gallery-title">GALLERY</h2>
     <div className="gallery-photos">{photos.map(photo => <figure key={photo.image}>
