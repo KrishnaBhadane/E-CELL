@@ -9,6 +9,7 @@ test('page ends after impact with a footer and no campus section', async ({ page
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await expect(page.locator('#campus')).toHaveCount(0);
   await expect(page.locator('.header-location')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'EVENTS', exact: true })).toBeVisible();
@@ -19,6 +20,7 @@ test('page ends after impact with a footer and no campus section', async ({ page
 test('poster pins, tears on scroll, and closes when scrolling back', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   const poster = page.locator('[data-tear-progress]');
   await expect(poster).toHaveAttribute('data-tear-progress', '0.000');
   await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 1000); });
@@ -30,6 +32,7 @@ test('poster pins, tears on scroll, and closes when scrolling back', async ({ pa
 
 test('pill follows keyboard focus and all navigation destinations exist', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   const links = page.getByRole('navigation').getByRole('link');
   await page.getByRole('navigation').getByRole('link', { name: 'About', exact: true }).focus();
   await expect(page.locator('.nav-cursor')).toHaveCSS('opacity', '1');
@@ -45,6 +48,7 @@ for (const width of [360, 390, 768]) {
   test(`navigation and poster fit a ${width}px viewport`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.getByRole('navigation')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -57,6 +61,7 @@ for (const width of [360, 390, 768]) {
 test('reduced motion has a manual reveal without extra scroll distance', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   const poster = page.locator('[data-tear-progress]');
   const stage = page.locator('.tiger-stage');
   await expect(stage).toHaveCSS('position', 'relative');
@@ -69,6 +74,7 @@ test('reduced motion has a manual reveal without extra scroll distance', async (
 
 test('impact counters finish with plus signs and the geographic map renders', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await page.locator('.impact-facts').scrollIntoViewIfNeeded();
   await expect(page.locator('.count-value').first()).toHaveText('+1,200');
   await expect(page.getByRole('img', { name: 'Glowing India map' })).toBeVisible();

@@ -202,7 +202,7 @@ function buildStripes() {
 function buildHairs() {
   const r = rng(53)
   const tones = ["", "", ""]
-  for (let i = 0; i < 2600; i++) {
+  for (let i = 0; i < 900; i++) {
     const x = (r() - 0.5) * 1900
     const y = (r() - 0.5) * 480
     const a = Math.atan2(y - 150, x) + (r() - 0.5) * 0.5
@@ -249,7 +249,7 @@ const Fur = React.memo(function Fur({ id, fur }: { id: string; fur: string }) {
         ))}
         <ellipse cx={0} cy={188} rx={96} ry={52} opacity={0.85} />
       </g>
-      <g filter={"url(#" + id + "-rough)"}>
+      <g>
         <path d={stripes} fill="#17141b" />
       </g>
       <path d={hairs[0]} stroke="#403947" strokeWidth={1.4} opacity={0.35} strokeLinecap="round" />
@@ -327,7 +327,7 @@ const CURLS: Record<"top" | "bottom", [number, number, number][]> = {
   ],
 }
 
-function Half({
+const Half = React.memo(function Half({
   id,
   side,
   line,
@@ -387,7 +387,7 @@ function Half({
       ) : null}
     </g>
   )
-}
+})
 
 // ---------------------------------------------------------------- component
 
@@ -471,6 +471,12 @@ export default function TigerTearReveal({
     let nextIdle = 0
     let nextBlink = performance.now() + 2500
     let last: Frame | null = null
+    let dirty = true
+    let scrollTarget = 0
+    let bounds = stage.getBoundingClientRect()
+    function invalidate() { dirty = true; resume() }
+    window.addEventListener('scroll', invalidate, { passive: true })
+    window.addEventListener('resize', invalidate)
 
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting
@@ -490,16 +496,26 @@ export default function TigerTearReveal({
       raf = 0
       if (!visible || document.hidden) return
       const c = cfg.current
+      if (dirty) {
+        bounds = stage!.getBoundingClientRect()
+        scrollTarget = scrollProgress(root!.getBoundingClientRect().top - parseFloat(getComputedStyle(stage!).top || '0'), root!.offsetHeight, stage!.offsetHeight)
+        dirty = false
+      }
       const target = c.controlled
         ? clamp01(c.progress ?? 0)
-        : scrollProgress(root!.getBoundingClientRect().top - parseFloat(getComputedStyle(stage!).top || '0'), root!.offsetHeight, stage!.offsetHeight)
+        : scrollTarget
       p = c.reduced ? (target > 0.3 ? 1 : 0) : p + (target - p) * 0.14
       if (Math.abs(target - p) < 0.0005) p = target
+      if (p === 0 && target === 0 && !c.controlled) {
+        last = { p: 0, look: [0, 0], blink: 0, squint: 0 }
+        setF(last)
+        return
+      }
 
       // where the eyes look: the pointer if there is one, else a wandering gaze
       let want: Pt
       if (pointer.current) {
-        const r = stage!.getBoundingClientRect()
+        const r = bounds
         want = [
           Math.max(-1, Math.min(1, (pointer.current.x - r.left - r.width / 2) / (r.width * 0.35))),
           Math.max(-1, Math.min(1, (pointer.current.y - r.top - r.height * 0.58) / (r.height * 0.35))),
@@ -542,6 +558,8 @@ export default function TigerTearReveal({
       cancelAnimationFrame(raf)
       io.disconnect()
       document.removeEventListener("visibilitychange", resume)
+      window.removeEventListener('scroll', invalidate)
+      window.removeEventListener('resize', invalidate)
     }
   }, [reduced, reduced ? progress : undefined])
 
@@ -558,7 +576,7 @@ export default function TigerTearReveal({
   const tiger =
     "translate(" + CX + " " + (CY + rise).toFixed(2) + ") rotate(-7) scale(" + (1.34 - 0.06 * s.rise).toFixed(4) + ")"
 
-  const sheet = (
+  const sheet = React.useMemo(() => (
     <>
       <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill={paper} />
       {paperArtwork && <foreignObject x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height}>{paperArtwork}</foreignObject>}
@@ -585,7 +603,7 @@ export default function TigerTearReveal({
         {word}
       </text>
     </>
-  )
+  ), [paper, paperArtwork, frameBox, tagline, taglineColor, inkGradient, id, ink, fontFamily, word])
 
   return (
     <section

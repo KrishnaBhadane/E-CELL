@@ -1,8 +1,0 @@
-/* Magic UI's masked border and offset-path beam, in a slender header rail. */
-.header-road { position: absolute; left: 0; right: 0; height: 3px; bottom: -2px; pointer-events: none; filter: drop-shadow(0 0 5px #aa83e9); }
-.border-beam { position: absolute; inset: 0; border: 1px solid transparent; border-radius: inherit; pointer-events: none; mask-image: linear-gradient(transparent, transparent), linear-gradient(#000, #000); mask-clip: padding-box, border-box; mask-composite: intersect; overflow: clip; }
-.border-beam-light { position: absolute; aspect-ratio: 1; background: linear-gradient(to left, #f1e8ff, #8958cf, transparent); animation: border-travel var(--beam-duration) linear infinite; }
-@keyframes border-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
-@media (prefers-reduced-motion: reduce) {
-  .border-beam { display: none; }
-}

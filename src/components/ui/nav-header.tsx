@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 
 type Position = { left: number; width: number; opacity: number };
 type NavItem = { label: string; href: string };
@@ -16,7 +15,6 @@ const defaultItems: NavItem[] = [
 /** User-supplied sliding-pill navigation, with typed state and keyboard links. */
 export default function NavHeader({ items = defaultItems }: { items?: NavItem[] }) {
   const [position, setPosition] = useState<Position>({ left: 0, width: 0, opacity: 0 });
-  const reduced = useReducedMotion();
 
   return (
     <nav aria-label="Main navigation" className="pill-navigation">
@@ -30,11 +28,10 @@ export default function NavHeader({ items = defaultItems }: { items?: NavItem[] 
         }}
       >
         {items.map(item => <Tab key={item.href} item={item} setPosition={setPosition} />)}
-        <motion.li
+        <li
           aria-hidden="true"
           className="nav-cursor glass-cursor pointer-events-none absolute bottom-1 top-1 z-0 rounded-full"
-          animate={position}
-          transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 32 }}
+          style={{ width: position.width, opacity: position.opacity, transform: `translateX(${position.left}px)`, left: 0 }}
         />
       </ul>
     </nav>

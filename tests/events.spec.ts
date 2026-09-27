@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('event wheel follows the hero and supports direct selection and keyboard', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   expect(await page.locator('.tear-hero').evaluate(el => el.nextElementSibling?.id)).toBe('events');
   await page.locator('#events').scrollIntoViewIfNeeded();
   await page.getByRole('button', { name: 'DevSpark', exact: true }).click();
@@ -14,6 +15,7 @@ test('event wheel follows the hero and supports direct selection and keyboard', 
 test('mobile events scroll horizontally without overflowing the page', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await page.locator('#events').scrollIntoViewIfNeeded();
   const cards = page.locator('.works-cards');
   await expect(page.locator('.works-card').first()).toBeVisible();

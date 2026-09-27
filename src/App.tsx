@@ -4,10 +4,12 @@ import Hero from './sections/Hero';
 import Events from './sections/Events';
 import About from './sections/About';
 import Members from './sections/Members';
+import WelcomeScreen from './components/WelcomeScreen';
 
 export default function App() {
   return (
     <>
+      <WelcomeScreen />
       <a className="skip-link" href="#about">Skip to content</a>
       <div id="top" />
       <Header />

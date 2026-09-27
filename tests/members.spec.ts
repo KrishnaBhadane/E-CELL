@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('40 member cards include two leaders and reveal on page scroll', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await expect(page.locator('.member-card')).toHaveCount(40);
   await expect(page.locator('.member-leader')).toHaveCount(2);
   const card = page.locator('#member-1');
@@ -36,6 +37,7 @@ test('members remain readable with reduced motion on mobile', async ({ page }) =
 test('desktop uses six columns and only navigation stays fixed', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
+  await expect(page.locator('.welcome-screen')).toHaveCount(0);
   await expect(page.locator('#members [data-gp-ready]')).toHaveAttribute('data-gp-ready', 'true');
   await page.locator('.members-grid').scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator('.members-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(6);

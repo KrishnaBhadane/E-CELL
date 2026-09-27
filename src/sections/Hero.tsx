@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TigerTearReveal from '@/components/ui/tiger-tear-reveal';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { LiquidButton } from '@/components/ui/liquid-glass-button';
 import { DarkGradientBg } from '@/components/ui/elegant-dark-pattern';
 import ClubLogo from '@/components/ClubLogo';
 
@@ -32,7 +31,7 @@ export default function Hero() {
       >
         <div className="tear-caption">
           {reduced
-            ? <LiquidButton size="lg" className="tear-reveal-button" onClick={() => setRevealed(!revealed)} aria-pressed={revealed}>{revealed ? 'Close the poster' : 'Reveal the tiger'} <span aria-hidden="true">↗</span></LiquidButton>
+            ? <button type="button" className="glass-control glass-button tear-reveal-button" onClick={() => setRevealed(!revealed)} aria-pressed={revealed}>{revealed ? 'Close the poster' : 'Reveal the tiger'} <span aria-hidden="true">↗</span></button>
             : <span className="tear-scroll">SCROLL TO BREAK THROUGH <span aria-hidden="true">↓</span></span>}
         </div>
       </TigerTearReveal>
