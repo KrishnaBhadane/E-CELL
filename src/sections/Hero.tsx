@@ -3,6 +3,8 @@ import TigerTearReveal from '@/components/ui/tiger-tear-reveal';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { DarkGradientBg } from '@/components/ui/elegant-dark-pattern';
 import ClubLogo from '@/components/ClubLogo';
+import UpcomingEvent from '@/components/UpcomingEvent';
+import { upcomingEvent } from '@/data/upcoming-event';
 
 export default function Hero() {
   const reduced = useReducedMotion();
@@ -28,10 +30,12 @@ export default function Hero() {
         topOffset="0px"
         progress={reduced ? (revealed ? 1 : 0) : undefined}
         hint={false}
+        revealLabel={`${upcomingEvent.name}, our upcoming event`}
+        revealArtwork={() => <UpcomingEvent />}
       >
         <div className="tear-caption">
           {reduced
-            ? <button type="button" className="glass-control glass-button tear-reveal-button" onClick={() => setRevealed(!revealed)} aria-pressed={revealed}>{revealed ? 'Close the poster' : 'Reveal the tiger'} <span aria-hidden="true">↗</span></button>
+            ? <button type="button" className="glass-control glass-button tear-reveal-button" onClick={() => setRevealed(!revealed)} aria-pressed={revealed}>{revealed ? 'Close the poster' : 'Reveal upcoming event'} <span aria-hidden="true">↗</span></button>
             : <span className="tear-scroll">SCROLL TO BREAK THROUGH <span aria-hidden="true">↓</span></span>}
         </div>
       </TigerTearReveal>

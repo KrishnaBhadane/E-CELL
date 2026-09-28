@@ -50,6 +50,7 @@ export interface TigerTearRevealProps {
   /** Space reserved for a persistent site header. */
   topOffset?: string
   revealArtwork?: (look: Pt) => React.ReactNode
+  revealLabel?: string
   paperArtwork?: React.ReactNode
 }
 
@@ -423,6 +424,7 @@ export default function TigerTearReveal({
   children,
   topOffset = "0px",
   revealArtwork,
+  revealLabel = 'featured artwork',
   paperArtwork,
 }: TigerTearRevealProps) {
   const rootRef = React.useRef<HTMLElement | null>(null)
@@ -457,8 +459,8 @@ export default function TigerTearReveal({
   const [f, setF] = React.useState<Frame>({ p: progress ?? 0, look: [0, 0], blink: 0, squint: 0 })
 
   const controlled = progress !== undefined
-  const cfg = React.useRef({ progress, controlled, reduced, lite })
-  cfg.current = { progress, controlled, reduced, lite }
+  const cfg = React.useRef({ progress, controlled, reduced, lite: lite || !!revealArtwork })
+  cfg.current = { progress, controlled, reduced, lite: lite || !!revealArtwork }
   const pointer = React.useRef<{ x: number; y: number } | null>(null)
   const squintAt = React.useRef(-1e9)
 
@@ -633,7 +635,7 @@ export default function TigerTearReveal({
           viewBox={`${frameBox.x} ${frameBox.y} ${frameBox.width} ${frameBox.height}`}
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label={(tagline ? tagline + ". " : "") + word + (revealArtwork ? ", opening to reveal an Indian rupee note." : ", torn in two by a tiger looking through.")}
+          aria-label={(tagline ? tagline + ". " : "") + word + (revealArtwork ? `, opening to reveal ${revealLabel}.` : ", torn in two by a tiger looking through.")}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", maxWidth: "none", display: "block" }}
         >
           <defs>
@@ -685,8 +687,8 @@ export default function TigerTearReveal({
           <g transform={"translate(" + shake.toFixed(2) + " " + (shake * 0.4).toFixed(2) + ")"}>
             {/* behind the paper: the tiger, rising into the gap */}
             {s.open > 0 && revealArtwork ? (
-              <foreignObject x="300" y="140" width="400" height="340" opacity={s.rise}>
-                {revealArtwork(f.look)}
+              <foreignObject x="270" y="245" width="610" height="155" opacity={Math.max(0, Math.min(1, (s.open - .8) / .2))}>
+                {s.open > .8 && revealArtwork(f.look)}
               </foreignObject>
             ) : s.open > 0 ? (
               <g transform={tiger}>
@@ -714,10 +716,10 @@ export default function TigerTearReveal({
                 then in two halves that part along the tear */}
             {s.open > 0 ? (
               <>
-                <Half id={id} side="top" line={line} open={s.open * (revealArtwork ? 1.7 : 1)}>
+                <Half id={id} side="top" line={line} open={s.open * (revealArtwork ? 1.55 : 1)}>
                   {sheet}
                 </Half>
-                <Half id={id} side="bottom" line={line} open={s.open * (revealArtwork ? 1.7 : 1)}>
+                <Half id={id} side="bottom" line={line} open={s.open * (revealArtwork ? 1.55 : 1)}>
                   {sheet}
                 </Half>
               </>

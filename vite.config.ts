@@ -5,5 +5,6 @@ import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: { rollupOptions: { input: { main: fileURLToPath(new URL('./index.html', import.meta.url)), members: fileURLToPath(new URL('./members.html', import.meta.url)) } } },
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
 });

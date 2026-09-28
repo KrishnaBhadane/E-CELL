@@ -30,19 +30,13 @@ export default function Events() {
     }, 3500);
     return () => { clearInterval(timer); observer.disconnect(); element.removeEventListener('pointerdown', postpone); element.removeEventListener('wheel', postpone); };
   }, [reduced]);
-  return (
-    <section id="events" className="events" aria-labelledby="events-title" data-nav-tone="light">
-      <div className="events-heading">
-        <h2 id="events-title">Our Initiatives</h2>
-      </div>
-      <div ref={rail} className="events-gallery" role="region" aria-label="Our events" tabIndex={0}>
-        {(reduced ? events : [...events, ...events]).map((event, index) => (
-          <figure className="event-card" key={`${event.title}-${index}`} aria-hidden={index >= events.length ? true : undefined}>
-            <img src={event.image} alt={event.title} loading="lazy" decoding="async" style={{ objectFit: event.fit === 'contain' ? 'contain' : 'cover' }} />
-            <figcaption>{event.title}</figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
+  return <section id="events" className="events" aria-labelledby="events-title" data-nav-tone="light">
+    <div className="events-heading"><h2 id="events-title">Our Initiatives</h2></div>
+    <div ref={rail} className="events-gallery" role="region" aria-label="Our events" tabIndex={0}>
+      {(reduced ? events : [...events, ...events]).map((event, index) => <figure className="event-card" key={`${event.title}-${index}`} aria-hidden={index >= events.length ? true : undefined}>
+        <img src={event.image} alt={event.title} loading="lazy" decoding="async" style={{ objectFit: event.fit === 'contain' ? 'contain' : 'cover' }} />
+        <figcaption>{event.title}</figcaption>
+      </figure>)}
+    </div>
+  </section>;
 }

@@ -1,5 +1,22 @@
 .tear-hero { --tear-distance: 110svh; background: #09090b; position: relative; }
 .hero-lite svg [filter] { filter: none; }
+.event-reveal { height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; color: #dbc2ff; }
+.event-reveal p { font: 600 13px var(--sans); letter-spacing: .3em; }
+.event-reveal svg { width: 100%; height: 170px; }
+.event-outline { font: 120px var(--display); stroke-dasharray: 900; stroke-dashoffset: 0; animation: event-draw 2.4s ease-out both; }
+.event-reveal .event-coming { font-size: 12px; letter-spacing: .2em; }
+@keyframes event-draw { from { stroke-dashoffset: 900; fill-opacity: 0; } 65% { fill-opacity: 0; } to { stroke-dashoffset: 0; fill-opacity: 1; } }
+.upcoming-event { position: relative; height: 100%; display: grid; grid-template-columns: 98px minmax(0, 1fr) 70px; align-items: center; gap: 14px; padding: 8px; background: radial-gradient(ellipse at 50% 60%, #07385d66, transparent 75%); }
+.event-character { width: 98px; height: 120px; object-fit: cover; object-position: 38% center; border-radius: 8px; border: 2px solid #cf3e43; }
+.event-ship { width: 70px; animation: ship-arrive 1.4s ease-out both; }
+.event-announcement { min-width: 0; text-align: center; }
+.upcoming-event .event-reveal { color: #e7f4ff; }
+.upcoming-event .event-reveal svg { height: 70px; }
+.upcoming-event .event-outline { stroke: #579bda; paint-order: stroke fill; }
+.upcoming-event .event-reveal p { font-size: 12px; letter-spacing: .14em; }
+.upcoming-event .event-coming { font-size: 10px; }
+.event-edition { display: inline-block; margin-top: 7px; padding: 4px 10px; border: 1px solid #f06a67; border-radius: 3px; background: #a5222c55; font: 700 10px var(--sans); letter-spacing: .14em; color: #fff0ed; }
+@keyframes ship-arrive { from { transform: translateY(15px) rotate(-4deg); opacity: 0; } to { transform: none; opacity: 1; } }
 .tear-hero .hero-lite::after { animation: none; }
 .hero-club-logo { position: absolute; top: 20px; left: var(--gutter); z-index: 5; }
 .hero-club-logo .club-logo { width: 58px; height: 58px; background: #f4f4f2; }

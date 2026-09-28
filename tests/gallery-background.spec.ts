@@ -5,7 +5,7 @@ test('gallery renders the themed shader without page errors', async ({ page }) =
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
   await expect(page.locator('.welcome-screen')).toHaveCount(0);
-  await page.locator('#gallery').scrollIntoViewIfNeeded();
+  await page.locator('#gallery-title').scrollIntoViewIfNeeded();
   const canvas = page.locator('.gallery-shader');
   await expect(canvas).toBeVisible();
   await expect(canvas).toHaveCSS('position', 'absolute');

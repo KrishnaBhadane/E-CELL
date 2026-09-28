@@ -10,7 +10,8 @@ test('community sections follow the requested order and text reveals on scroll',
   await expect(title).toHaveClass(/text-visible/);
   await expect(page.locator('#gallery img')).toHaveCount(3);
   await expect(page.locator('.header .social-icon')).toHaveCount(3);
-  await expect(page.locator('#testimonials')).toContainText('testimonials coming soon');
+  await expect(page.locator('#testimonials')).toContainText('Krushna Bhadane');
+  await expect(page.locator('#testimonials')).toContainText('DEMO TESTIMONIAL');
 });
 
 test('mobile header socials and gallery fit the screen', async ({ page }) => {

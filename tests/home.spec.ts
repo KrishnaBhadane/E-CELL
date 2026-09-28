@@ -40,7 +40,8 @@ test('pill follows keyboard focus and all navigation destinations exist', async 
   await expect(page).toHaveURL(/#about$/);
   for (const link of await links.all()) {
     const destination = await link.getAttribute('href');
-    await expect(page.locator(destination!)).toHaveCount(1);
+    if (destination!.startsWith('#')) await expect(page.locator(destination!)).toHaveCount(1);
+    else expect(destination).toBe('/members.html');
   }
 });
 
@@ -66,7 +67,7 @@ test('reduced motion has a manual reveal without extra scroll distance', async (
   const stage = page.locator('.tiger-stage');
   await expect(stage).toHaveCSS('position', 'relative');
   expect((await poster.boundingBox())!.height).toBe((await stage.boundingBox())!.height);
-  await page.getByRole('button', { name: 'Reveal the tiger' }).click();
+  await page.getByRole('button', { name: 'Reveal upcoming event' }).click();
   await expect(poster).toHaveAttribute('data-tear-progress', '1.000');
   await page.getByRole('button', { name: 'Close the poster' }).click();
   await expect(poster).toHaveAttribute('data-tear-progress', '0.000');

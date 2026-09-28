@@ -1,4 +1,17 @@
-Glyph Portal (src/components/ui/glyph-portal.tsx)
+Skiper UI 39 — Crowd Canvas (src/components/ui/skiper39.tsx)
+Adapted from the user-supplied Skiper UI component by Gurvinder Singh.
+https://skiper-ui.com/
+Illustrations: Open Peeps, https://www.openpeeps.com/
+Original inspiration: https://codepen.io/zadvorsky/pen/xxwbBQV
+The supplied free-use terms require attribution. Visible attribution is provided
+in the Members page footer. Animation is adapted to a capped native canvas loop.
+
+Luffy illustration (public/assets/events/luffy.jpg)
+Source: https://one-piece.com/character/luffy/index.html
+Image: https://one-piece.com/img/character/luffy/luffy_03.jpg
+Character and illustration belong to their respective rights holders.
+
+Historical notice for the removed Glyph Portal component:
 Copyright (c) 2026 Christian Katzmann
 Origin: UsefulPortal.astro on https://ktzm.dk
 
