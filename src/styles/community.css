@@ -22,15 +22,6 @@
 .testimonial-person strong { display: block; font: 26px var(--display); }
 .testimonial-person span { display: block; margin-top: 8px; font-size: 11px; color: #e5d3f7; }
 @media (max-width: 760px) { .testimonial-story { grid-template-columns: 1fr; gap: 28px; padding: 32px 24px; } .testimonial-avatar { width: 100px; font-size: 36px; margin-bottom: 12px; } }
-.footer-links { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12px; }
-.footer { flex-wrap: wrap; border-top: 1px solid var(--line); }
-.footer-contacts { flex: 0 0 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding-bottom: 32px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
-.footer-contacts h2 { font-size: 15px; font-weight: 700; margin: 0 0 14px; }
-.footer-contacts p { margin: 0 0 8px; font-size: 13px; }
-.contact-email { display: block; color: var(--accent); font-size: 13px; overflow-wrap: anywhere; }
-.footer-contacts small { display: block; margin-top: 8px; font-size: 10px; color: var(--muted); }
-.footer-contacts .social-links { width: fit-content; }
-@media (max-width: 760px) { .footer-contacts { grid-template-columns: 1fr; gap: 26px; } }
 @media (max-width: 900px) {
   .header.header { height: 108px; flex-direction: column; justify-content: flex-start; }
   .header > .social-links { position: static; margin-top: 3px; }

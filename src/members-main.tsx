@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Header from './components/Header';
-import FooterContacts from './components/FooterContacts';
+import Footer from './components/Footer';
 import Skiper39 from './components/ui/skiper39';
 import MemberLinks from './components/MemberLinks';
 import { team } from './data/team';
@@ -22,7 +22,7 @@ function MembersPage() {
       </section>
       <p className="team-preview-note">Preview roster · Names and portraits are placeholders.</p>
     </main>
-    <footer className="footer"><FooterContacts /><a href="/">E-CELL RCPIT</a><p>© {new Date().getFullYear()} E-Cell RCPIT</p><a href="/#about">Back to the website ↗</a><small>Animation adapted from <a href="https://skiper-ui.com/">Skiper UI</a> · Illustrations by <a href="https://www.openpeeps.com/">Open Peeps</a></small></footer>
+    <Footer membersPage />
   </>;
 }
 
