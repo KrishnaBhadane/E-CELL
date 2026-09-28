@@ -12,9 +12,9 @@ for (const width of [390, 1440]) {
     await expect(page.locator('.leader-card')).toHaveCount(0);
     await expect(page.locator('.team-card')).toHaveCount(40);
     await expect(page.getByRole('region', { name: 'Contact details' })).toContainText('For Sponsorship Queries');
-    await expect(page.locator('.member-links')).toHaveCount(40);
-    await expect(page.locator('.member-links [aria-label*="LinkedIn"]')).toHaveCount(40);
-    await expect(page.locator('.member-links [aria-label*="GitHub"]')).toHaveCount(40);
+    await expect(page.locator('#team-roster .member-links')).toHaveCount(40);
+    await expect(page.locator('#team-roster .member-links [aria-label*="LinkedIn"]')).toHaveCount(40);
+    await expect(page.locator('#team-roster .member-links [aria-label*="GitHub"]')).toHaveCount(40);
     await expect.poll(() => page.locator('.crowd-canvas').evaluate(el => (el as HTMLCanvasElement).width)).toBeGreaterThan(1);
     expect(await page.locator('.team-roster').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width < 760 ? 4 : 6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
