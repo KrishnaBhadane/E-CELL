@@ -1,10 +1,10 @@
-Skiper UI 39 — Crowd Canvas (src/components/ui/skiper39.tsx)
+Historical notice for the removed Skiper UI 39 — Crowd Canvas:
 Adapted from the user-supplied Skiper UI component by Gurvinder Singh.
 https://skiper-ui.com/
 Illustrations: Open Peeps, https://www.openpeeps.com/
 Original inspiration: https://codepen.io/zadvorsky/pen/xxwbBQV
-The supplied free-use terms require attribution. Visible attribution is provided
-in the Members page footer. Animation is adapted to a capped native canvas loop.
+The original component and Open Peeps image have been removed from the site.
+This notice is retained for historical attribution.
 
 Luffy illustration (public/assets/events/luffy.jpg)
 Source: https://one-piece.com/character/luffy/index.html

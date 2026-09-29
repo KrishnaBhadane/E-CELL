@@ -15,27 +15,28 @@ for (const width of [390, 1440]) {
     await expect(page.locator('#team-roster .member-links')).toHaveCount(40);
     await expect(page.locator('#team-roster .member-links [aria-label*="LinkedIn"]')).toHaveCount(40);
     await expect(page.locator('#team-roster .member-links [aria-label*="GitHub"]')).toHaveCount(40);
-    await expect.poll(() => page.locator('.crowd-canvas').evaluate(el => (el as HTMLCanvasElement).width)).toBeGreaterThan(1);
-    expect(await page.locator('.team-roster').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width < 760 ? 4 : 6);
+    expect(await page.locator('.team-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width < 760 ? 2 : 4);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.getByRole('navigation').getByRole('link', { name: 'About', exact: true }).click();
     await expect(page).toHaveURL(/\/#about$/);
   });
 }
 
-test('crowd paints, animates, and stops drawing offscreen', async ({ page }) => {
+test('members scroll vertically and respect reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/members.html');
-  const canvas = page.locator('.crowd-canvas');
-  await expect.poll(() => canvas.evaluate(el => {
-    const c = el as HTMLCanvasElement;
-    return c.getContext('2d')!.getImageData(0, 0, c.width, c.height).data.some((value, index) => index % 4 === 3 && value > 0);
-  })).toBe(true);
-  const before = await canvas.evaluate(el => (el as HTMLCanvasElement).toDataURL());
-  await expect.poll(() => canvas.evaluate(el => (el as HTMLCanvasElement).toDataURL())).not.toBe(before);
-  await page.locator('footer').evaluate(el => el.scrollIntoView({ behavior: 'instant' }));
-  await expect(canvas).not.toBeInViewport();
-  await page.waitForTimeout(100);
-  const paused = await canvas.evaluate(el => (el as HTMLCanvasElement).toDataURL());
-  await page.waitForTimeout(300);
-  expect(await canvas.evaluate(el => (el as HTMLCanvasElement).toDataURL())).toBe(paused);
+  const section = page.locator('#team-roster');
+  await expect(section).not.toHaveAttribute('data-pinned');
+  await section.evaluate(el => scrollTo({ top: scrollY + el.getBoundingClientRect().top - 90, behavior: 'instant' }));
+  await page.locator('.team-card').first().hover();
+  const before = await page.evaluate(() => scrollY);
+  await page.mouse.wheel(0, 600);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(before);
+  expect(await section.evaluate(el => el.scrollLeft)).toBe(0);
+  await page.locator('.team-card').last().scrollIntoViewIfNeeded();
+  await expect(page.locator('.team-card').last()).toBeInViewport();
+  await section.evaluate(el => scrollTo({ top: scrollY + el.getBoundingClientRect().bottom, behavior: 'instant' }));
+  await expect(page.locator('footer')).toBeInViewport();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('.blog-letter-mask > span').first()).toHaveCSS('animation-name', 'none');
 });

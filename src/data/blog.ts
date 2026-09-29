@@ -13,6 +13,16 @@ export interface BlogPost {
 // Sample editorial content. Replace with approved articles before publishing.
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'finding-your-first-team', title: 'Find your people. Build something together.', category: 'Campus Stories',
+    excerpt: 'A sample story about turning a campus conversation into a small project.',
+    paragraphs: ['This is a fictional campus story for the blog preview. Three students meet after a workshop and realise they have been exploring the same problem from different angles.', 'Instead of assigning titles, they agree on one small task each and a time to compare what they learn. A shared experiment gives them a clearer sense of how they work together.'],
+  },
+  {
+    slug: 'asking-better-questions', title: 'Good questions come before good answers.', category: 'Skills',
+    excerpt: 'Listen carefully, leave space, and learn what people actually need.',
+    paragraphs: ['Start a discovery conversation with a recent experience, rather than asking whether someone likes your idea. Ask what happened, what they tried, and what was frustrating.', 'This sample article is a starting point for a future practical guide. Keep your notes anonymous, ask permission before recording, and avoid treating a handful of conversations as a final verdict.'],
+  },
+  {
     slug: 'start-with-a-problem', title: 'Start with a problem. Then build the idea.', category: 'Startup Basics',
     excerpt: 'A simple way to move from “what if?” to a problem worth exploring.',
     paragraphs: [

@@ -15,6 +15,5 @@ export default function Footer({ membersPage = false }: { membersPage?: boolean 
     <p className="footer-demo-note">Sample contact details — names and Gmail addresses are placeholders.</p>
     <div className="footer-bottom"><SocialLinks /><p>Built with purpose by E-Cell RCPIT.</p><a href={membersPage ? '#members-title' : '#top'}>Back to top ↑</a></div>
     <p className="footer-copyright">© {new Date().getFullYear()} E-Cell RCPIT. All rights reserved.</p>
-    {membersPage && <small className="footer-credit">Animation adapted from <a href="https://skiper-ui.com/">Skiper UI</a> · Illustrations by <a href="https://www.openpeeps.com/">Open Peeps</a></small>}
   </footer>;
 }
