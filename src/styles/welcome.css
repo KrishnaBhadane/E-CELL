@@ -1,9 +1,5 @@
-.welcome-screen { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: #100d16; color: #faf8ff; transition: opacity .25s ease; }
-.welcome-screen.leaving { opacity: 0; pointer-events: none; }
-.welcome-screen > span { font-size: 10px; letter-spacing: .25em; }
-.welcome-screen strong { font: 400 clamp(38px, 9vw, 70px)/1.1 var(--display); }
-.welcome-ring { width: 48px; height: 48px; fill: none; stroke: #ffffff20; stroke-width: 2; transform: rotate(-90deg); }
-.welcome-progress { stroke: #bd97ff; stroke-dasharray: 1; animation: welcome-load .9s ease-out both; }
-.welcome-screen button { padding: 12px 20px; font-size: 12px; color: #c5bed1; cursor: pointer; }
-@keyframes welcome-load { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) { .welcome-screen { transition: none; } .welcome-progress { animation: none; } }
+.welcome-screen { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #fff; color: #777; }
+.welcome-loading { display: grid; justify-items: center; gap: 16px; font: 12px/1.4 Arial, sans-serif; }
+.welcome-spinner { width: 24px; height: 24px; border: 2px solid #ededed; border-top-color: #777; border-radius: 50%; animation: welcome-spin .8s linear infinite; }
+@keyframes welcome-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .welcome-spinner { animation: none; } }

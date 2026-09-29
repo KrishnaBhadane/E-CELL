@@ -10,6 +10,7 @@ const defaultItems: NavItem[] = [
   { label: 'Impact', href: '#impact' },
   { label: 'Initiatives', href: '#events' },
   { label: 'Members', href: '/members.html' },
+  { label: 'Blog', href: '/blog.html' },
 ];
 
 /** User-supplied sliding-pill navigation, with typed state and keyboard links. */
@@ -27,7 +28,7 @@ export default function NavHeader({ items = defaultItems }: { items?: NavItem[] 
           if (!event.currentTarget.contains(event.relatedTarget)) setPosition(value => ({ ...value, opacity: 0 }));
         }}
       >
-        {items.map(item => <Tab key={item.href} item={window.location.pathname === '/members.html' && item.href.startsWith('#') ? { ...item, href: `/${item.href}` } : item} setPosition={setPosition} />)}
+        {items.map(item => <Tab key={item.href} item={!['/', '/index.html'].includes(window.location.pathname) && item.href.startsWith('#') ? { ...item, href: `/${item.href}` } : item} setPosition={setPosition} />)}
         <li
           aria-hidden="true"
           className="nav-cursor glass-cursor pointer-events-none absolute bottom-1 top-1 z-0 rounded-full"

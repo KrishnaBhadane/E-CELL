@@ -1,27 +1,24 @@
 import { useEffect, useState } from 'react';
-
-/** The page mounts underneath so fonts and artwork load during the introduction. */
+/** Keep the plain loader visible for two seconds while initial assets load. */
 export default function WelcomeScreen() {
-  const [phase, setPhase] = useState<'visible' | 'leaving' | 'done'>('visible');
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let fade: ReturnType<typeof setTimeout>;
     let disposed = false;
-    const timer = setTimeout(() => {
-      if (!disposed) {
-        setPhase('leaving');
-        fade = setTimeout(() => setPhase('done'), reduced ? 0 : 250);
-      }
-    }, reduced ? 0 : 900);
-    return () => { disposed = true; clearTimeout(timer); clearTimeout(fade); };
+    let minimumTimer: ReturnType<typeof setTimeout>;
+    const minimum = new Promise<void>(resolve => { minimumTimer = setTimeout(resolve, 2000); });
+    const finish = () => { if (!disposed) setLoading(false); };
+    const ready = () => {
+      const images = Array.from(document.images).filter(image => image.loading !== 'lazy');
+      void Promise.allSettled([minimum, document.fonts.ready, ...images.map(image => image.decode())]).then(finish);
+    };
+    // A failed or stalled resource must not block the usable page indefinitely.
+    const timeout = setTimeout(finish, 5000);
+    if (document.readyState === 'complete') ready();
+    else window.addEventListener('load', ready, { once: true });
+    return () => { disposed = true; clearTimeout(minimumTimer); clearTimeout(timeout); window.removeEventListener('load', ready); };
   }, []);
-  if (phase === 'done') return null;
-  return (
-    <div className={`welcome-screen ${phase}`} role="status" aria-label="Welcome to E-Cell RCPIT">
-      <span>WELCOME TO</span>
-      <strong>E-CELL RCPIT</strong>
-      <svg className="welcome-ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" /><circle className="welcome-progress" cx="24" cy="24" r="20" pathLength="1" /></svg>
-      <button type="button" onClick={() => setPhase('done')}>Enter site</button>
-    </div>
-  );
+  if (!loading) return null;
+  return <div className="welcome-screen" role="status" aria-label="Loading page">
+    <div className="welcome-loading"><span className="welcome-spinner" aria-hidden="true" /><span>Loading…</span></div>
+  </div>;
 }

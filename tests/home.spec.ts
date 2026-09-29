@@ -41,7 +41,7 @@ test('pill follows keyboard focus and all navigation destinations exist', async 
   for (const link of await links.all()) {
     const destination = await link.getAttribute('href');
     if (destination!.startsWith('#')) await expect(page.locator(destination!)).toHaveCount(1);
-    else expect(destination).toBe('/members.html');
+    else expect(['/members.html', '/blog.html']).toContain(destination);
   }
 });
 

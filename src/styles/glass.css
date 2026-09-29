@@ -40,6 +40,5 @@
   .header[data-tone="dark"] .nav-glass { background: #211a2e; }
   .header[data-tone="violet"] .nav-glass { background: #e6d5f5; }
 }
-.header-location.glass-button { padding: 10px 15px; }
 .footer > .glass-button { padding-inline: 20px; }
 @supports not (backdrop-filter: blur(1px)) { .glass-control { background-color: #eeebf3; } }

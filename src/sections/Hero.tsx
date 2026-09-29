@@ -22,8 +22,6 @@ export default function Hero() {
         inkGradient={["#aa7bf0", "#d2b6ff"]}
         paper="#09090b"
         taglineColor="#f4f4f2"
-        eyeColor="#9c75e0"
-        furColor="#aaa5b0"
         fontFamily="Anton, Impact, sans-serif"
         height="100svh"
         scrollDistance="var(--tear-distance)"
