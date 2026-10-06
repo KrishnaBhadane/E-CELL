@@ -8,7 +8,7 @@ const defaultItems: NavItem[] = [
   { label: 'Home', href: '#top' },
   { label: 'About', href: '#about' },
   { label: 'Impact', href: '#impact' },
-  { label: 'Initiatives', href: '#events' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Members', href: '/members.html' },
   { label: 'Blog', href: '/blog.html' },
 ];

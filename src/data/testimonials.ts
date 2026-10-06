@@ -1,0 +1,4 @@
+export const testimonials = [
+  { name: 'Krushna Bhadane', initials: 'KB', role: 'E-Cell participant · Demo profile', quote: 'Being part of E-Cell has made college more exciting. From attending events to working together on NEC activities, I’ve enjoyed meeting new people and turning ideas into action. Learning how a team plans an event, manages a budget, and makes things happen has been a great experience. I’m happy to be part of this community!' },
+  { name: 'Aditi Sharma', initials: 'AS', role: 'Workshop participant · Demo profile', quote: 'I arrived with a rough idea and plenty of questions. Working with other students helped me look at the problem differently, explain my thinking, and choose a small first step. The best part was finding people willing to listen, challenge an idea, and build together.' },
+];

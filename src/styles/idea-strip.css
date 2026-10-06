@@ -1,0 +1,15 @@
+.idea-strip { padding: 70px 0 90px; overflow: hidden; background: var(--paper); }
+.crossed-strips { height: 190px; position: relative; }
+.idea-band { position: absolute; top: 60px; left: -5%; width: 110%; overflow: hidden; padding: 14px 0; background: #25162f; color: #e4cafa; transform: rotate(-5deg); }
+.idea-band.band-1 { transform: rotate(5deg); background: #b98ce3; color: #24132e; }
+.idea-band > div { display: flex; width: max-content; animation: strip-travel 38s linear infinite paused; }
+.idea-band span { white-space: nowrap; flex-shrink: 0; font: 24px var(--display); letter-spacing: .12em; }
+.band-1 > div { animation-direction: reverse; }
+.strip-visible .idea-band > div { animation-play-state: running; }
+.idea-lines { max-width: 1200px; padding: 38px var(--gutter) 0; margin: auto; }
+.idea-lines p { font: 400 clamp(27px, 3.8vw, 52px)/1.5 var(--display); }
+.idea-lines [data-word] { color: #aaa2b0; transition: color .22s ease; }
+.idea-lines .word-lit { color: #6630b5; }
+@keyframes strip-travel { to { transform: translateX(-50%); } }
+@media (max-width: 600px) { .idea-strip { padding: 35px 0 48px; } .crossed-strips { height: 140px; } .idea-band { top: 45px; padding: 10px 0; transform: rotate(-9deg); } .idea-band.band-1 { transform: rotate(9deg); } .idea-band span { font-size: 18px; } .idea-lines { padding-top: 22px; } }
+@media (prefers-reduced-motion: reduce) { .idea-lines [data-word] { color: #6630b5; } }

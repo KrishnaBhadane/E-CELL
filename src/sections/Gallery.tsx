@@ -1,4 +1,3 @@
-import { ShaderBackground } from '@/components/ui/red-in-black';
 import { galleryEvents } from '@/data/gallery';
 import { useState, type KeyboardEvent } from 'react';
 
@@ -16,9 +15,8 @@ export default function Gallery() {
     setSelected(next);
     document.getElementById(`gallery-tab-${next}`)?.focus();
   }
-  return <section id="gallery" className="space-gallery" data-nav-tone="violet" aria-labelledby="gallery-title">
-    <ShaderBackground className="gallery-shader" />
-    <h2 id="gallery-title">GALLERY</h2>
+  return <section id="gallery" className="space-gallery" data-nav-tone="dark" aria-labelledby="gallery-title">
+    <h2 id="gallery-title">Our <span>Gallery</span></h2>
     <div className="gallery-tabs" role="tablist" aria-label="Gallery events">
       {galleryEvents.map((item, index) => <button key={item.name} id={`gallery-tab-${index}`} role="tab"
         aria-selected={selected === index} aria-controls="gallery-panel" tabIndex={selected === index ? 0 : -1}

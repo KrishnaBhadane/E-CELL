@@ -4,7 +4,7 @@ test('community sections follow the requested order and text reveals on scroll',
   await page.goto('/');
   await expect(page.locator('.welcome-screen')).toHaveCount(0);
   const ids = await page.locator('main > div > section[id]').evaluateAll(nodes => nodes.map(node => node.id));
-  expect(ids).toEqual(['about', 'events', 'gallery', 'testimonials', 'members']);
+  expect(ids).toEqual(['about', 'ideas', 'gallery', 'testimonials', 'members']);
   const title = page.locator('#gallery-title');
   await title.scrollIntoViewIfNeeded();
   await expect(title).toHaveClass(/text-visible/);
