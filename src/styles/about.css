@@ -5,7 +5,7 @@
 @keyframes globe-drift { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
 .globe-orbit { transform-origin: 145px 145px; animation: globe-orbit 32s linear infinite; filter: drop-shadow(0 0 3px #d7aeff); }
 @keyframes globe-orbit { to { transform: rotate(360deg); } }
-.illuminate-layout { position: relative; max-width: 1120px; margin: 70px auto; }
+.illuminate-layout { position: relative; max-width: 1120px; margin: 70px auto 16px; }
 .about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, transparent 8%, #7951d933 50%, #8451bd 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1px #7951d94a; margin-bottom: -20px; position: relative; z-index: 1; }
 .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .mission-grid article { padding: 65px 48px 145px; background: linear-gradient(to bottom, #7951d900, #8f60ca80 20%, #a47bdc 100%); text-align: center; }
@@ -22,7 +22,7 @@
 .impact-facts strong { display: block; font: 400 clamp(32px, 4vw, 58px)/1.2 var(--display); }
 .impact-facts span { display: block; margin-top: 12px; font-size: 12px; line-height: 1.6; }
 @media (max-width: 760px) {
-  .illuminate-layout { margin-block: 40px; }
+  .illuminate-layout { margin-block: 40px 12px; }
   .mission-grid { grid-template-columns: 1fr; gap: 12px; }
   .mission-grid article { padding: 32px; }
   .mission-grid article:last-child { padding-bottom: 110px; }
