@@ -14,7 +14,7 @@ for (const width of [320, 390, 1440]) {
     await expect(page.locator('.blog-reader h1')).toHaveText(title);
     await page.goto('/members.html');
     await expect(page.locator('.team-card')).toHaveCount(38);
-    expect(await page.locator('.team-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(6);
+    expect(await page.locator('.team-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width <= 768 ? 4 : 6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     await page.screenshot({ path: `/private/tmp/members-grid-${width}.png` });
     await page.goto('/');

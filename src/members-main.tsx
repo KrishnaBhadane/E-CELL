@@ -56,7 +56,7 @@ function MembersPage() {
                     src={member.image}
                     alt={`Portrait for ${member.name}`}
                     width="400"
-                    height="440"
+                    height="400"
                     loading="lazy"
                     decoding="async"
                   />

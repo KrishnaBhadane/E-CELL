@@ -15,7 +15,7 @@ for (const width of [390, 1440]) {
     await expect(page.locator('#team-roster .member-links')).toHaveCount(38);
     await expect(page.locator('#team-roster .member-links [aria-label*="LinkedIn"]')).toHaveCount(38);
     await expect(page.locator('#team-roster .member-links [aria-label*="GitHub"]')).toHaveCount(38);
-    expect(await page.locator('.team-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(6);
+    expect(await page.locator('.team-grid').evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(width <= 768 ? 4 : 6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.getByRole('navigation').getByRole('link', { name: 'About', exact: true }).click();
     await expect(page).toHaveURL(/\/#about$/);

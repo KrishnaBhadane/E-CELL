@@ -8,7 +8,7 @@ function LeaderCard({ member }: { member: Member }) {
   const card = useVisibleAnimation<HTMLElement>();
   return (
     <article ref={card} id={member.id} className="leader-card">
-      <img src={member.image} alt={`Portrait placeholder for ${member.name}`} loading="lazy" width="400" height="440" />
+      <img src={member.image} alt={`Portrait placeholder for ${member.name}`} loading="lazy" width="400" height="400" />
       <div>
         <h3>{member.name}</h3>
         <p>{member.domain}</p>
