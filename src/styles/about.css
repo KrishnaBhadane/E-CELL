@@ -1,22 +1,22 @@
-.about { position: relative; z-index: 2; background: var(--paper); padding: 28px var(--gutter) 0; box-shadow: 0 -15px 50px #22122f0d; }
-.about h2.about-outline { text-shadow: 0 2px 3px #0003; -webkit-text-stroke-color: #21142d99 !important; }
+.about { position: relative; z-index: 2; background: var(--paper); padding: 28px var(--gutter) 0; box-shadow: 0 -15px 50px color-mix(in srgb, var(--brand-dark-70) 5.1%, transparent); }
+.about h2.about-outline { text-shadow: 0 2px 3px color-mix(in srgb, var(--theme-black) 20.0%, transparent); -webkit-text-stroke-color: color-mix(in srgb, var(--brand-dark-70) 60.0%, transparent) !important; }
 .mission-grid article p { font-weight: 600; }
 .india-globe { transform-origin: center; animation: globe-drift 8s ease-in-out infinite alternate; }
 @keyframes globe-drift { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
-.globe-orbit { transform-origin: 145px 145px; animation: globe-orbit 32s linear infinite; filter: drop-shadow(0 0 3px #d7aeff); }
+.globe-orbit { transform-origin: 145px 145px; animation: globe-orbit 32s linear infinite; filter: drop-shadow(0 0 3px var(--brand-light-70)); }
 @keyframes globe-orbit { to { transform: rotate(360deg); } }
 .illuminate-layout { position: relative; max-width: 1120px; margin: 70px auto 16px; }
-.about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, transparent 8%, #7951d933 50%, #8451bd 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1px #7951d94a; margin-bottom: -20px; position: relative; z-index: 1; }
+.about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, transparent 8%, color-mix(in srgb, var(--brand-bright) 20.0%, transparent) 50%, var(--brand-light-15) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1px color-mix(in srgb, var(--brand-bright) 29.02%, transparent); margin-bottom: -20px; position: relative; z-index: 1; }
 .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.mission-grid article { padding: 65px 48px 145px; background: linear-gradient(to bottom, #7951d900, #8f60ca80 20%, #a47bdc 100%); text-align: center; }
+.mission-grid article { padding: 65px 48px 145px; background: linear-gradient(to bottom, color-mix(in srgb, var(--brand-bright) 0.0%, transparent), color-mix(in srgb, var(--brand-light-25) 50.2%, transparent) 20%, var(--brand-light-40) 100%); text-align: center; }
 .mission-grid h3 { font: 400 clamp(30px, 3vw, 46px)/1.15 var(--display); margin: 22px 0; }
-.mission-grid p { font-size: 14px; line-height: 1.9; max-width: 380px; color: #241332; margin: auto; }
-.impact-emblem { width: 300px; height: 300px; margin: -150px auto; position: relative; z-index: 2; border-radius: 50%; background: #171021; box-shadow: 0 0 8px #1e0b37, 0 0 35px #9e66d970; }
-.india-globe { display: block; width: 100%; height: 100%; mask-image: radial-gradient(circle, black 62%, #000b 67%, transparent 72%); }
+.mission-grid p { font-size: 14px; line-height: 1.9; max-width: 380px; color: var(--brand-dark-70); margin: auto; }
+.impact-emblem { width: 300px; height: 300px; margin: -150px auto; position: relative; z-index: 2; border-radius: 50%; background: var(--brand-dark-80); box-shadow: 0 0 8px var(--brand-dark-70), 0 0 35px color-mix(in srgb, var(--brand-light-30) 43.92%, transparent); }
+.india-globe { display: block; width: 100%; height: 100%; mask-image: radial-gradient(circle, black 62%, color-mix(in srgb, var(--theme-black) 73.33%, transparent) 67%, transparent 72%); }
 .map-node { animation: map-glimmer 3.6s ease-in-out infinite alternate; }
 @keyframes map-glimmer { from { opacity: .35; } to { opacity: 1; } }
 .impact-facts strong .count-value { font: inherit; margin: 0; line-height: inherit; font-variant-numeric: tabular-nums; }
-.impact-panel { background: radial-gradient(ellipse at 50% 0, #bc97ec, #9b6bd7 65%, #8658c2); color: #22122f; text-align: center; padding: 164px 40px 32px; margin-top: 16px; }
+.impact-panel { background: radial-gradient(ellipse at 50% 0, var(--brand-light-55), var(--brand-light-35) 65%, var(--brand-light-20)); color: var(--brand-dark-70); text-align: center; padding: 164px 40px 32px; margin-top: 16px; }
 .impact-panel h3 { font: 400 clamp(26px, 2.6vw, 38px)/1.05 var(--display); text-transform: uppercase; margin: 6px 0 20px; }
 .impact-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .impact-facts strong { display: block; font: 400 clamp(32px, 4vw, 58px)/1.2 var(--display); }
@@ -29,7 +29,8 @@
   .impact-emblem { width: 210px; height: 210px; margin-block: -105px; }
   .impact-panel { padding: 140px 24px 35px; }
   .impact-facts { grid-template-columns: 1fr; gap: 28px; }
-  .impact-facts > div + div { border-top: 1px solid #ffffff40; padding-top: 24px; }
+  .impact-facts > div + div { border-top: 1px solid color-mix(in srgb, var(--theme-white) 25.1%, transparent); padding-top: 24px; }
 }
 
 .about h2 { font-family: var(--display); font-weight: 400; letter-spacing: -.6px; line-height: 1.16; }
+.india-globe:not([data-visible="true"]), .india-globe:not([data-visible="true"]) .map-node, .india-globe:not([data-visible="true"]) .globe-orbit { animation-play-state: paused; }

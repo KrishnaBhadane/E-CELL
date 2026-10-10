@@ -10,8 +10,9 @@ export interface BlogPost {
   paragraphs: string[];
 }
 
+// Newest first: the first post is featured; all older posts appear in the grid.
 // Sample editorial content. Replace with approved articles before publishing.
-export const blogPosts: BlogPost[] = [
+const articles: BlogPost[] = [
   {
     slug: 'finding-your-first-team', title: 'Find your people. Build something together.', category: 'Campus Stories',
     excerpt: 'A sample story about turning a campus conversation into a small project.',
@@ -68,3 +69,10 @@ export const blogPosts: BlogPost[] = [
     ],
   },
 ];
+
+const extraTitles = ['Learning from a first customer', 'A budget for your first project', 'Designing with your team', 'What makes useful feedback?', 'From workshop to working idea', 'Reflect, improve, repeat'];
+export const blogPosts: BlogPost[] = [...articles, ...extraTitles.map((title, index): BlogPost => ({
+  slug: `sample-story-${index + 1}`, title, category: 'Startup Basics',
+  excerpt: 'A sample journal entry exploring practical lessons for student entrepreneurs.',
+  paragraphs: ['This is a dummy article for the E-Cell journal layout. Replace it with a real contribution before publishing.', 'Start small, share what you learn with your team, and choose one practical next step.'],
+}))].map((post, index) => ({ ...post, image: post.image ?? `/assets/blog/editorial-${index % 3}.svg`, imageAlt: post.imageAlt ?? 'Abstract editorial illustration' }));

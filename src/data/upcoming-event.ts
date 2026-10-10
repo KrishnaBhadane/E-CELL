@@ -4,6 +4,6 @@ export const upcomingEvent = {
   label: 'Recently Done',
   theme: 'ONE PIECE EDITION',
   status: 'Team NEC · E-CELL RCPIT',
-  colors: ['#ffffff', '#8dd5ff'] as [string, string],
+  colors: ['var(--theme-white)', 'var(--event-blue)'] as [string, string],
   characterSource: 'https://one-piece.com/character/luffy/index.html',
 };

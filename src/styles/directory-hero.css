@@ -1,0 +1,6 @@
+.directory-heading { position: relative; isolation: isolate; text-align: center; overflow: hidden; min-height: 390px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px solid var(--line); border-radius: 24px; background: radial-gradient(ellipse at 50% 70%, var(--brand-dark-70), var(--theme-black) 70%); }
+.blog-page .directory-heading h1 { background: linear-gradient(175deg, var(--theme-white) 20%, var(--brand-primary) 35%, var(--theme-white) 48%, var(--brand-dark-40) 65%, var(--theme-white) 85%); background-clip: text; color: transparent; font-family: Georgia, serif; font-size: clamp(44px, 9vw, 130px); text-shadow: 0 2px 15px #0003; }
+.directory-heading > span { color: var(--theme-white); }
+.directory-heading { animation: directory-enter .65s ease both; }
+@keyframes directory-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media(max-width:600px) { .directory-heading { min-height: 280px; } }

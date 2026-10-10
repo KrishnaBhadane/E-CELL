@@ -1,6 +1,6 @@
 import Header from './components/Header';
 import Hero from './sections/Hero';
-import IdeaStrip from './sections/IdeaStrip';
+import CommunityPoster from './sections/CommunityPoster';
 import About from './sections/About';
 import Members from './sections/Members';
 import WelcomeScreen from './components/WelcomeScreen';
@@ -20,7 +20,7 @@ export default function App() {
         <Hero />
         <ScrollReveal>
         <About />
-        <IdeaStrip />
+        <CommunityPoster />
         <Gallery />
         <Testimonials />
         <Members />

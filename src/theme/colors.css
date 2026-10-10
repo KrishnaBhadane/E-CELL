@@ -1,0 +1,12 @@
+/* Edit these colors to recolor the interface on all three pages.
+   Photos, club logos and event illustrations retain their original artwork. */
+:root {
+  --brand-primary: #aeb4bd;
+  --brand-bright: #e2e5e9;
+  --theme-paper: #0c0d10;
+  --theme-white: #ffffff;
+  --theme-ink: #e2e5e9;
+  --theme-black: #000000;
+  --event-blue: #d1d6df;
+  --event-red: #9da5b1;
+}

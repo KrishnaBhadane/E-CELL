@@ -7,14 +7,16 @@ export default function Header() {
   const [tone, setTone] = useState('dark');
   useEffect(() => {
     let frame = 0;
+    const navigation = header.current?.querySelector('nav');
+    const surfaces = document.querySelectorAll<HTMLElement>('[data-nav-tone]');
     const update = () => {
       frame = 0;
-      const nav = header.current?.querySelector('nav')?.getBoundingClientRect();
+      const nav = navigation?.getBoundingClientRect();
       if (!nav) return;
       const y = nav.top + nav.height / 2;
       let next = 'light';
       // Explicit surface tones also work for gradients, SVG and transparent layers.
-      document.querySelectorAll<HTMLElement>('[data-nav-tone]').forEach(surface => {
+      surfaces.forEach(surface => {
         const bounds = surface.getBoundingClientRect();
         if (bounds.top <= y && bounds.bottom > y) next = surface.dataset.navTone ?? 'light';
       });

@@ -174,7 +174,7 @@ const Half = React.memo(function Half({
         <path
           d={d(line, false)}
           fill="none"
-          stroke="#000"
+          stroke="var(--theme-black)"
           strokeOpacity={0.55 * Math.min(1, open * 3)}
           strokeWidth={22}
           transform={"translate(0 " + (up ? 10 : -10) + ")"}
@@ -187,9 +187,9 @@ const Half = React.memo(function Half({
       <g clipPath={"url(#" + clip + ")"}>{children}</g>
       {open > 0 ? (
         <>
-          <path d={d(core)} fill="#ffffff" />
+          <path d={d(core)} fill="var(--theme-white)" />
           {curls.map((c, i) => (
-            <path key={i} d={c} fill={"url(#" + id + "-curl-" + side + ")"} stroke="#fff" strokeWidth={1} />
+            <path key={i} d={c} fill={"url(#" + id + "-curl-" + side + ")"} stroke="var(--theme-white)" strokeWidth={1} />
           ))}
         </>
       ) : null}
@@ -202,10 +202,10 @@ const Half = React.memo(function Half({
 export default function TigerTearReveal({
   word = "COURAGE",
   tagline = "HAVE NO FEAR",
-  ink = "#cf2e3d",
+  ink = "var(--event-red)",
   inkGradient,
-  paper = "#f2f1ee",
-  taglineColor = "#2a2a2a",
+  paper = "var(--brand-light-90)",
+  taglineColor = "var(--neutral-light-10)",
   fontFamily = '"Anton", Impact, "Bebas Neue", "Oswald", "Arial Narrow", "Arial Black", sans-serif',
   height = "100svh",
   scrollDistance = "160svh",
@@ -366,15 +366,15 @@ export default function TigerTearReveal({
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", maxWidth: "none", display: "block" }}
         >
           <defs>
-            <linearGradient id={`${id}-mobile-paper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#29252f" /><stop offset=".6" stopColor={paper} /><stop offset="1" stopColor="#17111e" /></linearGradient>
+            <linearGradient id={`${id}-mobile-paper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="var(--neutral-light-10)" /><stop offset=".6" stopColor={paper} /><stop offset="1" stopColor="var(--brand-dark-80)" /></linearGradient>
             {inkGradient && <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={inkGradient[0]} /><stop offset="1" stopColor={inkGradient[1]} /></linearGradient>}
             <linearGradient id={id + "-curl-top"} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="1" stopColor="#d9d5df" />
+              <stop offset="0" stopColor="var(--theme-white)" />
+              <stop offset="1" stopColor="var(--brand-light-75)" />
             </linearGradient>
             <linearGradient id={id + "-curl-bottom"} x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="1" stopColor="#d9d5df" />
+              <stop offset="0" stopColor="var(--theme-white)" />
+              <stop offset="1" stopColor="var(--brand-light-75)" />
             </linearGradient>
             <filter id={id + "-soft"} x="-20%" y="-50%" width="140%" height="200%">
               <feGaussianBlur stdDeviation="8" />
@@ -405,7 +405,7 @@ export default function TigerTearReveal({
 
             {/* the crack, running out from the middle before it gives way */}
             {s.crack > 0 && s.open < 0.15 && crack.length > 1 ? (
-              <path d={d(crack, false)} fill="none" stroke="#201726" strokeWidth={2.4} strokeLinejoin="bevel" opacity={1 - s.open / 0.15} />
+              <path d={d(crack, false)} fill="none" stroke="var(--brand-dark-75)" strokeWidth={2.4} strokeLinejoin="bevel" opacity={1 - s.open / 0.15} />
             ) : null}
           </g>
         </svg>

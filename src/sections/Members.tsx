@@ -1,19 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useVisibleAnimation } from '@/hooks/useVisibleAnimation';
 import { members, type Member } from '@/data/members';
 import MemberLinks from '@/components/MemberLinks';
 
 const leaders = members.filter(member => member.leadership);
 
 function LeaderCard({ member }: { member: Member }) {
-  const card = useRef<HTMLElement>(null);
-  useEffect(() => {
-    if (!card.current) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      entry.target.classList.toggle('leader-visible', entry.isIntersecting);
-    }, { threshold: .3 });
-    observer.observe(card.current);
-    return () => observer.disconnect();
-  }, []);
+  const card = useVisibleAnimation<HTMLElement>();
   return <article ref={card} id={member.id} className="leader-card">
     <img src={member.image} alt={`Portrait placeholder for ${member.name}`} loading="lazy" width="400" height="440" />
     <div><h3>{member.name}</h3><p>{member.domain}</p></div>

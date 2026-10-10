@@ -1,34 +1,34 @@
-.tear-hero { --tear-distance: 110svh; background: #09090b; position: relative; }
+.tear-hero { --tear-distance: 110svh; background: var(--neutral-dark-55); position: relative; }
 .hero-lite svg [filter] { filter: none; }
-.event-reveal { height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; color: #dbc2ff; }
+.event-reveal { height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; color: var(--brand-light-80); }
 .event-reveal p { font: 600 13px var(--sans); letter-spacing: .3em; }
 .event-reveal svg { width: 100%; height: 170px; }
 .event-outline { font: 120px var(--display); stroke-dasharray: 900; stroke-dashoffset: 0; animation: event-draw 2.4s ease-out both; }
 .event-reveal .event-coming { font-size: 12px; letter-spacing: .2em; }
 @keyframes event-draw { from { stroke-dashoffset: 900; fill-opacity: 0; } 65% { fill-opacity: 0; } to { stroke-dashoffset: 0; fill-opacity: 1; } }
-.upcoming-event { position: relative; height: 100%; display: grid; grid-template-columns: 98px minmax(0, 1fr) 70px; align-items: center; gap: 14px; padding: 8px; background: radial-gradient(ellipse at 50% 60%, #07385d66, transparent 75%); }
-.event-character { width: 98px; height: 120px; object-fit: cover; object-position: 38% center; border-radius: 8px; border: 2px solid #cf3e43; }
+.upcoming-event { position: relative; height: 100%; display: grid; grid-template-columns: 98px minmax(0, 1fr) 70px; align-items: center; gap: 14px; padding: 8px; background: radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--brand-dark-55) 40.0%, transparent), transparent 75%); }
+.event-character { width: 98px; height: 120px; object-fit: cover; object-position: 38% center; border-radius: 8px; border: 2px solid var(--brand-light-15); }
 .event-ship { width: 70px; animation: ship-arrive 1.4s ease-out both; }
 .event-announcement { min-width: 0; text-align: center; }
-.upcoming-event .event-reveal { color: #e7f4ff; }
+.upcoming-event .event-reveal { color: var(--brand-light-90); }
 .upcoming-event .event-reveal svg { height: 70px; }
-.upcoming-event .event-outline { stroke: #579bda; paint-order: stroke fill; }
+.upcoming-event .event-outline { stroke: var(--brand-light-25); paint-order: stroke fill; }
 .upcoming-event .event-reveal p { font-size: 12px; letter-spacing: .14em; }
 .upcoming-event .event-coming { font-size: 10px; }
-.event-edition { display: inline-block; margin-top: 7px; padding: 4px 10px; border: 1px solid #f06a67; border-radius: 3px; background: #a5222c55; font: 700 10px var(--sans); letter-spacing: .14em; color: #fff0ed; }
+.event-edition { display: inline-block; margin-top: 7px; padding: 4px 10px; border: 1px solid var(--brand-light-40); border-radius: 3px; background: color-mix(in srgb, var(--brand-dark-15) 33.33%, transparent); font: 700 10px var(--sans); letter-spacing: .14em; color: var(--brand-light-95); }
 @keyframes ship-arrive { from { transform: translateY(15px) rotate(-4deg); opacity: 0; } to { transform: none; opacity: 1; } }
 .tear-hero .hero-lite::after { animation: none; }
 .hero-club-logo { position: absolute; top: 20px; left: var(--gutter); z-index: 5; }
-.hero-club-logo .club-logo { width: 58px; height: 58px; background: #f4f4f2; }
+.hero-club-logo .club-logo { width: 58px; height: 58px; background: var(--theme-paper); }
 @media (max-width: 760px) { .hero-club-logo { top: 82px; left: 20px; } .hero-club-logo .club-logo { width: 46px; height: 46px; } }
-.tear-hero .tiger-stage::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 16px; background: repeating-linear-gradient(115deg, #b994ed 0 26px, #674299 26px 52px, #e4d6f4 52px 78px); background-size: 172px 100%; mask-image: linear-gradient(transparent, #0009 55%, #000); animation: hero-stripe 18s linear infinite; pointer-events: none; }
+.tear-hero .tiger-stage::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 16px; background: repeating-linear-gradient(115deg, var(--brand-light-55) 0 26px, var(--brand-dark-5) 26px 52px, var(--brand-light-80) 52px 78px); background-size: 172px 100%; mask-image: linear-gradient(transparent, color-mix(in srgb, var(--theme-black) 60.0%, transparent) 55%, var(--theme-black)); animation: hero-stripe 18s linear infinite; pointer-events: none; }
 @keyframes hero-stripe { to { background-position: 172px 0; } }
-.dark-gradient-bg { position: relative; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(100% 100% at 0 0, #2e2e2e, #000); }
-.dark-streaks { position: absolute; inset: 0; mask-image: linear-gradient(#000, transparent 90%); }
-.dark-streaks i { position: absolute; top: -30%; width: 18%; height: 150%; transform: skewX(45deg); background: linear-gradient(90deg, transparent, #00cfff, transparent); }
-.dark-dots { position: absolute; inset: 0; opacity: .16; background-image: radial-gradient(circle at 1px 1px, #ffffff80 1px, transparent 0); background-size: 20px 20px; }
+.dark-gradient-bg { position: relative; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(100% 100% at 0 0, var(--neutral-light-10), var(--theme-black)); }
+.dark-streaks { position: absolute; inset: 0; mask-image: linear-gradient(var(--theme-black), transparent 90%); }
+.dark-streaks i { position: absolute; top: -30%; width: 18%; height: 150%; transform: skewX(45deg); background: linear-gradient(90deg, transparent, var(--brand-light-10), transparent); }
+.dark-dots { position: absolute; inset: 0; opacity: .16; background-image: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--theme-white) 50.2%, transparent) 1px, transparent 0); background-size: 20px 20px; }
 .tear-hero .tear-caption { display: flex; justify-content: center; }
-.tear-hero .tear-scroll { color: #e6d9f8; }
+.tear-hero .tear-scroll { color: var(--brand-light-85); }
 .tiger-stage > svg { animation: poster-arrive .9s ease-out both; }
 .tear-caption { position: absolute; bottom: 28px; left: var(--gutter); right: var(--gutter); display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; gap: 20px; }
 .tear-scroll { display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 8px; letter-spacing: 1.6px; }

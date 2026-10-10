@@ -1,0 +1,12 @@
+.community-poster { position: relative; overflow: hidden; isolation: isolate; max-width: 1400px; margin: 20px auto; padding: clamp(20px, 4vw, 54px); background: var(--theme-black); color: var(--theme-white); }
+.community-poster::before { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(135deg, transparent 45%, color-mix(in srgb, var(--theme-white) 12%, transparent) 45% 55%, transparent 55%); }
+.poster-caption, .poster-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 10px; letter-spacing: .06em; }
+.community-poster h2 { font: 400 clamp(62px, 9vw, 128px)/.9 var(--display); letter-spacing: -.04em; margin: 32px 0; }
+.community-poster h2 span { background: linear-gradient(165deg, var(--theme-white) 8%, var(--muted) 28%, var(--theme-white) 45%, var(--muted) 60%, var(--theme-white) 82%); background-clip: text; color: transparent; }
+.poster-bottom p { line-height: 1.6; }
+.poster-bottom a { border-bottom: 1px solid currentColor; padding: 12px 0; font-weight: 700; }
+@media (max-width: 600px) { .community-poster { margin: 12px; } .poster-caption { font-size: 8px; } }
+
+.poster-content { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+.community-poster { border: 1px solid var(--line); border-radius: 24px; }
+@media(max-width:600px) { .community-poster h2 { font-size: clamp(36px, 9vw, 60px); } }

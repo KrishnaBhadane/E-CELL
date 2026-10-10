@@ -1,5 +1,7 @@
-.welcome-screen { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: #fff; color: #777; }
+.welcome-screen { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; background: var(--theme-paper); color: var(--neutral-light-40); }
 .welcome-loading { display: grid; justify-items: center; gap: 16px; font: 12px/1.4 Arial, sans-serif; }
-.welcome-spinner { width: 24px; height: 24px; border: 2px solid #ededed; border-top-color: #777; border-radius: 50%; animation: welcome-spin .8s linear infinite; }
+.welcome-spinner { width: 24px; height: 24px; border: 2px solid var(--neutral-light-90); border-top-color: var(--neutral-light-40); border-radius: 50%; animation: welcome-spin .8s linear infinite; }
 @keyframes welcome-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .welcome-spinner { animation: none; } }
+
+.welcome-loading .club-logo { width: 72px; height: 72px; }

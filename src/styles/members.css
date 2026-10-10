@@ -1,34 +1,34 @@
 .members { position: relative; background: var(--paper); padding: 32px var(--gutter) 48px; }
 .team-page-link { display: table; margin: 28px auto 0; padding: 12px 22px; border-radius: 99px; font-size: 13px; font-weight: 600; }
 .team-page { background: var(--paper); }
-.member-links { display: flex; gap: 10px; margin-top: 10px; color: #573276; }
+.member-links { display: flex; gap: 10px; margin-top: 10px; color: var(--brand-dark-25); }
 .member-links svg { width: 18px; height: 18px; }
 .member-links a, .member-links span { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 28px; }
 .member-links span { opacity: .55; }
 .member-links a:focus-visible { outline: 2px solid var(--accent); border-radius: 4px; }
 .team-page .team-page-link { display: none; }
-.team-card { min-width: 0; padding: 10px; border-radius: 12px; background: #ebe1f2; }
+.team-card { min-width: 0; padding: 10px; border-radius: 12px; background: var(--brand-light-85); }
 .team-card img { width: 100%; height: auto; display: block; border-radius: 7px; }
 .team-card h2 { font: 400 clamp(14px, 2vw, 24px)/1.15 var(--display); margin: 10px 0 5px; overflow-wrap: anywhere; }
-.team-card p { font-size: 11px; color: #604079; overflow-wrap: anywhere; }
-.team-preview-note { text-align: center; font-size: 12px; color: #665a70; padding: 24px; }
+.team-card p { font-size: 11px; color: var(--brand-dark-20); overflow-wrap: anywhere; }
+.team-preview-note { text-align: center; font-size: 12px; color: var(--neutral-light-35); padding: 24px; }
 @media (max-width: 760px) {
   .team-card { padding: 6px; }
   .team-card p { font-size: 9px; }
 }
 .members-leads { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: center; gap: 28px; margin: 0 auto; }
-.leader-card { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: 16px; padding: 18px; border-radius: 16px 5px 16px 5px; background: #9660d5; color: #f4eafa; box-shadow: 0 12px 30px #28143820; transition: transform .3s ease, box-shadow .3s ease; }
-@media (hover: hover) { .leader-card:hover { transform: perspective(900px) translateY(-5px) rotateX(2deg); box-shadow: 0 20px 36px #58317b35; } }
-.leader-card::before { content: ''; position: absolute; z-index: -2; width: 220%; aspect-ratio: 1; left: -60%; top: 50%; background: conic-gradient(transparent 0deg, #a066d8 80deg, #f6e6ff 110deg, transparent 150deg, #a066d8 260deg, #f6e6ff 290deg, transparent 330deg); animation: leader-aura 7s linear infinite paused; }
-.leader-card::after { content: ''; position: absolute; inset: 1px; z-index: -1; border-radius: 15px 4px 15px 4px; background: linear-gradient(140deg, #302139, #17111f 55%, #42245e); }
-.leader-visible::before { animation-play-state: running; }
+.leader-card { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: 16px; padding: 18px; border-radius: 16px 5px 16px 5px; background: var(--brand-light-30); color: var(--brand-light-90); box-shadow: 0 12px 30px color-mix(in srgb, var(--brand-dark-65) 12.55%, transparent); transition: transform .3s ease, box-shadow .3s ease; }
+@media (hover: hover) { .leader-card:hover { transform: perspective(900px) translateY(-5px) rotateX(2deg); box-shadow: 0 20px 36px color-mix(in srgb, var(--brand-dark-25) 20.78%, transparent); } }
+.leader-card::before { content: ''; position: absolute; z-index: -2; width: 220%; aspect-ratio: 1; left: -60%; top: 50%; background: conic-gradient(transparent 0deg, var(--brand-light-30) 80deg, var(--brand-light-90) 110deg, transparent 150deg, var(--brand-light-30) 260deg, var(--brand-light-90) 290deg, transparent 330deg); animation: leader-aura 7s linear infinite paused; }
+.leader-card::after { content: ''; position: absolute; inset: 1px; z-index: -1; border-radius: 15px 4px 15px 4px; background: linear-gradient(140deg, var(--brand-dark-60), var(--brand-dark-80) 55%, var(--brand-dark-45)); }
+.leader-card[data-visible="true"]::before { animation-play-state: running; }
 @keyframes leader-aura { from { transform: translateY(-50%) rotate(0deg); } to { transform: translateY(-50%) rotate(360deg); } }
 .leader-card img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 30%; border-radius: 8px 2px 8px 2px; display: block; opacity: .92; }
-.leader-card > div:not(.member-links) { position: relative; padding: 14px; border: 1px solid #e4c4ff28; border-radius: 9px; background: linear-gradient(135deg, #e1c4ff12, #ffffff05); backdrop-filter: blur(6px); }
-.leader-card > div:not(.member-links)::after { content: ''; position: absolute; right: 0; bottom: 0; width: 42px; height: 55px; border-radius: 0 0 8px; background: linear-gradient(135deg, #b691e5, #7542b8); clip-path: polygon(100% 0, 70% 48%, 82% 66%, 0 100%, 100% 100%); opacity: .5; }
-.leader-card .member-links { margin-top: 0; color: #d7b8f6; }
+.leader-card > div:not(.member-links) { position: relative; padding: 14px; border: 1px solid color-mix(in srgb, var(--brand-light-80) 15.69%, transparent); border-radius: 9px; background: linear-gradient(135deg, color-mix(in srgb, var(--brand-light-80) 7.06%, transparent), color-mix(in srgb, var(--theme-white) 1.96%, transparent)); backdrop-filter: blur(6px); }
+.leader-card > div:not(.member-links)::after { content: ''; position: absolute; right: 0; bottom: 0; width: 42px; height: 55px; border-radius: 0 0 8px; background: linear-gradient(135deg, var(--brand-light-50), var(--brand-light-5)); clip-path: polygon(100% 0, 70% 48%, 82% 66%, 0 100%, 100% 100%); opacity: .5; }
+.leader-card .member-links { margin-top: 0; color: var(--brand-light-70); }
 .leader-card h3 { font: 32px/1.2 var(--display); }
-.leader-card p { margin: 7px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: #c9a8ed; }
+.leader-card p { margin: 7px 0 0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--brand-light-65); }
 @media (max-width: 600px) {
   .members { padding-inline: 20px; }
   .members-leads { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }

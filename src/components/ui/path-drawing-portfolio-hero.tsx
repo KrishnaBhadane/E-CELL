@@ -2,7 +2,7 @@ import { useId } from 'react';
 
 /** Adapted from the supplied SVG outline-text design. CSS draws once, avoiding
  * repeated canvas measurements and a permanent JavaScript animation loop. */
-export default function PathDrawingPortfolioHero({ brand, colors = ['#aa7bf0', '#e3ccff'], label = 'UPCOMING EVENT', status = 'COMING SOON · E-CELL RCPIT' }: { brand: string; colors?: [string, string]; label?: string; status?: string }) {
+export default function PathDrawingPortfolioHero({ brand, colors = ['var(--brand-light-50)', 'var(--brand-light-80)'], label = 'UPCOMING EVENT', status = 'COMING SOON · E-CELL RCPIT' }: { brand: string; colors?: [string, string]; label?: string; status?: string }) {
   const id = useId().replace(/:/g, '');
   return <div className="event-reveal" data-path-drawing-hero>
     <p>{label}</p>

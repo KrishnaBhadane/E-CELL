@@ -18,10 +18,10 @@ export default function Hero() {
         word="RCPIT"
         tagline="ENTREPRENEURSHIP CELL"
         paperArtwork={<DarkGradientBg />}
-        ink="#6630b5"
-        inkGradient={["#aa7bf0", "#d2b6ff"]}
-        paper="#09090b"
-        taglineColor="#f4f4f2"
+        ink="var(--brand-primary)"
+        inkGradient={["var(--brand-light-50)", "var(--brand-light-75)"]}
+        paper="var(--neutral-dark-55)"
+        taglineColor="var(--theme-white)"
         fontFamily="Anton, Impact, sans-serif"
         height="100svh"
         scrollDistance="var(--tear-distance)"

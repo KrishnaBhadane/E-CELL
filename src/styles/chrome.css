@@ -1,0 +1,7 @@
+.chrome-object { width: 100%; aspect-ratio: 1; display: grid; place-items: center; perspective: 850px; }
+.chrome-sculpture { position: relative; width: 80%; height: 80%; transform-style: preserve-3d; animation: chrome-turn 24s linear infinite; animation-play-state: paused; }
+.chrome-object[data-visible="true"] .chrome-sculpture { animation-play-state: running; }
+@keyframes chrome-turn { from { transform: rotateX(-12deg) rotateY(0deg); } to { transform: rotateX(-12deg) rotateY(360deg); } }
+.chrome-sculpture i { position: absolute; inset: 15% 4%; border-radius: 48% 52% 44% 56%; background: conic-gradient(from 30deg, var(--theme-black), var(--theme-white) 8%, var(--brand-primary) 15%, var(--theme-black) 24%, var(--theme-white) 38%, var(--brand-bright) 44%, var(--theme-black) 58%, var(--theme-white) 73%, var(--brand-primary) 85%, var(--theme-black)); box-shadow: inset 2px 3px 2px var(--theme-white), inset -3px -4px 4px var(--theme-black), 0 18px 25px #0005; mask: radial-gradient(ellipse, transparent 38%, black 40%); transform: rotate(-32deg) rotateX(25deg); }
+.chrome-sculpture i:nth-child(2) { transform: rotate(45deg) rotateY(40deg) translateZ(25px); }
+.chrome-sculpture i:nth-child(3) { transform: rotate(100deg) rotateX(-35deg) translateZ(-25px); }

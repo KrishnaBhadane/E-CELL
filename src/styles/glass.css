@@ -2,9 +2,9 @@
 .glass-control {
   position: relative;
   isolation: isolate;
-  border: 1px solid rgb(255 255 255 / .88);
-  background: linear-gradient(150deg, rgb(255 255 255 / .76), rgb(231 224 242 / .3) 48%, rgb(255 255 255 / .52));
-  box-shadow: 0 5px 18px #2513330c, 0 1px 3px #2513330a, inset 0 1px 0 #fff, inset 0 -1px 1px #c6bad952;
+  border: 1px solid color-mix(in srgb, var(--theme-white) 88%, transparent);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--theme-white) 76%, transparent), color-mix(in srgb, var(--brand-light-85) 30%, transparent) 48%, color-mix(in srgb, var(--theme-white) 52%, transparent));
+  box-shadow: 0 5px 18px color-mix(in srgb, var(--brand-dark-70) 4.71%, transparent), 0 1px 3px color-mix(in srgb, var(--brand-dark-70) 3.92%, transparent), inset 0 1px 0 var(--theme-white), inset 0 -1px 1px color-mix(in srgb, var(--brand-light-60) 32.16%, transparent);
   backdrop-filter: blur(16px) saturate(1.7);
   -webkit-backdrop-filter: blur(16px) saturate(1.7);
 }
@@ -14,31 +14,32 @@
   inset: 1px;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(175deg, #ffffff80, transparent 48%);
+  background: linear-gradient(175deg, color-mix(in srgb, var(--theme-white) 50.2%, transparent), transparent 48%);
   z-index: -1;
 }
 .glass-button { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 12px 20px; min-height: 44px; color: var(--ink); transition: box-shadow .25s, background .25s, transform .25s; }
-.glass-button:hover { transform: translateY(-2px); background-color: #e3d7f04d; box-shadow: 0 8px 24px #6337a51a, inset 0 1px 1px #fff, inset 0 -1px 2px #bdb0ce66; }
+.glass-button:hover { transform: translateY(-2px); background-color: color-mix(in srgb, var(--brand-light-80) 30.2%, transparent); box-shadow: 0 8px 24px color-mix(in srgb, var(--brand-dark-5) 10.2%, transparent), inset 0 1px 1px var(--theme-white), inset 0 -1px 2px color-mix(in srgb, var(--brand-light-55) 40.0%, transparent); }
 .glass-button:active { transform: translateY(0); }
-.glass-cursor { border: 1px solid #ffffffd9; background: linear-gradient(155deg, #ffffffb8, #cbb8e440 65%, #ffffffa6); box-shadow: 0 2px 7px #38204712, inset 0 1px 1px #fff, inset 0 -1px 2px #ac95ca52; }
+.glass-cursor { border: 1px solid color-mix(in srgb, var(--theme-white) 85.1%, transparent); background: linear-gradient(155deg, color-mix(in srgb, var(--theme-white) 72.16%, transparent), color-mix(in srgb, var(--brand-light-65) 25.1%, transparent) 65%, color-mix(in srgb, var(--theme-white) 65.1%, transparent)); box-shadow: 0 2px 7px color-mix(in srgb, var(--brand-dark-55) 7.06%, transparent), inset 0 1px 1px var(--theme-white), inset 0 -1px 2px color-mix(in srgb, var(--brand-light-45) 32.16%, transparent); }
 .nav-glass { padding: 5px; }
 .nav-cursor { transition: transform .3s cubic-bezier(.2,.8,.2,1), width .3s cubic-bezier(.2,.8,.2,1), opacity .18s; }
 .header .nav-glass { transition: background .35s ease, border-color .35s ease, box-shadow .35s ease; }
 .header .pill-link { transition: color .35s ease; }
 .header[data-tone="dark"] .nav-glass {
-  border-color: #ffffff50;
-  background: linear-gradient(150deg, #ffffff29, #231a343d 48%, #ffffff14);
-  box-shadow: 0 5px 18px #0003, inset 0 1px 0 #ffffff70, inset 0 -1px 1px #b79bd63b;
+  border-color: color-mix(in srgb, var(--theme-white) 31.37%, transparent);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--theme-white) 16.08%, transparent), color-mix(in srgb, var(--brand-dark-65) 23.92%, transparent) 48%, color-mix(in srgb, var(--theme-white) 7.84%, transparent));
+  box-shadow: 0 5px 18px color-mix(in srgb, var(--theme-black) 20.0%, transparent), inset 0 1px 0 color-mix(in srgb, var(--theme-white) 43.92%, transparent), inset 0 -1px 1px color-mix(in srgb, var(--brand-light-50) 23.14%, transparent);
 }
-.header[data-tone="dark"] .nav-glass::before { background: linear-gradient(175deg, #ffffff26, transparent 48%); }
-.header[data-tone="dark"] .pill-link { color: #f5efff; }
-.header[data-tone="dark"] .pill-link:hover, .header[data-tone="dark"] .pill-link:focus-visible { color: #d8b9ff; }
-.header[data-tone="dark"] .glass-cursor { background: linear-gradient(155deg, #ffffff30, #ad82e32b 65%, #ffffff1a); border-color: #ffffff55; box-shadow: inset 0 1px 1px #ffffff70, 0 2px 7px #0002; }
-.header[data-tone="violet"] .nav-glass { background: linear-gradient(150deg, #f5eaffb8, #dcc4f64d 48%, #f8f2ff85); border-color: #fff9; }
-.header[data-tone="violet"] .pill-link { color: #29133d; }
+.header[data-tone="dark"] .nav-glass::before { background: linear-gradient(175deg, color-mix(in srgb, var(--theme-white) 14.9%, transparent), transparent 48%); }
+.header[data-tone="dark"] .pill-link { color: var(--brand-light-95); }
+.header[data-tone="dark"] .pill-link:hover, .header[data-tone="dark"] .pill-link:focus-visible { color: var(--brand-light-75); }
+.header[data-tone="dark"] .glass-cursor { background: linear-gradient(155deg, color-mix(in srgb, var(--theme-white) 18.82%, transparent), color-mix(in srgb, var(--brand-light-45) 16.86%, transparent) 65%, color-mix(in srgb, var(--theme-white) 10.2%, transparent)); border-color: color-mix(in srgb, var(--theme-white) 33.33%, transparent); box-shadow: inset 0 1px 1px color-mix(in srgb, var(--theme-white) 43.92%, transparent), 0 2px 7px color-mix(in srgb, var(--theme-black) 13.33%, transparent); }
+.header[data-tone="violet"] .nav-glass { background: linear-gradient(150deg, color-mix(in srgb, var(--brand-light-95) 72.16%, transparent), color-mix(in srgb, var(--brand-light-75) 30.2%, transparent) 48%, color-mix(in srgb, var(--brand-light-95) 52.16%, transparent)); border-color: color-mix(in srgb, var(--theme-white) 60.0%, transparent); }
+.header[data-tone="violet"] .pill-link { color: var(--brand-dark-65); }
 @supports not (backdrop-filter: blur(1px)) {
-  .header[data-tone="dark"] .nav-glass { background: #211a2e; }
-  .header[data-tone="violet"] .nav-glass { background: #e6d5f5; }
+  .header[data-tone="dark"] .nav-glass { background: var(--brand-dark-70); }
+  .header[data-tone="violet"] .nav-glass { background: var(--brand-light-80); }
 }
 .footer > .glass-button { padding-inline: 20px; }
-@supports not (backdrop-filter: blur(1px)) { .glass-control { background-color: #eeebf3; } }
+@supports not (backdrop-filter: blur(1px)) { .glass-control { background-color: var(--brand-light-90); } }
+.header[data-tone="light"] .pill-link { color: var(--brand-dark-80); }

@@ -13,7 +13,8 @@ test('page ends after impact with a footer and no campus section', async ({ page
   await expect(page.locator('#campus')).toHaveCount(0);
   await expect(page.locator('.header-location')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Our Initiatives', exact: true })).toHaveCount(0);
-  await expect(page.locator('#ideas .idea-lines p')).toHaveCount(2);
+  await expect(page.locator('#ideas .idea-lines')).toHaveCount(0);
+  await expect(page.locator('#poster-title')).toHaveText('STAYHUNGRY.STAYFOOLISH.');
   await expect(page.locator('footer')).toContainText('E-Cell RCPIT');
   expect(errors).toEqual([]);
 });
