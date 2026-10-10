@@ -1,0 +1,497 @@
+/* ==========================================================================
+   ADMIN PORTAL: BLACK & SILVER DESIGN SYSTEM
+   ========================================================================== */
+
+.admin-body {
+  margin: 0;
+  padding: 0;
+  background-color: #08090b;
+  color: #e2e5e9;
+  font-family: 'Manrope Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.admin-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 15% 10%, rgba(226, 229, 233, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(174, 180, 189, 0.03) 0%, transparent 50%),
+    #08090b;
+}
+
+/* --------------------------------------------------------------------------
+   NAVBAR & HEADER
+   -------------------------------------------------------------------------- */
+.admin-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: rgba(12, 13, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(226, 229, 233, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.admin-brand-title {
+  font-family: 'Anton', Impact, sans-serif;
+  letter-spacing: 0.05em;
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, #ffffff 30%, #aeb4bd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 229, 233, 0.25);
+  background: rgba(226, 229, 233, 0.08);
+  color: #e2e5e9;
+  font-family: 'Manrope Variable', sans-serif;
+  font-weight: 600;
+}
+
+.admin-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-user-pill {
+  font-size: 0.82rem;
+  color: #aeb4bd;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-user-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   TABS NAVIGATION
+   -------------------------------------------------------------------------- */
+.admin-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 28px;
+  background: rgba(14, 16, 20, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.admin-tabs-bar::-webkit-scrollbar { display: none; }
+
+.admin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #8b929e;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.admin-tab-btn:hover {
+  color: #e2e5e9;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-tab-btn.active {
+  color: #0c0d10;
+  background: linear-gradient(135deg, #ffffff, #cfd4dc);
+  border-color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   MAIN CONTAINER & SECTIONS
+   -------------------------------------------------------------------------- */
+.admin-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  width: 100%;
+  flex: 1;
+}
+
+.admin-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-section-title {
+  margin: 0;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+.admin-section-subtitle {
+  margin: 4px 0 0;
+  color: #8f96a3;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   CARDS & GRIDS
+   -------------------------------------------------------------------------- */
+.admin-card {
+  background: rgba(18, 20, 26, 0.65);
+  border: 1px solid rgba(226, 229, 233, 0.12);
+  border-radius: 14px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card:hover {
+  border-color: rgba(226, 229, 233, 0.24);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.admin-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   BUTTONS (BLACK & SILVER)
+   -------------------------------------------------------------------------- */
+.btn-silver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0c0d10;
+  background: linear-gradient(135deg, #ffffff 0%, #d4d8df 60%, #aeb4bd 100%);
+  border: 1px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-silver:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #e2e5e9 100%);
+}
+
+.btn-silver:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #d1d5db;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+/* --------------------------------------------------------------------------
+   FORMS & INPUTS
+   -------------------------------------------------------------------------- */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #cfd4dc;
+  margin-bottom: 7px;
+  letter-spacing: 0.02em;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: rgba(10, 11, 14, 0.8);
+  border: 1px solid rgba(226, 229, 233, 0.16);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: #fff;
+  font-size: 0.92rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #aeb4bd;
+  box-shadow: 0 0 0 3px rgba(174, 180, 189, 0.15);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.form-hint {
+  font-size: 0.76rem;
+  color: #79818e;
+  margin-top: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   IMAGE UPLOAD & PREVIEW COMPONENT
+   -------------------------------------------------------------------------- */
+.image-upload-box {
+  border: 2px dashed rgba(226, 229, 233, 0.2);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.image-upload-box:hover {
+  border-color: rgba(226, 229, 233, 0.4);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.image-preview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 10px;
+}
+
+.image-preview-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   LOGIN MODAL / HERO
+   -------------------------------------------------------------------------- */
+.admin-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(226, 229, 233, 0.06) 0%, transparent 60%),
+    #08090b;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(14, 16, 22, 0.9);
+  border: 1px solid rgba(226, 229, 233, 0.2);
+  border-radius: 18px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-login-title {
+  font-family: 'Anton', Impact, sans-serif;
+  letter-spacing: 0.06em;
+  font-size: 2rem;
+  margin: 12px 0 6px;
+  color: #fff;
+}
+
+.admin-login-subtitle {
+  color: #8b929e;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   MODAL DIALOG
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-content {
+  background: #0f1117;
+  border: 1px solid rgba(226, 229, 233, 0.2);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  padding: 28px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   STATUS BADGES & TOASTS
+   -------------------------------------------------------------------------- */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.badge-published {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.badge-draft {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.admin-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #141720;
+  color: #fff;
+  border: 1px solid rgba(226, 229, 233, 0.3);
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 200;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}

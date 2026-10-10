@@ -1,9 +1,14 @@
 node_modules/
-node_modules
-.env
-.env.*
-!.env.example
 dist/
 test-results/
 playwright-report/
 .DS_Store
+
+# Environment files
+.env
+.env.*
+.env.local
+.env.example
+
+# Supabase database files
+supabase/

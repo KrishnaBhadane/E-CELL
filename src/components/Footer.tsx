@@ -9,7 +9,7 @@ export default function Footer({ membersPage = false }: { membersPage?: boolean 
       <div className="footer-brand"><a href="/" aria-label="E-Cell RCPIT home"><ClubLogo /><span>E-CELL RCPIT</span></a><p>Entrepreneurship Cell<br />R. C. Patel Institute of Technology<br />Shirpur, Maharashtra</p></div>
       <div className="footer-link-column"><h2>Explore</h2><a href={`${home}#about`}>About us</a><a href={`${home}#impact`}>Our impact</a><a href="/members.html">Our team</a></div>
       <div className="footer-link-column"><h2>Discover</h2><a href={`${home}#gallery`}>Gallery</a><a href="/blog.html">Blog</a><a href={`${home}#testimonials`}>Testimonials</a></div>
-      <div className="footer-link-column"><h2>Community</h2><a href="/blog.html">Blog</a><a href="/members.html">Members</a></div>
+      <div className="footer-link-column"><h2>Community</h2><a href="/blog.html">Blog</a><a href="/members.html">Members</a><a href="/admin.html">Admin</a></div>
     </div>
     <FooterContacts />
     <p className="footer-demo-note">Sample contact details — names and Gmail addresses are placeholders.</p>
