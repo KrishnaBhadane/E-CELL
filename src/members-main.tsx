@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MemberLinks from './components/MemberLinks';
-import { team } from './data/team';
 import type { Member } from './data/members';
 import { fetchMembers } from './lib/supabase';
 import './styles/global.css';
@@ -12,12 +11,13 @@ import './styles/blog.css';
 import './styles/team-page.css';
 
 function MembersPage() {
-  const [memberList, setMemberList] = useState<Member[]>(() => team.filter(m => !m.leadership));
+  const [memberList, setMemberList] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchMembers().then(dbMembers => {
-      if (dbMembers.length > 0) {
-        setMemberList(dbMembers.map(m => ({
+      setMemberList(
+        dbMembers.map(m => ({
           id: m.id,
           name: m.name,
           domain: m.domain,
@@ -25,8 +25,9 @@ function MembersPage() {
           leadership: false,
           github: m.github,
           linkedin: m.linkedin,
-        })));
-      }
+        }))
+      );
+      setLoading(false);
     });
   }, []);
 
@@ -42,27 +43,35 @@ function MembersPage() {
         <section id="team-roster" className="team-directory" aria-label="E-Cell members">
           <div className="blog-results-heading">
             <h2>Our people</h2>
-            <span>{memberList.length} members</span>
+            <span>{memberList.length} {memberList.length === 1 ? 'member' : 'members'}</span>
           </div>
-          <div className="team-grid">
-            {memberList.map(member => (
-              <article className="team-card" key={member.id}>
-                <img
-                  src={member.image}
-                  alt={`Portrait for ${member.name}`}
-                  width="400"
-                  height="440"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <h2>{member.name}</h2>
-                <p>{member.domain}</p>
-                <MemberLinks member={member} />
-              </article>
-            ))}
-          </div>
+
+          {loading ? (
+            <p style={{ textAlign: 'center', color: '#8b929e', padding: '40px 0' }}>Loading members...</p>
+          ) : memberList.length > 0 ? (
+            <div className="team-grid">
+              {memberList.map(member => (
+                <article className="team-card" key={member.id}>
+                  <img
+                    src={member.image}
+                    alt={`Portrait for ${member.name}`}
+                    width="400"
+                    height="440"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <h2>{member.name}</h2>
+                  <p>{member.domain}</p>
+                  <MemberLinks member={member} />
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p style={{ textAlign: 'center', color: '#8b929e', padding: '40px 0' }}>
+              No members added yet. Upload members from the Admin Portal.
+            </p>
+          )}
         </section>
-        <p className="team-preview-note">E-Cell RCPIT student community directory.</p>
       </main>
       <Footer membersPage />
     </>

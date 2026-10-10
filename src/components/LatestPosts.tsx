@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { blogPosts, type BlogPost } from '@/data/blog';
+import type { BlogPost } from '@/data/blog';
 import { fetchBlogs } from '@/lib/supabase';
 
-/** Keep data newest first: a new entry automatically moves the previous one into the archive. */
+/** Keep data newest first: the latest published entry appears here. */
 export default function LatestPosts({ post: propPost }: { post?: BlogPost }) {
-  const [featured, setFeatured] = useState<BlogPost>(propPost || blogPosts[0]);
+  const [featured, setFeatured] = useState<BlogPost | null>(propPost || null);
 
   useEffect(() => {
     if (propPost) {
@@ -24,6 +24,8 @@ export default function LatestPosts({ post: propPost }: { post?: BlogPost }) {
           imageAlt: top.image_alt || top.title,
           paragraphs: Array.isArray(top.paragraphs) ? top.paragraphs : [top.excerpt],
         });
+      } else {
+        setFeatured(null);
       }
     });
   }, [propPost]);
@@ -34,7 +36,9 @@ export default function LatestPosts({ post: propPost }: { post?: BlogPost }) {
     <section className="latest-posts" aria-labelledby="latest-title">
       <h2 id="latest-title">Recent blog</h2>
       <article className="latest-post">
-        <img src={featured.image} alt={featured.imageAlt ?? ''} width="800" height="600" />
+        {featured.image && (
+          <img src={featured.image} alt={featured.imageAlt ?? ''} width="800" height="600" />
+        )}
         <div>
           <span className="blog-category">{featured.category}</span>
           <h3>{featured.title}</h3>
