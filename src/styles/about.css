@@ -1,12 +1,12 @@
 .about { position: relative; z-index: 2; background: var(--paper); padding: 28px var(--gutter) 0; box-shadow: 0 -15px 50px color-mix(in srgb, var(--brand-dark-70) 5.1%, transparent); }
-.about h2.about-outline { text-shadow: 0 2px 3px color-mix(in srgb, var(--theme-black) 20.0%, transparent); -webkit-text-stroke-color: color-mix(in srgb, var(--brand-dark-70) 60.0%, transparent) !important; }
+.about h2.about-outline { text-shadow: none; }
 .mission-grid article p { font-weight: 600; }
 .india-globe { transform-origin: center; animation: globe-drift 8s ease-in-out infinite alternate; }
 @keyframes globe-drift { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
 .globe-orbit { transform-origin: 145px 145px; animation: globe-orbit 32s linear infinite; filter: drop-shadow(0 0 3px var(--brand-light-70)); }
 @keyframes globe-orbit { to { transform: rotate(360deg); } }
 .illuminate-layout { position: relative; max-width: 1120px; margin: 70px auto 16px; }
-.about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, transparent 8%, color-mix(in srgb, var(--brand-bright) 20.0%, transparent) 50%, var(--brand-light-15) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1px color-mix(in srgb, var(--brand-bright) 29.02%, transparent); margin-bottom: -20px; position: relative; z-index: 1; }
+.about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, #ffffff 0%, #e2e5e9 30%, var(--brand-primary) 70%, color-mix(in srgb, var(--brand-primary) 50%, transparent) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.45); margin-bottom: -20px; position: relative; z-index: 1; filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.12)); }
 .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .mission-grid article { padding: 65px 48px 145px; background: linear-gradient(to bottom, color-mix(in srgb, var(--brand-bright) 0.0%, transparent), color-mix(in srgb, var(--brand-light-25) 50.2%, transparent) 20%, var(--brand-light-40) 100%); text-align: center; }
 .mission-grid h3 { font: 400 clamp(30px, 3vw, 46px)/1.15 var(--display); margin: 22px 0; }
