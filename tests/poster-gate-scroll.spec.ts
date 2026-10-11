@@ -68,6 +68,19 @@ for (const width of [390, 1440]) {
     await expect(wordFoolish).toHaveClass(/is-active/);
     await expect(meetBtn).toBeVisible();
 
+    await expect(page.locator('.poster-gate-wrap')).toBeHidden();
+    await expect(poster).not.toHaveClass(/is-revealing/);
+    const idleMutations = await poster.evaluate(async element => {
+      let changes = 0;
+      const observer = new MutationObserver(records => { changes += records.length; });
+      observer.observe(element, { attributes: true, subtree: true });
+      for (let i = 0; i < 20; i++) window.dispatchEvent(new Event('scroll'));
+      await new Promise(resolve => setTimeout(resolve, 200));
+      observer.disconnect();
+      return changes;
+    });
+    expect(idleMutations).toBe(0);
+
     // Now test REVERSE scroll: scroll back up to progress ~ 0.05
     await page.evaluate(() => {
       const el = document.getElementById('ideas');
@@ -82,6 +95,10 @@ for (const width of [390, 1440]) {
     await page.waitForTimeout(400);
 
     // Once opened, gate remains open and words remain active (no annoying reclosing)
+    await expect(page.locator('.poster-gate-wrap')).toBeHidden();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await expect(page.locator('.poster-gate-wrap')).toBeHidden();
     await expect(wordStay).toHaveClass(/is-active/);
     await expect(wordFoolish).toHaveClass(/is-active/);
     await expect(meetBtn).toBeVisible();

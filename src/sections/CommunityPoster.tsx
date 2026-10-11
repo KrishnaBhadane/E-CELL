@@ -2,15 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import '@/styles/community-poster.css';
 
-/**
- * STAY HUNGRY. STAY FOOLISH.
- * High-Performance Butter-Smooth 60/120FPS Scroll Gate Animation.
- * - Zero CSS-transition lag: direct RAF lerp loop drives GPU transform & opacity.
- * - Gate remains firmly closed while user sees half/most of the gate (~0.00 to 0.36).
- * - Gate smoothly parts open across a generous runway (~0.36 to 0.68).
- * - Words illuminate sequentially from faint silhouette into vibrant magazine poster design.
- * - Slower, cinematic fade-in (0.00 -> 0.35) and fade-out (0.82 -> 1.00).
- */
+/** Scroll-driven reveal; completion is permanent for this mounted page. */
 export default function CommunityPoster() {
   const containerRef = useRef<HTMLElement>(null);
   const gateWrapRef = useRef<HTMLDivElement>(null);
@@ -27,204 +19,110 @@ export default function CommunityPoster() {
   const authorRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
 
+  const opened = useRef(false);
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    function unlockAll() {
-      if (gateWrapRef.current) gateWrapRef.current.style.display = 'none';
-      if (containerRef.current) containerRef.current.style.opacity = '1';
-      [wordStay1Ref, wordHungryRef, wordStay2Ref, wordFoolishRef].forEach((ref) => {
-        if (ref.current) {
-          ref.current.classList.add('is-active');
-          ref.current.style.opacity = '1';
-          ref.current.style.transform = 'none';
-        }
-      });
-      if (authorRef.current) {
-        authorRef.current.classList.add('is-active');
-        authorRef.current.style.opacity = '1';
-        authorRef.current.style.transform = 'none';
-      }
-      if (ctaRef.current) {
-        ctaRef.current.classList.add('is-active');
-        ctaRef.current.style.opacity = '1';
-        ctaRef.current.style.transform = 'none';
-      }
-    }
-
-    if (reduced) {
-      unlockAll();
-      return;
-    }
-
     const container = containerRef.current;
     if (!container) return;
+    const words = [wordStay1Ref.current, wordHungryRef.current, wordStay2Ref.current, wordFoolishRef.current];
+    const details = [authorRef.current, ctaRef.current];
+    const doors = [doorLeftRef.current, doorRightRef.current];
+    const lasers = [laserLeftRef.current, laserRightRef.current];
+    const mobile = window.innerWidth <= 768;
+    const start = mobile ? 0.10 : 0.08;
+    const duration = mobile ? 0.24 : 0.20;
+    const wordStart = mobile ? 0.12 : 0.10;
+    const step = mobile ? 0.05 : 0.04;
+    const finish = Math.max(start + duration, wordStart + step * 5);
+    const clamp = (value: number) => Math.min(1, Math.max(0, value));
+    let frame = 0;
+    let visible = false;
+    let dirty = true;
+    let target = 0;
+    let progress = 0;
+    let lastTime = 0;
+    let observer: IntersectionObserver | undefined;
 
-    const isMobile = window.innerWidth <= 768;
-    const completeThreshold = isMobile ? 0.42 : 0.34;
-
-    let targetProgress = 0;
-    let currentProgress = 0;
-    let rafId = 0;
-    let isVisible = false;
-    let hasFullyOpened = false;
-
-    function applyProgress(progress: number) {
-      if (hasFullyOpened) return;
-
-      if (container) {
-        container.style.opacity = '1';
-      }
-
-      // Gate opening curve
-      const gateStart = isMobile ? 0.10 : 0.08;
-      const gateDuration = isMobile ? 0.24 : 0.20;
-      const gateOpen = Math.min(1, Math.max(0, (progress - gateStart) / gateDuration));
-
-      // 100% lag-free hardware accelerated 2D translate3d
-      const tx = gateOpen * 105;
-      const doorOpacity = Math.max(0, 1 - Math.pow(gateOpen, 2.2) * 1.4);
-      const laserOpacity = Math.max(0, 1 - gateOpen * 3.5);
-
-      if (doorLeftRef.current) {
-        doorLeftRef.current.style.transform = `translate3d(${-tx}%, 0, 0)`;
-        doorLeftRef.current.style.opacity = doorOpacity.toFixed(3);
-      }
-
-      if (doorRightRef.current) {
-        doorRightRef.current.style.transform = `translate3d(${tx}%, 0, 0)`;
-        doorRightRef.current.style.opacity = doorOpacity.toFixed(3);
-      }
-
-      if (laserLeftRef.current) {
-        laserLeftRef.current.style.opacity = laserOpacity.toFixed(3);
-      }
-      if (laserRightRef.current) {
-        laserRightRef.current.style.opacity = laserOpacity.toFixed(3);
-      }
-
-      if (gateWrapRef.current) {
-        gateWrapRef.current.style.display = gateOpen >= 0.99 ? 'none' : 'block';
-      }
-
-      // Sequential word illumination: appears smoothly before scrolling up
-      const wordBase = isMobile ? 0.12 : 0.10;
-      const step = isMobile ? 0.05 : 0.04;
-      const hl1 = Math.min(1, Math.max(0, (progress - wordBase) / step));
-      const hl2 = Math.min(1, Math.max(0, (progress - (wordBase + step)) / step));
-      const hl3 = Math.min(1, Math.max(0, (progress - (wordBase + step * 2)) / step));
-      const hl4 = Math.min(1, Math.max(0, (progress - (wordBase + step * 3)) / step));
-      const hlCTA = Math.min(1, Math.max(0, (progress - (wordBase + step * 4)) / step));
-
-      updateWord(wordStay1Ref.current, hl1);
-      updateWord(wordHungryRef.current, hl2);
-      updateWord(wordStay2Ref.current, hl3);
-      updateWord(wordFoolishRef.current, hl4);
-
-      if (authorRef.current) {
-        authorRef.current.style.opacity = (0.3 + hlCTA * 0.7).toFixed(3);
-        authorRef.current.style.transform = `translate3d(0, ${((1 - hlCTA) * 6).toFixed(2)}px, 0)`;
-        if (hlCTA >= 0.50) authorRef.current.classList.add('is-active');
-        else authorRef.current.classList.remove('is-active');
-      }
-
-      if (ctaRef.current) {
-        ctaRef.current.style.opacity = (0.3 + hlCTA * 0.7).toFixed(3);
-        ctaRef.current.style.transform = `translate3d(0, ${((1 - hlCTA) * 8).toFixed(2)}px, 0)`;
-        if (hlCTA >= 0.50) ctaRef.current.classList.add('is-active');
-        else ctaRef.current.classList.remove('is-active');
-      }
-
-      // Check if completely opened
-      if (progress >= completeThreshold || gateOpen >= 0.99) {
-        hasFullyOpened = true;
-        unlockAll();
-      }
+    function stop() {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      observer?.disconnect();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      document.removeEventListener('visibilitychange', visibilityChanged);
+      container?.classList.remove('is-revealing');
     }
 
-    function updateWord(el: HTMLElement | null, hl: number) {
-      if (!el || hasFullyOpened) return;
-      const opacity = 0.20 + hl * 0.80;
-      el.style.opacity = opacity.toFixed(3);
-      el.style.transform = `translate3d(0, ${((1 - hl) * 4).toFixed(2)}px, 0)`;
-      if (hl >= 0.50) {
-        el.classList.add('is-active');
-      } else {
-        el.classList.remove('is-active');
-      }
+    function complete() {
+      opened.current = true;
+      if (gateWrapRef.current) gateWrapRef.current.style.display = 'none';
+      [...words, ...details].forEach(element => {
+        if (!element) return;
+        element.classList.add('is-active');
+        element.style.opacity = '1';
+        element.style.transform = 'none';
+      });
+      stop();
     }
 
-    function loop() {
-      if (hasFullyOpened) return;
-      const diff = targetProgress - currentProgress;
-      if (Math.abs(diff) > 0.0003) {
-        currentProgress += diff * 0.22;
-      } else {
-        currentProgress = targetProgress;
-      }
-
-      applyProgress(currentProgress);
-
-      if (!hasFullyOpened && Math.abs(targetProgress - currentProgress) > 0.0003 && isVisible) {
-        rafId = requestAnimationFrame(loop);
-      } else {
-        rafId = 0;
-      }
+    function reveal(element: HTMLElement | null, amount: number, base: number, offset: number) {
+      if (!element) return;
+      element.style.opacity = (base + amount * (1 - base)).toFixed(3);
+      element.style.transform = `translateY(${((1 - amount) * offset).toFixed(2)}px)`;
+      if (amount >= 0.5 && !element.classList.contains('is-active')) element.classList.add('is-active');
     }
 
-    function onScroll() {
-      if (!container || hasFullyOpened || !isVisible || document.hidden) return;
-      const rect = container.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalDistance = windowHeight + rect.height;
-      const currentPos = windowHeight - rect.top;
-      const rawProgress = Math.max(0, Math.min(1, currentPos / totalDistance));
-
-      // Monotonic progression: only advance forward, never close backwards
-      if (rawProgress > targetProgress) {
-        targetProgress = rawProgress;
+    function tick(time: number) {
+      frame = 0;
+      if (!visible || document.hidden || opened.current) return;
+      // Read layout once per scheduled frame, before any style writes.
+      if (dirty) {
+        const rect = container!.getBoundingClientRect();
+        target = Math.max(target, Math.min(finish, clamp((innerHeight - rect.top) / (innerHeight + rect.height))));
+        dirty = false;
       }
+      const delta = lastTime ? Math.min(time - lastTime, 64) : 16.67;
+      lastTime = time;
+      progress += (target - progress) * (1 - Math.exp(-delta / 70));
+      if (Math.abs(target - progress) < 0.0003) progress = target;
+      if (progress >= finish) { complete(); return; }
 
-      if (targetProgress >= completeThreshold) {
-        hasFullyOpened = true;
-        unlockAll();
-        return;
-      }
-
-      if (!rafId && isVisible && !hasFullyOpened) {
-        rafId = requestAnimationFrame(loop);
-      }
+      const open = clamp((progress - start) / duration);
+      doors.forEach((door, index) => {
+        if (!door) return;
+        door.style.transform = `translateX(${(index ? 1 : -1) * open * 105}%)`;
+        door.style.opacity = Math.max(0, 1 - open ** 2.2 * 1.4).toFixed(3);
+      });
+      lasers.forEach(laser => { if (laser) laser.style.opacity = Math.max(0, 1 - open * 3.5).toFixed(3); });
+      words.forEach((word, index) => reveal(word, clamp((progress - wordStart - step * index) / step), 0.2, 4));
+      details.forEach((element, index) => reveal(element, clamp((progress - wordStart - step * 4) / step), 0.3, 6 + index * 2));
+      if (progress !== target) frame = requestAnimationFrame(tick);
+      else lastTime = 0;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (hasFullyOpened) return;
-        isVisible = entry.isIntersecting;
-        if (isVisible) {
-          onScroll();
-        } else {
-          if (rafId) cancelAnimationFrame(rafId);
-          rafId = 0;
-          if (targetProgress >= completeThreshold) {
-            hasFullyOpened = true;
-            unlockAll();
-          }
-        }
-      },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], rootMargin: '120px 0px' }
-    );
+    function schedule() {
+      dirty = true;
+      if (visible && !document.hidden && !opened.current && !frame) frame = requestAnimationFrame(tick);
+    }
 
+    function visibilityChanged() {
+      if (document.hidden) { cancelAnimationFrame(frame); frame = 0; lastTime = 0; }
+      else schedule();
+    }
+
+    if (reduced || opened.current) { complete(); return; }
+    observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      container.classList.toggle('is-revealing', visible);
+      if (visible) schedule();
+      else { cancelAnimationFrame(frame); frame = 0; lastTime = 0; }
+    }, { rootMargin: '120px 0px' });
     observer.observe(container);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    onScroll();
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      observer.disconnect();
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+    document.addEventListener('visibilitychange', visibilityChanged);
+    return stop;
   }, [reduced]);
 
   return (
