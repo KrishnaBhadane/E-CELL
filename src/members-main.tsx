@@ -119,6 +119,7 @@ function MembersPage() {
                       width="400"
                       height="400"
                       loading="lazy"
+                      decoding="async"
                     />
                     <div>
                       <h3>{leader.name}</h3>

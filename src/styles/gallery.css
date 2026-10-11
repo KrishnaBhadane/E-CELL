@@ -141,6 +141,49 @@
   line-height: 1.6;
 }
 
+.gallery-empty-state {
+  display: grid;
+  align-content: center;
+  text-align: center;
+  min-height: 280px;
+  max-width: 1000px;
+  margin: 28px auto 0;
+  border: 1px dashed rgba(169, 184, 135, 0.25);
+  border-radius: 20px;
+  padding: 44px 24px;
+  background: radial-gradient(circle at 50% 20%, rgba(46, 61, 40, 0.35) 0%, rgba(7, 9, 14, 0.85) 80%);
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-empty-badge {
+  display: inline-block;
+  margin: 0 auto 14px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #A9B887;
+  background: rgba(169, 184, 135, 0.1);
+  border: 1px solid rgba(169, 184, 135, 0.25);
+}
+
+.gallery-empty-title {
+  font: 400 clamp(28px, 4.5vw, 42px) var(--display, 'Anton', Impact, sans-serif);
+  color: #E8E9DF;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.gallery-empty-desc {
+  margin: 12px auto 0;
+  color: #94a3b8;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
 /* LIGHTBOX MODAL */
 .memories-lightbox-overlay {
   position: fixed;

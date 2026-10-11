@@ -134,110 +134,71 @@ const CURLS: Record<"top" | "bottom", [number, number, number][]> = {
   ],
 }
 
-const Half = React.memo(function Half({
-  id,
-  side,
-  line,
-  open,
-  children,
-  isVertical = false,
-  cx = CX,
-  cy = CY,
-}: {
+type HalfUpdater = React.MutableRefObject<((open: number) => void) | null>
+
+const Half = React.memo(function Half({ id, side, line, updateRef, children, isVertical = false, cx = CX, cy = CY }: {
   id: string
   side: "top" | "bottom" | "left" | "right"
   line: Pt[]
-  open: number
+  updateRef: HalfUpdater
   children: React.ReactNode
   isVertical?: boolean
   cx?: number
   cy?: number
 }) {
-  if (isVertical) {
-    const isLeft = side === "left"
-    const m = isLeft
-      ? { dx: -108 * open, dy: -6 * open, rot: -2.8 * open }
-      : { dx: 108 * open, dy: 6 * open, rot: 2.8 * open }
-    const shape = isLeft
-      ? [[-FAR, line[0][1]] as Pt, ...line, [-FAR, line[line.length - 1][1]] as Pt]
-      : [[FAR, line[0][1]] as Pt, ...line, [FAR, line[line.length - 1][1]] as Pt]
-    const widths = fibreWidths(line.length, open, isLeft ? 5 : 8)
-    const core = line.concat(line.map(([x, y], i) => [x + (isLeft ? -widths[i] : widths[i]), y] as Pt).reverse())
-    const transform = "translate(" + m.dx.toFixed(2) + " " + m.dy.toFixed(2) + ") rotate(" + m.rot.toFixed(3) + " " + cx + " " + cy + ")"
-    const clip = id + "-" + side
-
-    return (
-      <g transform={transform}>
-        {open > 0 ? (
-          <path
-            d={d(line, false)}
-            fill="none"
-            stroke="var(--theme-black, #000)"
-            strokeOpacity={0.6 * Math.min(1, open * 3)}
-            strokeWidth={22}
-            transform={"translate(" + (isLeft ? -10 : 10) + " 0)"}
-            filter={"url(#" + id + "-soft)"}
-          />
-        ) : null}
-        <clipPath id={clip}>
-          <path d={d(shape)} />
-        </clipPath>
-        <g clipPath={"url(#" + clip + ")"}>{children}</g>
-        {open > 0 ? (
-          <path d={d(core)} fill="var(--theme-white, #fff)" />
-        ) : null}
-      </g>
-    )
-  }
-
-  // Horizontal Mode
-  const up = side === "top"
-  const m = up
-    ? { dx: -10 * open, dy: -82 * open, rot: -2.6 * open }
-    : { dx: 12 * open, dy: 78 * open, rot: 2.1 * open }
-  const shape = up
-    ? [[line[0][0], -FAR] as Pt, [line[line.length - 1][0], -FAR] as Pt, ...[...line].reverse()]
-    : [...line, [line[line.length - 1][0], FAR] as Pt, [line[0][0], FAR] as Pt]
-  const widths = fibreWidths(line.length, open, up ? 5 : 8)
-  const core = line.concat(line.map(([x, y], i) => [x, y + (up ? -widths[i] : widths[i])] as Pt).reverse())
-  const curls = CURLS[side as "top" | "bottom"].map(([cxPos, hw, depth]) => {
-    const pts = line.filter(([x]) => Math.abs(x - cxPos) <= hw)
-    const back = pts.map(([x, y]) => {
-      const s = Math.cos(((x - cxPos) / hw) * (Math.PI / 2))
-      return [x + (up ? 6 : -6) * s * open, y + (up ? 1 : -1) * depth * s * s * Math.min(1, open * 2.5)] as Pt
+  const group = React.useRef<SVGGElement>(null)
+  const edge = React.useRef<SVGPathElement>(null)
+  const core = React.useRef<SVGPathElement>(null)
+  const curlsRef = React.useRef<(SVGPathElement | null)[]>([])
+  const up = side === "top" || side === "left"
+  const geometry = React.useMemo(() => {
+    const shape: Pt[] = isVertical
+      ? [[up ? -FAR : FAR, line[0][1]], ...line, [up ? -FAR : FAR, line[line.length - 1][1]]]
+      : up ? [[line[0][0], -FAR], [line[line.length - 1][0], -FAR], ...[...line].reverse()]
+        : [...line, [line[line.length - 1][0], FAR], [line[0][0], FAR]]
+    const curls = isVertical ? [] : CURLS[side as "top" | "bottom"].map(([center, width, depth]) => {
+      const pts = line.filter(([x]) => Math.abs(x - center) <= width)
+      return { pts, depth, factors: pts.map(([x]) => Math.cos(((x - center) / width) * Math.PI / 2)) }
     })
-    return d(pts.concat(back.reverse()))
-  })
-  const transform =
-    "translate(" + m.dx.toFixed(2) + " " + m.dy.toFixed(2) + ") rotate(" + m.rot.toFixed(3) + " " + cx + " " + cy + ")"
-  const clip = id + "-" + side
-  return (
-    <g transform={transform}>
-      {open > 0 ? (
-        <path
-          d={d(line, false)}
-          fill="none"
-          stroke="var(--theme-black, #000)"
-          strokeOpacity={0.55 * Math.min(1, open * 3)}
-          strokeWidth={22}
-          transform={"translate(0 " + (up ? 10 : -10) + ")"}
-          filter={"url(#" + id + "-soft)"}
-        />
-      ) : null}
-      <clipPath id={clip}>
-        <path d={d(shape)} />
-      </clipPath>
-      <g clipPath={"url(#" + clip + ")"}>{children}</g>
-      {open > 0 ? (
-        <>
-          <path d={d(core)} fill="var(--theme-white, #fff)" />
-          {curls.map((c, i) => (
-            <path key={i} d={c} fill={"url(#" + id + "-curl-" + side + ")"} stroke="var(--theme-white, #fff)" strokeWidth={1} />
-          ))}
-        </>
-      ) : null}
-    </g>
-  )
+    return { shape: d(shape), line: d(line, false), widths: fibreWidths(line.length, 1, up ? 5 : 8), curls }
+  }, [line, isVertical, side, up])
+
+  React.useLayoutEffect(() => {
+    let lastOpen = -1
+    let lastWidth = -1
+    updateRef.current = open => {
+      if (open === lastOpen || !group.current) return
+      lastOpen = open
+      const dx = isVertical ? (up ? -108 : 108) : (up ? -10 : 12)
+      const dy = isVertical ? (up ? -6 : 6) : (up ? -82 : 78)
+      const rotation = isVertical ? (up ? -2.8 : 2.8) : (up ? -2.6 : 2.1)
+      group.current.setAttribute('transform', `translate(${(dx * open).toFixed(2)} ${(dy * open).toFixed(2)}) rotate(${(rotation * open).toFixed(3)} ${cx} ${cy})`)
+      edge.current?.setAttribute('stroke-opacity', String((isVertical ? 0.6 : 0.55) * Math.min(1, open * 3)))
+      const width = Math.min(1, open * 4)
+      if (width !== lastWidth) {
+        lastWidth = width
+        const back = line.map(([x, y], i): Pt => isVertical
+          ? [x + (up ? -1 : 1) * geometry.widths[i] * width, y]
+          : [x, y + (up ? -1 : 1) * geometry.widths[i] * width])
+        core.current?.setAttribute('d', d(line.concat(back.reverse())))
+      }
+      geometry.curls.forEach(({ pts, depth, factors }, i) => {
+        const back = pts.map(([x, y], j): Pt => [x + (up ? 6 : -6) * factors[j] * open, y + (up ? 1 : -1) * depth * factors[j] ** 2 * Math.min(1, open * 2.5)])
+        curlsRef.current[i]?.setAttribute('d', d(pts.concat(back.reverse())))
+      })
+    }
+    return () => { updateRef.current = null }
+  }, [geometry, line, isVertical, up, cx, cy, updateRef])
+
+  const clip = id + '-' + side
+  return <g ref={group}>
+    <path ref={edge} d={geometry.line} fill="none" stroke="var(--theme-black, #000)" strokeOpacity={0} strokeWidth={22}
+      transform={isVertical ? `translate(${up ? -10 : 10} 0)` : `translate(0 ${up ? 10 : -10})`} filter={`url(#${id}-soft)`} />
+    <clipPath id={clip}><path d={geometry.shape} /></clipPath>
+    <g clipPath={`url(#${clip})`}>{children}</g>
+    <path ref={core} fill="var(--theme-white, #fff)" />
+    {geometry.curls.map((_, i) => <path key={i} ref={element => { curlsRef.current[i] = element }} fill={`url(#${id}-curl-${side})`} stroke="var(--theme-white, #fff)" strokeWidth={1} />)}
+  </g>
 })
 
 export default function TigerTearReveal({
@@ -304,7 +265,18 @@ export default function TigerTearReveal({
     return tearLineH(11, -800, 1800, 9, CX, CY)
   }, [isVertical, curCX, curCY])
 
-  const [p, setProgress] = React.useState(progress ?? 0)
+  const latestProgress = React.useRef(progress ?? 0)
+  const renderProgress = React.useRef<(value: number) => void>(() => {})
+  const halfA = React.useRef<((open: number) => void) | null>(null)
+  const halfB = React.useRef<((open: number) => void) | null>(null)
+  const shakeRef = React.useRef<SVGGElement>(null)
+  const sheetRef = React.useRef<SVGGElement>(null)
+  const halvesRef = React.useRef<SVGGElement>(null)
+  const artworkRef = React.useRef<SVGForeignObjectElement>(null)
+  const crackRef = React.useRef<SVGPathElement>(null)
+  const hintRef = React.useRef<HTMLDivElement>(null)
+  const [artworkReady, setArtworkReady] = React.useState(false)
+  const artwork = React.useMemo(() => artworkReady ? revealArtwork() : null, [artworkReady, revealArtwork])
   const controlled = progress !== undefined
   const cfg = React.useRef({ progress, controlled })
   cfg.current = { progress, controlled }
@@ -314,12 +286,12 @@ export default function TigerTearReveal({
     const stage = stageRef.current
     if (!root || !stage) return
     if (reduced) {
-      setProgress(progress ?? 0)
+      renderProgress.current(progress ?? 0)
       return
     }
     let raf = 0
     let visible = false
-    let currentP = cfg.current.progress ?? 0
+    let currentP = latestProgress.current
     let last = currentP
     let dirty = true
     let scrollTarget = 0
@@ -356,7 +328,7 @@ export default function TigerTearReveal({
       if (Math.abs(target - currentP) < 0.0005) currentP = target
       if (Math.abs(currentP - last) > 1e-4 || (currentP === target && last !== currentP)) {
         last = currentP
-        setProgress(currentP)
+        renderProgress.current(currentP)
       }
       if (currentP !== target) raf = requestAnimationFrame(tick)
     }
@@ -368,12 +340,42 @@ export default function TigerTearReveal({
       window.removeEventListener('scroll', invalidate)
       window.removeEventListener('resize', invalidate)
     }
-  }, [reduced, reduced ? progress : undefined])
+  }, [reduced, progress, frameBox])
 
-  const s = stages(p)
-  const shake = reduced ? 0 : Math.sin(p * 900) * 6 * s.shake
-  const crackReach = s.crack * 640
-  const crack = line.filter(([x, y]) => isVertical ? Math.abs(y - curCY) <= crackReach : Math.abs(x - CX) <= crackReach)
+  React.useLayoutEffect(() => {
+    let previousCrack = ''
+    renderProgress.current = value => {
+      latestProgress.current = value
+      rootRef.current?.setAttribute('data-tear-progress', value.toFixed(3))
+      const stage = stages(value)
+      const shake = reduced ? 0 : Math.sin(value * 900) * 6 * stage.shake
+      shakeRef.current?.setAttribute('transform', isVertical
+        ? `translate(${(shake * 0.4).toFixed(2)} ${shake.toFixed(2)})`
+        : `translate(${shake.toFixed(2)} ${(shake * 0.4).toFixed(2)})`)
+      if (sheetRef.current) sheetRef.current.style.display = stage.open > 0 ? 'none' : ''
+      if (halvesRef.current) halvesRef.current.style.display = stage.open > 0 ? '' : 'none'
+      halfA.current?.(stage.open * 1.55)
+      halfB.current?.(stage.open * 1.55)
+      if ((stage.open > 0.15) !== artworkReady) setArtworkReady(stage.open > 0.15)
+      if (artworkRef.current) {
+        artworkRef.current.style.display = stage.open > 0.15 ? '' : 'none'
+        artworkRef.current.setAttribute('opacity', String(clamp01((stage.open - 0.15) / 0.45)))
+      }
+      if (crackRef.current) {
+        const showing = stage.crack > 0 && stage.open < 0.15
+        crackRef.current.style.display = showing ? '' : 'none'
+        if (showing) {
+          const reach = stage.crack * 640
+          const points = line.filter(([x, y]) => isVertical ? Math.abs(y - curCY) <= reach : Math.abs(x - CX) <= reach)
+          const path = points.length > 1 ? d(points, false) : ''
+          if (path !== previousCrack) { crackRef.current.setAttribute('d', path); previousCrack = path }
+          crackRef.current.setAttribute('opacity', String(1 - stage.open / 0.15))
+        }
+      }
+      if (hintRef.current) hintRef.current.style.opacity = String(Math.max(0, 0.7 - stage.crack * 3))
+    }
+    renderProgress.current(latestProgress.current)
+  }, [line, isVertical, curCY, reduced, artworkReady, frameBox])
 
   const sheet = React.useMemo(() => {
     if (isVertical) {
@@ -561,7 +563,7 @@ export default function TigerTearReveal({
   return (
     <section
       ref={rootRef}
-      data-tear-progress={p.toFixed(3)}
+      data-tear-progress={latestProgress.current.toFixed(3)}
       className={"relative w-full " + className}
       style={{ height: controlled || reduced ? height : "calc(" + height + " + " + scrollDistance + ")", background: paper, overflow: "clip" }}
     >
@@ -598,65 +600,38 @@ export default function TigerTearReveal({
             </filter>
           </defs>
 
-          <g transform={isVertical ? "translate(" + (shake * 0.4).toFixed(2) + " " + shake.toFixed(2) + ")" : "translate(" + shake.toFixed(2) + " " + (shake * 0.4).toFixed(2) + ")"}>
+          <g ref={shakeRef}>
             {/* 100% Solid Pitch Black Inside Background behind Tear */}
             <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill="#000000" />
 
-            {s.open > 0.15 && (
-              <foreignObject
+            {artworkReady && (
+              <foreignObject ref={artworkRef}
                 x={isVertical ? curCX - 170 : 270}
                 y={isVertical ? curCY - Math.min(420, frameBox.height * 0.38) : 235}
                 width={isVertical ? 340 : 610}
                 height={isVertical ? Math.min(840, frameBox.height * 0.76) : 165}
-                opacity={Math.min(1, Math.max(0, (s.open - 0.15) / 0.45))}
+                opacity={0}
               >
-                {revealArtwork()}
+                {artwork}
               </foreignObject>
             )}
 
-            {s.open > 0 ? (
-              isVertical ? (
-                <>
-                  <Half id={id} side="left" line={line} open={s.open * 1.55} isVertical={true} cx={curCX} cy={curCY}>
-                    {sheet}
-                  </Half>
-                  <Half id={id} side="right" line={line} open={s.open * 1.55} isVertical={true} cx={curCX} cy={curCY}>
-                    {sheet}
-                  </Half>
-                </>
-              ) : (
-                <>
-                  <Half id={id} side="top" line={line} open={s.open * 1.55} isVertical={false} cx={CX} cy={CY}>
-                    {sheet}
-                  </Half>
-                  <Half id={id} side="bottom" line={line} open={s.open * 1.55} isVertical={false} cx={CX} cy={CY}>
-                    {sheet}
-                  </Half>
-                </>
-              )
-            ) : (
-              sheet
-            )}
+            <g ref={sheetRef}>{sheet}</g>
+            <g ref={halvesRef} style={{ display: 'none' }}>
+              <Half id={id} side={isVertical ? 'left' : 'top'} line={line} updateRef={halfA} isVertical={isVertical} cx={curCX} cy={isVertical ? curCY : CY}>{sheet}</Half>
+              <Half id={id} side={isVertical ? 'right' : 'bottom'} line={line} updateRef={halfB} isVertical={isVertical} cx={curCX} cy={isVertical ? curCY : CY}>{sheet}</Half>
+            </g>
+            <path ref={crackRef} fill="none" stroke="var(--brand-dark-75, #1d4ed8)" strokeWidth={isVertical ? 3 : 2.4} strokeLinejoin="bevel" style={{ display: 'none' }} />
 
-            {/* The crack */}
-            {s.crack > 0 && s.open < 0.15 && crack.length > 1 ? (
-              <path
-                d={d(crack, false)}
-                fill="none"
-                stroke="var(--brand-dark-75, #1d4ed8)"
-                strokeWidth={isVertical ? 3 : 2.4}
-                strokeLinejoin="bevel"
-                opacity={1 - s.open / 0.15}
-              />
-            ) : null}
           </g>
         </svg>
 
         {hint && !controlled ? (
           <div
+            ref={hintRef}
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.35em]"
-            style={{ color: taglineColor, opacity: Math.max(0, 0.7 - s.crack * 3) }}
+            style={{ color: taglineColor, opacity: 0.7 }}
           >
             scroll
             <span className="block h-6 w-px animate-pulse motion-reduce:animate-none" style={{ background: taglineColor }} />

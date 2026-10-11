@@ -1,12 +1,11 @@
 import IndiaGlobe from '../components/IndiaGlobe';
 import CountUp from '../components/CountUp';
 
-// Participant and event totals are temporary values requested for the preview.
+// Only verified community figures are displayed. Unverified preview metrics (participants, events) remain hidden until officially confirmed.
 const impactStats = [
-  { value: 1200, label: 'Participants' },
-  { value: 18, label: 'Events & workshops' },
-  { value: 40, label: 'Members' },
+  { value: 40, label: 'Student community members' },
 ];
+
 
 export default function About() {
   return (

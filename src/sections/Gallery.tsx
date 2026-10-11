@@ -41,7 +41,7 @@ export default function Gallery() {
     eventName = 'All Memories';
     currentPhotos = eventsList.flatMap(ev => (!ev.upcoming && ev.photos ? ev.photos : []));
   } else {
-    const currentEvent = eventsList[selected] || eventsList[0];
+    const currentEvent = eventsList[selected];
     if (currentEvent) {
       eventName = currentEvent.name;
       isUpcoming = Boolean(currentEvent.upcoming);
@@ -49,14 +49,9 @@ export default function Gallery() {
     }
   }
 
-  // Fallback to galleryEvents if empty
-  if (currentPhotos.length === 0 && !isUpcoming) {
-    currentPhotos = galleryEvents.flatMap(ev => (!ev.upcoming && ev.photos ? ev.photos : []));
-  }
-
-  // Filter out any flyer or journey photos
+  // Filter out any non-photo flyer documents if present in raw records
   const filteredPhotos = currentPhotos.filter(
-    photo => !photo.image.includes('gallery-01.jpg') && !photo.caption.toLowerCase().includes('journey')
+    photo => Boolean(photo.image) && !photo.image.includes('gallery-01.jpg')
   );
 
   const slides: Slide[] = filteredPhotos.map(photo => {
@@ -158,6 +153,14 @@ export default function Gallery() {
             <h3>{eventName}</h3>
             <p>Edition in progress — stay tuned for snapshots from this upcoming summit!</p>
           </div>
+        ) : slides.length === 0 ? (
+          <div className="gallery-empty-state" role="status">
+            <span className="gallery-empty-badge">ARCHIVAL COLLECTION</span>
+            <h3 className="gallery-empty-title">{eventName}</h3>
+            <p className="gallery-empty-desc">
+              Photographs from this collection are currently being curated. Check back soon for official event memories.
+            </p>
+          </div>
         ) : (
           <div className="memories-carousel-container">
             <PolaroidLineCarousel
@@ -218,15 +221,14 @@ export default function Gallery() {
             </button>
 
             <div className="memories-lightbox-media-wrap">
-              {activeLightboxPhoto.image ? (
+              {activeLightboxPhoto.image && (
                 <img
                   src={activeLightboxPhoto.image}
                   alt={activeLightboxPhoto.alt || activeLightboxPhoto.title || 'Memory photo'}
                   className="memories-lightbox-img"
                   loading="eager"
+                  decoding="async"
                 />
-              ) : (
-                <div className="memories-lightbox-placeholder">Painted Landscape Preview</div>
               )}
             </div>
 

@@ -114,7 +114,7 @@ export default function BlogPage() {
               </>
             ) : (
               <div style={{ textAlign: 'center', color: '#8b929e', padding: '60px 16px' }}>
-                <p>No published articles yet. Publish articles from the Admin Portal.</p>
+                <p>No published articles yet in this category. Editorial dispatches and guides will appear here soon.</p>
               </div>
             )}
           </>

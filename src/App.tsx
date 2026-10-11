@@ -1,6 +1,6 @@
 import Header from './components/Header';
 import Hero from './sections/Hero';
-import CommunityPoster from './sections/CommunityPoster';
+import GateExperience from './sections/GateExperience';
 import About from './sections/About';
 import WelcomeScreen from './components/WelcomeScreen';
 import ScrollReveal from './components/ScrollReveal';
@@ -19,7 +19,7 @@ export default function App() {
         <Hero />
         <ScrollReveal>
           <About />
-          <CommunityPoster />
+          <GateExperience />
           <Gallery />
           <Testimonials />
         </ScrollReveal>

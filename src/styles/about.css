@@ -30,7 +30,7 @@
 .impact-facts strong .count-value { font: inherit; margin: 0; line-height: inherit; font-variant-numeric: tabular-nums; }
 .impact-panel { background: radial-gradient(ellipse at 50% 0, var(--brand-light-55), var(--brand-light-35) 65%, var(--brand-light-20)); color: var(--brand-dark-70); text-align: center; padding: 164px 40px 32px; margin-top: 16px; }
 .impact-panel h3 { font: 400 clamp(26px, 2.6vw, 38px)/1.05 var(--display); text-transform: uppercase; margin: 6px 0 20px; }
-.impact-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.impact-facts { display: flex; justify-content: center; align-items: center; gap: clamp(24px, 5vw, 64px); flex-wrap: wrap; }
 .impact-facts strong { display: block; font: 400 clamp(32px, 4vw, 58px)/1.2 var(--display); }
 .impact-facts span { display: block; margin-top: 12px; font-size: 12px; line-height: 1.6; }
 @media (max-width: 760px) {

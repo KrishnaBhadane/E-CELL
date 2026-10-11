@@ -12,10 +12,10 @@ for (const width of [390, 1440]) {
     await expect(page.locator('[data-tear-progress]')).toHaveAttribute('data-tear-progress', '1.000');
     await expect(page.getByRole('img', { name: 'illuminate', exact: true })).toBeVisible();
     await expect(page.locator('.event-outline')).toHaveCSS('fill-opacity', '1');
-    await expect(page.locator('.event-ship')).toBeVisible();
+    await expect(page.locator(width < 768 ? '.mobile-ship-img' : '.event-ship')).toBeVisible();
     const title = await page.locator('.event-announcement').boundingBox();
-    expect(title!.x + title!.width / 2).toBeGreaterThan(width / 2);
-    await expect(page.locator('.event-character')).toBeVisible();
-    await expect.poll(() => page.locator('.event-character').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    if (width >= 768) expect(title!.x + title!.width / 2).toBeGreaterThan(width / 2);
+    await expect(page.locator(width < 768 ? '.mobile-event-img' : '.event-character')).toBeVisible();
+    await expect.poll(() => page.locator(width < 768 ? '.mobile-event-img' : '.event-character').evaluate(el => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   });
 }

@@ -1,16 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { testimonials as defaultTestimonials } from '@/data/testimonials';
+import { testimonials as defaultTestimonials, type TestimonialItem } from '@/data/testimonials';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { fetchTestimonials, type DbTestimonial } from '@/lib/supabase';
 import '@/styles/testimonials.css';
-
-interface TestimonialItem {
-  name: string;
-  initials: string;
-  role: string;
-  quote: string;
-  image?: string;
-}
 
 export default function Testimonials() {
   const root = useRef<HTMLElement>(null);
@@ -25,9 +17,13 @@ export default function Testimonials() {
 
   useEffect(() => {
     fetchTestimonials().then(data => {
-      if (data.length > 0) {
+      // Filter out any demo records from public display
+      const verified = (data || []).filter(
+        (item: DbTestimonial) => !item.role?.toLowerCase().includes('demo')
+      );
+      if (verified.length > 0) {
         setItems(
-          data.map((item: DbTestimonial) => ({
+          verified.map((item: DbTestimonial) => ({
             name: item.name,
             initials: item.initials || item.name.substring(0, 2).toUpperCase(),
             role: item.role,
@@ -76,58 +72,73 @@ export default function Testimonials() {
       }}
     >
       <h2 id="testimonial-title" className="testimonials-outline">TESTIMONIALS</h2>
-      <div className="testimonial-frame" role="region" aria-roledescription="carousel" aria-label="Student testimonials">
-        <div className="testimonial-track" style={{ transform: `translateX(-${selected * 100}%)` }}>
-          {items.map((item, index) => (
-            <figure className="testimonial-story" key={item.name + index} aria-hidden={selected !== index} inert={selected !== index}>
-              <div className="testimonial-copy">
-                <span className="testimonial-demo">COMMUNITY VOICE</span>
-                <blockquote>“{item.quote}”</blockquote>
-              </div>
-              <figcaption className="testimonial-person">
-                {item.image ? (
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    width="160"
-                    height="160"
-                    loading="lazy"
-                    decoding="async"
-                    className="testimonial-avatar"
-                    style={{ objectFit: 'cover' }}
-                  />
-                ) : (
-                  <div className="testimonial-avatar" aria-label="Portrait placeholder">
-                    {item.initials}
+      <div className="testimonial-frame">
+        {items.length > 0 ? (
+          <div role="region" aria-roledescription="carousel" aria-label="Student testimonials">
+            <div className="testimonial-track" style={{ transform: `translateX(-${selected * 100}%)` }}>
+              {items.map((item, index) => (
+                <figure className="testimonial-story" key={item.name + index} aria-hidden={selected !== index} inert={selected !== index}>
+                  <div className="testimonial-copy">
+                    <span className="testimonial-demo">COMMUNITY VOICE</span>
+                    <blockquote>“{item.quote}”</blockquote>
                   </div>
-                )}
-                <strong>{item.name}</strong>
-                <span>{item.role}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-      <div className="testimonial-controls">
-        <button className="glass-control glass-button" aria-label="Previous testimonial" onClick={() => move(-1)}>
-          ‹
-        </button>
-        <span>
-          {items.length > 0 ? selected + 1 : 0} / {items.length}
-        </span>
-        <button className="glass-control glass-button" aria-label="Next testimonial" onClick={() => move(1)}>
-          ›
-        </button>
-        {!reduced && (
-          <button
-            className="testimonial-pause"
-            onClick={() => setPaused(value => !value)}
-            aria-label={paused ? 'Play testimonials' : 'Pause testimonials'}
-          >
-            {paused ? 'Play' : 'Pause'}
-          </button>
+                  <figcaption className="testimonial-person">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        width="160"
+                        height="160"
+                        loading="lazy"
+                        decoding="async"
+                        className="testimonial-avatar"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="testimonial-avatar" aria-label="Portrait placeholder">
+                        {item.initials}
+                      </div>
+                    )}
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="testimonial-empty-state" role="status">
+            <span className="testimonial-empty-badge">COMMUNITY VOICES</span>
+            <h3 className="testimonial-empty-heading">Voices of Our Community</h3>
+            <p className="testimonial-empty-desc">
+              Participant experiences, takeaways, and stories from our upcoming workshops and hackathons will be featured here following each event.
+            </p>
+          </div>
         )}
       </div>
+
+      {items.length > 0 && (
+        <div className="testimonial-controls">
+          <button className="glass-control glass-button" aria-label="Previous testimonial" onClick={() => move(-1)}>
+            ‹
+          </button>
+          <span>
+            {selected + 1} / {items.length}
+          </span>
+          <button className="glass-control glass-button" aria-label="Next testimonial" onClick={() => move(1)}>
+            ›
+          </button>
+          {!reduced && (
+            <button
+              className="testimonial-pause"
+              onClick={() => setPaused(value => !value)}
+              aria-label={paused ? 'Play testimonials' : 'Pause testimonials'}
+            >
+              {paused ? 'Play' : 'Pause'}
+            </button>
+          )}
+        </div>
+      )}
     </section>
   );
 }

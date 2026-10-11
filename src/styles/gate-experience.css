@@ -1,0 +1,229 @@
+/* ==========================================================================
+   E-CELL RCPIT — GATE EXPERIENCE (SCROLL-CONTROLLED ENTRY)
+   Pinned 100svh scene inside 350svh scroll track.
+   Hardware-accelerated 60fps transform & opacity updates.
+   ========================================================================== */
+
+/* Container override: ensures section is a full-width, unconstrained sticky stage */
+.gate-experience-container {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  isolation: isolate;
+  background: #050608;
+}
+
+/* Outer scroll track providing native vertical scroll distance */
+.gate-experience-track {
+  position: relative;
+  width: 100%;
+  height: 350svh;
+  margin: 0;
+  padding: 0;
+  background: #050608;
+  contain: paint;
+}
+
+/* Fallback for browsers without svh support */
+@supports not (height: 100svh) {
+  .gate-experience-track {
+    height: 350vh;
+  }
+}
+
+/* Pinned sticky viewport scene */
+.gate-sticky-scene {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  background: #050608;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: center center;
+  contain: strict;
+  isolation: isolate;
+}
+
+@supports not (height: 100svh) {
+  .gate-sticky-scene {
+    height: 100vh;
+  }
+}
+
+/* Gate wrapper fills scene with perspective */
+.gate-sticky-scene .poster-gate-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.gate-sticky-scene .poster-gate-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: linear-gradient(135deg, #0a0d14 0%, #06080d 50%, #030407 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 35px rgba(0, 0, 0, 0.95),
+    0 0 24px rgba(0, 0, 0, 0.9);
+  will-change: transform, opacity;
+}
+
+.gate-sticky-scene .poster-gate-door.door-left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 1px solid rgba(100, 160, 255, 0.3);
+}
+
+.gate-sticky-scene .poster-gate-door.door-right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 1px solid rgba(100, 160, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Existing Name Layer: Appears behind the separating gates
+   -------------------------------------------------------------------------- */
+.gate-name-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 4;
+  pointer-events: none;
+  padding: 24px;
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+
+.gate-name-eyebrow {
+  font-family: var(--font-sans, 'Manrope', -apple-system, sans-serif);
+  font-size: clamp(11px, 1.3vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #66cfff;
+  margin-bottom: clamp(8px, 1.2vw, 14px);
+  text-shadow: 0 0 12px rgba(102, 207, 255, 0.6);
+}
+
+.gate-name-title {
+  font-family: var(--display, 'Anton', Impact, 'Bebas Neue', sans-serif);
+  font-size: clamp(52px, 8.5vw, 136px);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+  color: transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 25%, #cbd5e1 55%, #94a3b8 82%, #64748b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+  text-shadow:
+    0 2px 0 #cbd5e1,
+    0 4px 0 #64748b,
+    0 8px 24px rgba(0, 0, 0, 0.95),
+    0 0 28px rgba(102, 207, 255, 0.35);
+}
+
+.gate-name-sub {
+  font-family: var(--font-sans, 'Manrope', -apple-system, sans-serif);
+  font-size: clamp(10px, 1.1vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: clamp(8px, 1.2vw, 14px);
+}
+
+/* --------------------------------------------------------------------------
+   Quote Layer: Revealed after entering the room
+   -------------------------------------------------------------------------- */
+.gate-quote-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  padding: clamp(32px, 5vw, 64px) clamp(16px, 4vw, 48px);
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+
+/* Background Atmosphere Scaled on Entry */
+.gate-sticky-scene .poster-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #050608;
+  will-change: transform;
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+  .gate-experience-track {
+    height: 300svh;
+  }
+
+  .gate-sticky-scene .poster-gate-door {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+  }
+
+  .gate-name-title {
+    font-size: clamp(44px, 11vw, 76px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion: Static, unpinned, accessible presentation
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .gate-experience-track {
+    height: auto !important;
+    min-height: 80svh;
+  }
+
+  .gate-sticky-scene {
+    position: relative !important;
+    height: auto !important;
+    min-height: 80svh;
+    padding: 64px 20px;
+    contain: normal;
+  }
+
+  .gate-sticky-scene .poster-gate-wrap,
+  .gate-name-layer {
+    display: none !important;
+  }
+
+  .gate-quote-layer {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
