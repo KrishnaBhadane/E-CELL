@@ -11,10 +11,10 @@ export default function Hero() {
 
   return (
     <section className="tear-hero" aria-labelledby="hero-title" data-nav-tone="dark">
-      <h1 id="hero-title" className="sr-only">Entrepreneurship Cell RCPIT</h1>
+      <h1 id="hero-title" className="sr-only">The Entrepreneurship Cell RCPIT</h1>
       <TigerTearReveal
         word="RCPIT"
-        tagline="ENTREPRENEURSHIP CELL"
+        tagline="THE ENTREPRENEURSHIP CELL"
         paperArtwork={<DarkGradientBg />}
         ink="#ffffff"
         inkGradient={["#ffffff", "var(--blue-bright)"]}

@@ -24,7 +24,7 @@ export default function Header() {
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
+    window.addEventListener('resize', schedule, { passive: true });
     const observer = new ResizeObserver(schedule);
     observer.observe(document.body);
     update();

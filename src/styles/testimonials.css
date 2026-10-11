@@ -16,12 +16,12 @@
   font-weight: 400;
   text-align: center;
   text-transform: uppercase;
-  color: transparent;
-  background: linear-gradient(to bottom, #ffffff 0%, #e2e5e9 30%, var(--brand-primary) 70%, color-mix(in srgb, var(--brand-primary) 50%, transparent) 100%);
+  color: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 45%, #cbd5e1 80%, #94a3b8 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.45);
-  filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.12));
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  filter: drop-shadow(0 2px 14px rgba(255, 255, 255, 0.2));
   margin: 0 auto 32px;
   letter-spacing: -0.01em;
 }
@@ -171,4 +171,15 @@
 
 .testimonial-pause:hover {
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .testimonials h2.testimonials-outline,
+  .testimonials h2 {
+    color: #ffffff;
+    background: none;
+    -webkit-text-stroke: 0;
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
+    letter-spacing: -0.01em;
+  }
 }

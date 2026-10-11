@@ -117,8 +117,11 @@ export async function getCurrentUser() {
 // ============================================================================
 
 export async function uploadMedia(file: File, folder = 'uploads'): Promise<string> {
-  const fileExt = file.name.split('.').pop() || 'jpg';
-  const cleanName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+  const rawExt = (file.name.split('.').pop() || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const allowed = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+  const fileExt = allowed.includes(rawExt) ? rawExt : 'jpg';
+  const safeFolder = folder.replace(/[^a-zA-Z0-9_-]/g, '') || 'uploads';
+  const cleanName = `${safeFolder}/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
 
   const { data, error } = await supabase.storage
     .from('ecell-media')

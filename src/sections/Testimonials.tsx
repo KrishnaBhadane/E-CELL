@@ -89,6 +89,10 @@ export default function Testimonials() {
                   <img
                     src={item.image}
                     alt={item.name}
+                    width="160"
+                    height="160"
+                    loading="lazy"
+                    decoding="async"
                     className="testimonial-avatar"
                     style={{ objectFit: 'cover' }}
                   />

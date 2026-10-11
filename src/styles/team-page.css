@@ -1,12 +1,20 @@
+/* ==========================================================================
+   MEMBERS DIRECTORY — 4 COLUMNS DESKTOP & MOBILE, EQUAL SIZED CARDS
+   ========================================================================== */
+
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 20px 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px 14px;
+}
+
+.leadership-roster {
+  margin-bottom: 48px;
 }
 
 .team-page .team-card {
   background: var(--brand-dark-80);
-  padding: 10px;
+  padding: 12px 10px;
   border: 1px solid var(--brand-dark-50);
   border-radius: 14px;
   color: var(--theme-ink);
@@ -14,6 +22,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.team-page .team-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--highlight-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .team-page .team-card img {
@@ -43,72 +61,219 @@
 }
 
 .team-page .team-card h2 {
-  font-size: clamp(12px, 2vw, 26px);
-  margin: 10px 0 4px;
-  overflow-wrap: anywhere;
+  font-size: clamp(12px, 1.35vw, 17px);
+  line-height: 1.25;
+  margin: 10px 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 100%;
 }
 
-.team-page .team-card p {
+.team-page .team-card p,
+.team-page .team-card .member-domain {
   color: var(--muted);
-  font-size: 11px;
-  margin: 0;
-  overflow-wrap: anywhere;
+  font-size: clamp(8.5px, 0.95vw, 11px);
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  max-width: 100%;
+  letter-spacing: -0.01em;
 }
 
 .team-page .member-links {
   color: var(--theme-ink);
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 4px;
+  gap: 6px;
 }
+
+.team-page .member-links svg {
+  width: 16px;
+  height: 16px;
+}
+
+.team-page .member-links a,
+.team-page .member-links span {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-page .member-links a:hover {
+  background: var(--highlight-subtle);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & PHONES)
+   ========================================================================== */
 
 @media (max-width: 768px) {
   .team-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px 8px;
-  }
-}
-
-@media (max-width: 600px) {
-  .team-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px 6px;
   }
+
+  .leadership-roster {
+    margin-bottom: 32px;
+  }
+
   .team-page .team-card {
     padding: 8px 6px;
     border-radius: 10px;
   }
-  .team-page .team-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-  }
+
   .team-page .team-card h2 {
-    font-size: 11px;
-    line-height: 1.2;
+    font-size: clamp(10px, 2.5vw, 12px);
     margin: 6px 0 2px;
   }
-  .team-page .team-card p {
-    font-size: 9px;
-    line-height: 1.2;
+
+  .team-page .team-card p,
+  .team-page .team-card .member-domain {
+    font-size: clamp(7.5px, 2.1vw, 9.5px);
+    margin-bottom: 4px;
   }
+
   .team-page .member-links {
-    gap: 4px;
-    padding-top: 6px;
+    gap: 3px;
+    padding-top: 2px;
   }
+
   .team-page .member-links svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
   }
+
   .team-page .member-links a,
   .team-page .member-links span {
+    width: 20px;
+    height: 20px;
     min-width: 20px;
     min-height: 20px;
   }
 }
 
-.team-page img[src$="portrait-placeholder.svg"] {
-  filter: grayscale(1);
+@media (max-width: 480px) {
+  .team-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px 4px;
+  }
+
+  .team-page .team-card {
+    padding: 6px 4px;
+  }
+
+  .team-page .team-card h2 {
+    font-size: 10px;
+  }
+
+  .team-page .team-card p,
+  .team-page .team-card .member-domain {
+    font-size: 8px;
+  }
 }
 
+/* ==========================================================================
+   LEADERSHIP LOADING SKELETON
+   Clean shimmer cards with no names or images while loading
+   ========================================================================== */
+
+.leader-card-loading {
+  pointer-events: none;
+  animation: leader-shimmer-pulse 1.8s ease-in-out infinite;
+  min-height: 340px;
+  justify-content: center;
+}
+
+@keyframes leader-shimmer-pulse {
+  0%, 100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.leader-skeleton-avatar {
+  width: clamp(140px, 72%, 200px);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 2px solid rgba(59, 130, 246, 0.25);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.leader-skeleton-avatar::after,
+.leader-skeleton-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: skeleton-sweep 1.6s infinite;
+}
+
+@keyframes skeleton-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.leader-skeleton-box {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 16px 14px;
+  border-radius: 9px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.leader-skeleton-line {
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.leader-skeleton-name {
+  width: 65%;
+  height: 22px;
+}
+
+.leader-skeleton-role {
+  width: 40%;
+  height: 14px;
+}
+
+.leader-loading-label {
+  font: 700 11px var(--mono, monospace);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  opacity: 0.9;
+  text-align: center;
+}

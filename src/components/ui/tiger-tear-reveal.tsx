@@ -70,17 +70,14 @@ export function scrollProgress(top: number, height: number, viewport: number) {
 /** One scroll value drives the tear. */
 export function stages(p: number) {
   return {
-    crack: smooth(0.03, 0.2, p), // a crack runs out from the middle of the word
+    crack: smooth(0.03, 0.2, p), // a crack runs out from the middle
     open: smooth(0.18, 0.62, p), // the sheet tears and the halves pull apart
     shake: smooth(0.16, 0.22, p) * (1 - smooth(0.26, 0.36, p)), // the jolt of the rip
   }
 }
 
-/**
- * The tear, left to right across the whole sheet: a slight rising diagonal,
- * a slow wander, fine fibres and the odd big tooth. `x` always increases.
- */
-export function tearLine(seed = 11, from = -800, to = 1800, step = 9, cx = 500, cy = 318, angle = -7): Pt[] {
+/** Horizontal tear: left to right */
+export function tearLineH(seed = 11, from = -800, to = 1800, step = 9, cx = 500, cy = 318, angle = -7): Pt[] {
   const r = rng(seed)
   const slope = Math.tan((angle * Math.PI) / 180)
   const out: Pt[] = []
@@ -93,12 +90,18 @@ export function tearLine(seed = 11, from = -800, to = 1800, step = 9, cx = 500, 
   return out
 }
 
-/** Where each half goes as the tear opens. Both are still at open = 0. */
-export function pieceMotion(open: number) {
-  return {
-    top: { dx: -10 * open, dy: -82 * open, rot: -2.6 * open },
-    bottom: { dx: 12 * open, dy: 78 * open, rot: 2.1 * open },
+/** Vertical tear: top to bottom */
+export function tearLineV(seed = 11, from = -1000, to = 2400, step = 10, cx = 270, cy = 550, angle = 2): Pt[] {
+  const r = rng(seed)
+  const slope = Math.tan((angle * Math.PI) / 180)
+  const out: Pt[] = []
+  for (let y = from; y <= to; y += step) {
+    const fibre = (r() - 0.5) * 5
+    const tooth = r() < 0.08 ? (r() - 0.5) * 24 : 0
+    const wander = Math.sin(y * 0.016 + seed) * 10 + Math.sin(y * 0.048 + seed * 2) * 4
+    out.push([cx + (y - cy) * slope + wander + fibre + tooth, y])
   }
+  return out
 }
 
 /** Width of the white paper core exposed along a torn edge. */
@@ -114,14 +117,10 @@ export function fibreWidths(n: number, open: number, seed = 5) {
 const VIEW_W = 1000
 const CX = 500
 const CY = 318
-const FAR = 4000 // the paper halves reach well past any screen
-// the visible frame: cropped to the artwork, with room for the halves to part
+const FAR = 4000
 const d = (pts: Pt[], close = true) =>
   "M" + pts.map(([x, y]) => x.toFixed(1) + " " + y.toFixed(1)).join("L") + (close ? "Z" : "")
 
-// ---------------------------------------------------------------- the paper
-
-// Where the paper curls back over the gap: [x along the tear, half-width, depth].
 const CURLS: Record<"top" | "bottom", [number, number, number][]> = {
   top: [
     [300, 44, 30],
@@ -141,40 +140,84 @@ const Half = React.memo(function Half({
   line,
   open,
   children,
+  isVertical = false,
+  cx = CX,
+  cy = CY,
 }: {
   id: string
-  side: "top" | "bottom"
+  side: "top" | "bottom" | "left" | "right"
   line: Pt[]
   open: number
   children: React.ReactNode
+  isVertical?: boolean
+  cx?: number
+  cy?: number
 }) {
+  if (isVertical) {
+    const isLeft = side === "left"
+    const m = isLeft
+      ? { dx: -108 * open, dy: -6 * open, rot: -2.8 * open }
+      : { dx: 108 * open, dy: 6 * open, rot: 2.8 * open }
+    const shape = isLeft
+      ? [[-FAR, line[0][1]] as Pt, ...line, [-FAR, line[line.length - 1][1]] as Pt]
+      : [[FAR, line[0][1]] as Pt, ...line, [FAR, line[line.length - 1][1]] as Pt]
+    const widths = fibreWidths(line.length, open, isLeft ? 5 : 8)
+    const core = line.concat(line.map(([x, y], i) => [x + (isLeft ? -widths[i] : widths[i]), y] as Pt).reverse())
+    const transform = "translate(" + m.dx.toFixed(2) + " " + m.dy.toFixed(2) + ") rotate(" + m.rot.toFixed(3) + " " + cx + " " + cy + ")"
+    const clip = id + "-" + side
+
+    return (
+      <g transform={transform}>
+        {open > 0 ? (
+          <path
+            d={d(line, false)}
+            fill="none"
+            stroke="var(--theme-black, #000)"
+            strokeOpacity={0.6 * Math.min(1, open * 3)}
+            strokeWidth={22}
+            transform={"translate(" + (isLeft ? -10 : 10) + " 0)"}
+            filter={"url(#" + id + "-soft)"}
+          />
+        ) : null}
+        <clipPath id={clip}>
+          <path d={d(shape)} />
+        </clipPath>
+        <g clipPath={"url(#" + clip + ")"}>{children}</g>
+        {open > 0 ? (
+          <path d={d(core)} fill="var(--theme-white, #fff)" />
+        ) : null}
+      </g>
+    )
+  }
+
+  // Horizontal Mode
   const up = side === "top"
-  const m = pieceMotion(open)[side]
+  const m = up
+    ? { dx: -10 * open, dy: -82 * open, rot: -2.6 * open }
+    : { dx: 12 * open, dy: 78 * open, rot: 2.1 * open }
   const shape = up
     ? [[line[0][0], -FAR] as Pt, [line[line.length - 1][0], -FAR] as Pt, ...[...line].reverse()]
     : [...line, [line[line.length - 1][0], FAR] as Pt, [line[0][0], FAR] as Pt]
   const widths = fibreWidths(line.length, open, up ? 5 : 8)
-  // the white paper core along the edge, on this half's side of it
   const core = line.concat(line.map(([x, y], i) => [x, y + (up ? -widths[i] : widths[i])] as Pt).reverse())
-  const curls = CURLS[side].map(([cx, hw, depth]) => {
-    const pts = line.filter(([x]) => Math.abs(x - cx) <= hw)
+  const curls = CURLS[side as "top" | "bottom"].map(([cxPos, hw, depth]) => {
+    const pts = line.filter(([x]) => Math.abs(x - cxPos) <= hw)
     const back = pts.map(([x, y]) => {
-      const s = Math.cos(((x - cx) / hw) * (Math.PI / 2))
+      const s = Math.cos(((x - cxPos) / hw) * (Math.PI / 2))
       return [x + (up ? 6 : -6) * s * open, y + (up ? 1 : -1) * depth * s * s * Math.min(1, open * 2.5)] as Pt
     })
     return d(pts.concat(back.reverse()))
   })
   const transform =
-    "translate(" + m.dx.toFixed(2) + " " + m.dy.toFixed(2) + ") rotate(" + m.rot.toFixed(3) + " " + CX + " " + CY + ")"
+    "translate(" + m.dx.toFixed(2) + " " + m.dy.toFixed(2) + ") rotate(" + m.rot.toFixed(3) + " " + cx + " " + cy + ")"
   const clip = id + "-" + side
   return (
     <g transform={transform}>
-      {/* the half's shadow on the revealed artwork */}
       {open > 0 ? (
         <path
           d={d(line, false)}
           fill="none"
-          stroke="var(--theme-black)"
+          stroke="var(--theme-black, #000)"
           strokeOpacity={0.55 * Math.min(1, open * 3)}
           strokeWidth={22}
           transform={"translate(0 " + (up ? 10 : -10) + ")"}
@@ -187,9 +230,9 @@ const Half = React.memo(function Half({
       <g clipPath={"url(#" + clip + ")"}>{children}</g>
       {open > 0 ? (
         <>
-          <path d={d(core)} fill="var(--theme-white)" />
+          <path d={d(core)} fill="var(--theme-white, #fff)" />
           {curls.map((c, i) => (
-            <path key={i} d={c} fill={"url(#" + id + "-curl-" + side + ")"} stroke="var(--theme-white)" strokeWidth={1} />
+            <path key={i} d={c} fill={"url(#" + id + "-curl-" + side + ")"} stroke="var(--theme-white, #fff)" strokeWidth={1} />
           ))}
         </>
       ) : null}
@@ -197,18 +240,16 @@ const Half = React.memo(function Half({
   )
 })
 
-// ---------------------------------------------------------------- component
-
 export default function TigerTearReveal({
-  word = "COURAGE",
-  tagline = "HAVE NO FEAR",
-  ink = "var(--event-red)",
+  word = "RCPIT",
+  tagline = "ENTREPRENEURSHIP CELL",
+  ink = "#ffffff",
   inkGradient,
-  paper = "var(--brand-light-90)",
-  taglineColor = "var(--neutral-light-10)",
+  paper = "var(--neutral-dark-55, #07090e)",
+  taglineColor = "var(--theme-white, #ffffff)",
   fontFamily = '"Anton", Impact, "Bebas Neue", "Oswald", "Arial Narrow", "Arial Black", sans-serif',
   height = "100svh",
-  scrollDistance = "160svh",
+  scrollDistance = "120svh",
   progress,
   hint = true,
   className = "",
@@ -220,32 +261,49 @@ export default function TigerTearReveal({
 }: TigerTearRevealProps) {
   const rootRef = React.useRef<HTMLElement | null>(null)
   const stageRef = React.useRef<HTMLDivElement | null>(null)
-  const [lite, setLite] = React.useState(() => window.matchMedia('(max-width: 760px), (pointer: coarse)').matches)
-  React.useEffect(() => {
-    const media = window.matchMedia('(max-width: 760px), (pointer: coarse)')
-    const update = () => setLite(media.matches)
-    media.addEventListener('change', update)
-    return () => media.removeEventListener('change', update)
-  }, [])
+  const [isVertical, setIsVertical] = React.useState(() => {
+    if (typeof window === "undefined") return false
+    return window.innerWidth <= 768 || window.matchMedia("(max-width: 768px)").matches
+  })
   const [frameBox, setFrameBox] = React.useState({ x: 36, y: 44, width: 928, height: 468 })
+
   React.useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
     const resize = () => {
       if (!stage.clientWidth || !stage.clientHeight) return
       const aspect = stage.clientWidth / stage.clientHeight
-      const width = Math.max(928, 468 * aspect)
-      const height = width / aspect
-      setFrameBox({ x: CX - width / 2, y: 278 - height / 2, width, height })
+      const vertical = stage.clientWidth <= 768 || aspect < 0.75
+      setIsVertical(vertical)
+
+      if (vertical) {
+        const width = 540
+        const h = width / aspect
+        setFrameBox({ x: 0, y: 0, width, height: h })
+      } else {
+        const width = Math.max(928, 468 * aspect)
+        const h = width / aspect
+        setFrameBox({ x: CX - width / 2, y: 278 - h / 2, width, height: h })
+      }
     }
     const observer = new ResizeObserver(resize)
     observer.observe(stage)
     resize()
     return () => observer.disconnect()
   }, [])
+
   const reduced = useReducedMotion()
   const id = "ttr" + React.useId().replace(/[^a-zA-Z0-9]/g, "")
-  const line = React.useMemo(() => tearLine(), [])
+  const curCX = isVertical ? frameBox.width / 2 : CX
+  const curCY = isVertical ? frameBox.height / 2 : 278
+
+  const line = React.useMemo(() => {
+    if (isVertical) {
+      return tearLineV(11, -1000, 2400, 10, curCX, curCY)
+    }
+    return tearLineH(11, -800, 1800, 9, CX, CY)
+  }, [isVertical, curCX, curCY])
+
   const [p, setProgress] = React.useState(progress ?? 0)
   const controlled = progress !== undefined
   const cfg = React.useRef({ progress, controlled })
@@ -261,8 +319,8 @@ export default function TigerTearReveal({
     }
     let raf = 0
     let visible = false
-    let p = cfg.current.progress ?? 0
-    let last = p
+    let currentP = cfg.current.progress ?? 0
+    let last = currentP
     let dirty = true
     let scrollTarget = 0
     function invalidate() { dirty = true; resume() }
@@ -294,13 +352,13 @@ export default function TigerTearReveal({
       const target = c.controlled
         ? clamp01(c.progress ?? 0)
         : scrollTarget
-      p += (target - p) * 0.14
-      if (Math.abs(target - p) < 0.0005) p = target
-      if (Math.abs(p - last) > 1e-4 || p === target && last !== p) {
-        last = p
-        setProgress(p)
+      currentP += (target - currentP) * 0.14
+      if (Math.abs(target - currentP) < 0.0005) currentP = target
+      if (Math.abs(currentP - last) > 1e-4 || (currentP === target && last !== currentP)) {
+        last = currentP
+        setProgress(currentP)
       }
-      if (p !== target) raf = requestAnimationFrame(tick)
+      if (currentP !== target) raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
     return () => {
@@ -310,49 +368,195 @@ export default function TigerTearReveal({
       window.removeEventListener('scroll', invalidate)
       window.removeEventListener('resize', invalidate)
     }
-  }, [reduced, lite, reduced ? progress : undefined])
+  }, [reduced, reduced ? progress : undefined])
 
   const s = stages(p)
-  const shake = reduced || lite ? 0 : Math.sin(p * 900) * 6 * s.shake
-  const crackReach = s.crack * 620
-  const crack = line.filter(([x]) => Math.abs(x - CX) <= crackReach)
+  const shake = reduced ? 0 : Math.sin(p * 900) * 6 * s.shake
+  const crackReach = s.crack * 640
+  const crack = line.filter(([x, y]) => isVertical ? Math.abs(y - curCY) <= crackReach : Math.abs(x - CX) <= crackReach)
 
-  const sheet = React.useMemo(() => (
-    <>
-      <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill={paper} />
-      {lite ? <rect x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height} fill={`url(#${id}-mobile-paper)`} /> : paperArtwork && <foreignObject x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height}>{paperArtwork}</foreignObject>}
-      {tagline ? (
+  const sheet = React.useMemo(() => {
+    if (isVertical) {
+      const letters = word.split("")
+      const numLetters = letters.length
+      const letterStep = Math.min(128, (frameBox.height * 0.54) / numLetters)
+      const startY = curCY - ((numLetters - 1) * letterStep) / 2
+
+      return (
+        <>
+          <rect x={-FAR} y={-FAR} width={FAR * 2} height={FAR * 2} fill={paper} />
+
+          {/* Glowing Ambient Radial Backdrop */}
+          <radialGradient id={`${id}-mob-aura`} cx="50%" cy="50%" r="52%">
+            <stop offset="0%" stopColor="rgba(37, 99, 235, 0.32)" />
+            <stop offset="50%" stopColor="rgba(15, 23, 42, 0.85)" />
+            <stop offset="100%" stopColor="#07090e" />
+          </radialGradient>
+          <rect x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height} fill={`url(#${id}-mob-aura)`} />
+
+          {/* Blueprint Grid Lines Pattern */}
+          <defs>
+            <pattern id={`${id}-mob-grid`} width="36" height="36" patternUnits="userSpaceOnUse">
+              <path d="M 36 0 L 0 0 0 36" fill="none" stroke="rgba(255, 255, 255, 0.04)" strokeWidth="0.8" />
+              <circle cx="0" cy="0" r="1" fill="rgba(59, 130, 246, 0.3)" />
+            </pattern>
+          </defs>
+          <rect x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height} fill={`url(#${id}-mob-grid)`} />
+
+          {/* Concentric Cyber Rings */}
+          <circle cx={curCX} cy={curCY} r="220" stroke="rgba(59, 130, 246, 0.22)" strokeWidth="1" strokeDasharray="6 6" fill="none" />
+          <circle cx={curCX} cy={curCY} r="340" stroke="rgba(255, 255, 255, 0.08)" strokeWidth="1" strokeDasharray="12 12" fill="none" />
+          <circle cx={curCX} cy={curCY} r="460" stroke="rgba(37, 99, 235, 0.12)" strokeWidth="1" fill="none" />
+
+          {/* Corner Tech Brackets */}
+          <g stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1.2">
+            <path d={`M ${frameBox.x + 24} ${frameBox.y + 20} L ${frameBox.x + 24} ${frameBox.y + 36} M ${frameBox.x + 16} ${frameBox.y + 28} L ${frameBox.x + 32} ${frameBox.y + 28}`} />
+            <path d={`M ${frameBox.x + frameBox.width - 24} ${frameBox.y + 20} L ${frameBox.x + frameBox.width - 24} ${frameBox.y + 36} M ${frameBox.x + frameBox.width - 32} ${frameBox.y + 28} L ${frameBox.x + frameBox.width - 16} ${frameBox.y + 28}`} />
+            <path d={`M ${frameBox.x + 24} ${frameBox.y + frameBox.height - 24} L ${frameBox.x + 24} ${frameBox.y + frameBox.height - 8} M ${frameBox.x + 16} ${frameBox.y + frameBox.height - 16} L ${frameBox.x + 32} ${frameBox.y + frameBox.height - 16}`} />
+            <path d={`M ${frameBox.x + frameBox.width - 24} ${frameBox.y + frameBox.height - 24} L ${frameBox.x + frameBox.width - 24} ${frameBox.y + frameBox.height - 8} M ${frameBox.x + frameBox.width - 32} ${frameBox.y + frameBox.height - 16} L ${frameBox.x + frameBox.width - 16} ${frameBox.y + frameBox.height - 16}`} />
+          </g>
+
+          {/* Side Metadata Rails (Vertical text) */}
+          <text
+            x={frameBox.x + 22}
+            y={curCY}
+            fill="rgba(148, 163, 184, 0.42)"
+            transform={`rotate(-90 ${frameBox.x + 22} ${curCY})`}
+            textAnchor="middle"
+            style={{ font: '600 10px monospace', letterSpacing: '0.28em' }}
+          >
+            // E-CELL RCPIT • INNOVATION HUB • EST. 2026 //
+          </text>
+          <text
+            x={frameBox.x + frameBox.width - 22}
+            y={curCY}
+            fill="rgba(148, 163, 184, 0.42)"
+            transform={`rotate(90 ${frameBox.x + frameBox.width - 22} ${curCY})`}
+            textAnchor="middle"
+            style={{ font: '600 10px monospace', letterSpacing: '0.28em' }}
+          >
+            // LAT 21.31° N • LONG 74.88° E • SHIRPUR //
+          </text>
+
+          {/* Top Tagline Badge — Highlighted Size & Position */}
+          {tagline && (
+            <g>
+              <rect
+                x={curCX - 165}
+                y={startY - 106}
+                width="330"
+                height="42"
+                rx="21"
+                fill="rgba(8, 12, 22, 0.92)"
+                stroke="rgba(59, 130, 246, 0.6)"
+                strokeWidth="1.5"
+              />
+              <text
+                x={curCX}
+                y={startY - 80}
+                textAnchor="middle"
+                fill={taglineColor}
+                style={{ font: '700 12.5px "Manrope Variable", sans-serif', letterSpacing: '0.22em' }}
+              >
+                {tagline.includes("ENTREPRENEURSHIP CELL") ? (
+                  <>
+                    {tagline.startsWith("THE ") && (
+                      <tspan fill="rgba(255, 255, 255, 0.85)">THE </tspan>
+                    )}
+                    <tspan fill={taglineColor}>ENTRE</tspan>
+                    <tspan fill="var(--blue-bright, #3b82f6)">PRENEUR</tspan>
+                    <tspan fill={taglineColor}>SHIP CELL</tspan>
+                  </>
+                ) : (
+                  tagline
+                )}
+              </text>
+            </g>
+          )}
+
+          {/* Giant Vertical Letters (R C P I T) */}
+          {letters.map((char, index) => {
+            const charY = startY + index * letterStep
+            return (
+              <text
+                key={index}
+                x={curCX}
+                y={charY}
+                textAnchor="middle"
+                dominantBaseline="central"
+                fill={inkGradient ? `url(#${id}-ink)` : ink}
+                style={{
+                  fontFamily,
+                  fontSize: Math.min(148, letterStep * 1.18),
+                  fontWeight: 400,
+                  letterSpacing: 0,
+                  filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.65))',
+                }}
+              >
+                {char}
+              </text>
+            )
+          })}
+
+          {/* Bottom Tech Subtitle */}
+          <text
+            x={curCX}
+            y={startY + (numLetters - 1) * letterStep + 78}
+            textAnchor="middle"
+            fill="rgba(148, 163, 184, 0.65)"
+            style={{ font: '600 10px monospace', letterSpacing: '0.26em' }}
+          >
+            STUDENT STARTUP INCUBATOR
+          </text>
+        </>
+      )
+    }
+
+    // Horizontal Desktop Mode
+    return (
+      <>
+        <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill={paper} />
+        {paperArtwork && (
+          <foreignObject x={frameBox.x} y={frameBox.y} width={frameBox.width} height={frameBox.height}>
+            {paperArtwork}
+          </foreignObject>
+        )}
+        {tagline ? (
+          <text
+            x={CX}
+            y={162}
+            textAnchor="middle"
+            fill={taglineColor}
+            style={{ font: '700 32px "Manrope Variable", Arial, sans-serif', letterSpacing: "0.34em" }}
+          >
+            {tagline.includes("ENTREPRENEURSHIP CELL") ? (
+              <>
+                {tagline.startsWith("THE ") && (
+                  <tspan fill="rgba(255, 255, 255, 0.85)">THE </tspan>
+                )}
+                <tspan fill={taglineColor}>ENTRE</tspan>
+                <tspan fill="var(--blue-bright)">PRENEUR</tspan>
+                <tspan fill={taglineColor}>SHIP CELL</tspan>
+              </>
+            ) : (
+              tagline
+            )}
+          </text>
+        ) : null}
         <text
           x={CX}
-          y={150}
+          y={404}
           textAnchor="middle"
-          fill={taglineColor}
-          style={{ font: '600 27px "Manrope Variable", Arial, sans-serif', letterSpacing: "0.32em" }}
+          textLength={880}
+          lengthAdjust="spacingAndGlyphs"
+          fill={inkGradient ? `url(#${id}-ink)` : ink}
+          style={{ fontFamily, fontSize: 250, fontWeight: 400, letterSpacing: 0 }}
         >
-          {tagline.includes("ENTREPRENEURSHIP CELL") ? (
-            <>
-              <tspan fill={taglineColor}>ENTRE</tspan>
-              <tspan fill="var(--blue-bright)">PRENEUR</tspan>
-              <tspan fill={taglineColor}>SHIP CELL</tspan>
-            </>
-          ) : (
-            tagline
-          )}
+          {word}
         </text>
-      ) : null}
-      <text
-        x={CX}
-        y={404}
-        textAnchor="middle"
-        textLength={880}
-        lengthAdjust="spacingAndGlyphs"
-        fill={inkGradient ? `url(#${id}-ink)` : ink}
-        style={{ fontFamily, fontSize: 250, fontWeight: 400, letterSpacing: 0 }}
-      >
-        {word}
-      </text>
-    </>
-  ), [paper, paperArtwork, frameBox, tagline, taglineColor, inkGradient, id, ink, fontFamily, word, lite])
+      </>
+    )
+  }, [isVertical, word, frameBox, curCX, curCY, paper, id, tagline, taglineColor, inkGradient, ink, fontFamily, paperArtwork])
 
   return (
     <section
@@ -363,7 +567,7 @@ export default function TigerTearReveal({
     >
       <div
         ref={stageRef}
-        className={`tiger-stage sticky w-full overflow-hidden${lite ? ' hero-lite' : ''}`}
+        className="tiger-stage sticky w-full overflow-hidden"
         style={{ height, top: topOffset }}
       >
         <svg
@@ -374,20 +578,19 @@ export default function TigerTearReveal({
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", maxWidth: "none", display: "block" }}
         >
           <defs>
-            <linearGradient id={`${id}-mobile-paper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="var(--neutral-light-10)" /><stop offset=".6" stopColor={paper} /><stop offset="1" stopColor="var(--brand-dark-80)" /></linearGradient>
             {inkGradient && (
               <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={inkGradient[0]} />
-                <stop offset="38%" stopColor={inkGradient[0]} />
+                <stop offset="42%" stopColor={inkGradient[0]} />
                 <stop offset="100%" stopColor={inkGradient[1]} />
               </linearGradient>
             )}
             <linearGradient id={id + "-curl-top"} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="var(--theme-white)" />
+              <stop offset="0%" stopColor="var(--theme-white)" />
               <stop offset="1" stopColor="var(--brand-light-75)" />
             </linearGradient>
             <linearGradient id={id + "-curl-bottom"} x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="var(--theme-white)" />
+              <stop offset="0%" stopColor="var(--theme-white)" />
               <stop offset="1" stopColor="var(--brand-light-75)" />
             </linearGradient>
             <filter id={id + "-soft"} x="-20%" y="-50%" width="140%" height="200%">
@@ -395,31 +598,56 @@ export default function TigerTearReveal({
             </filter>
           </defs>
 
-          <g transform={"translate(" + shake.toFixed(2) + " " + (shake * 0.4).toFixed(2) + ")"}>
-            {s.open > .8 && (
-              <foreignObject x="270" y="245" width="610" height="155" opacity={Math.min(1, (s.open - .8) / .2)}>
+          <g transform={isVertical ? "translate(" + (shake * 0.4).toFixed(2) + " " + shake.toFixed(2) + ")" : "translate(" + shake.toFixed(2) + " " + (shake * 0.4).toFixed(2) + ")"}>
+            {/* 100% Solid Pitch Black Inside Background behind Tear */}
+            <rect x={-FAR} y={-FAR} width={FAR * 2 + VIEW_W} height={FAR * 2} fill="#000000" />
+
+            {s.open > 0.15 && (
+              <foreignObject
+                x={isVertical ? curCX - 170 : 270}
+                y={isVertical ? curCY - Math.min(420, frameBox.height * 0.38) : 235}
+                width={isVertical ? 340 : 610}
+                height={isVertical ? Math.min(840, frameBox.height * 0.76) : 165}
+                opacity={Math.min(1, Math.max(0, (s.open - 0.15) / 0.45))}
+              >
                 {revealArtwork()}
               </foreignObject>
             )}
 
-            {/* the sheet: whole until it tears (two clipped halves leave a hairline seam),
-                then in two halves that part along the tear */}
             {s.open > 0 ? (
-              <>
-                <Half id={id} side="top" line={line} open={s.open * 1.55}>
-                  {sheet}
-                </Half>
-                <Half id={id} side="bottom" line={line} open={s.open * 1.55}>
-                  {sheet}
-                </Half>
-              </>
+              isVertical ? (
+                <>
+                  <Half id={id} side="left" line={line} open={s.open * 1.55} isVertical={true} cx={curCX} cy={curCY}>
+                    {sheet}
+                  </Half>
+                  <Half id={id} side="right" line={line} open={s.open * 1.55} isVertical={true} cx={curCX} cy={curCY}>
+                    {sheet}
+                  </Half>
+                </>
+              ) : (
+                <>
+                  <Half id={id} side="top" line={line} open={s.open * 1.55} isVertical={false} cx={CX} cy={CY}>
+                    {sheet}
+                  </Half>
+                  <Half id={id} side="bottom" line={line} open={s.open * 1.55} isVertical={false} cx={CX} cy={CY}>
+                    {sheet}
+                  </Half>
+                </>
+              )
             ) : (
               sheet
             )}
 
-            {/* the crack, running out from the middle before it gives way */}
+            {/* The crack */}
             {s.crack > 0 && s.open < 0.15 && crack.length > 1 ? (
-              <path d={d(crack, false)} fill="none" stroke="var(--brand-dark-75)" strokeWidth={2.4} strokeLinejoin="bevel" opacity={1 - s.open / 0.15} />
+              <path
+                d={d(crack, false)}
+                fill="none"
+                stroke="var(--brand-dark-75, #1d4ed8)"
+                strokeWidth={isVertical ? 3 : 2.4}
+                strokeLinejoin="bevel"
+                opacity={1 - s.open / 0.15}
+              />
             ) : null}
           </g>
         </svg>

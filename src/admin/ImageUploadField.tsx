@@ -31,6 +31,17 @@ export default function ImageUploadField({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file (PNG, JPG, WebP, SVG, GIF).');
+      return;
+    }
+
+    const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_SIZE_BYTES) {
+      setError('Image file size must be under 5MB.');
+      return;
+    }
+
     // Instant local preview
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);

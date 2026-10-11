@@ -39,7 +39,7 @@ export default function ManageLeadership({ onNotify }: ManageLeadershipProps) {
       setHeadGithub(data.head.github || '');
       setHeadLinkedin(data.head.linkedin || '');
     } else {
-      setHeadName('Luffy');
+      setHeadName('Krushna Bhadane');
     }
 
     if (data.co_head) {
@@ -49,7 +49,7 @@ export default function ManageLeadership({ onNotify }: ManageLeadershipProps) {
       setCoGithub(data.co_head.github || '');
       setCoLinkedin(data.co_head.linkedin || '');
     } else {
-      setCoName('Zoro');
+      setCoName('Mukesh Nehete');
     }
 
     setLoading(false);
@@ -124,7 +124,7 @@ export default function ManageLeadership({ onNotify }: ManageLeadershipProps) {
               className="form-input"
               value={headName}
               onChange={e => setHeadName(e.target.value)}
-              placeholder="e.g. Luffy"
+              placeholder="e.g. Krushna Bhadane"
             />
           </div>
 
@@ -194,7 +194,7 @@ export default function ManageLeadership({ onNotify }: ManageLeadershipProps) {
               className="form-input"
               value={coName}
               onChange={e => setCoName(e.target.value)}
-              placeholder="e.g. Zoro"
+              placeholder="e.g. Mukesh Nehete"
             />
           </div>
 

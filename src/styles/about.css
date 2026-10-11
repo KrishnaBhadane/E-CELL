@@ -6,7 +6,19 @@
 .globe-orbit { transform-origin: 145px 145px; animation: globe-orbit 32s linear infinite; filter: drop-shadow(0 0 3px var(--brand-light-70)); }
 @keyframes globe-orbit { to { transform: rotate(360deg); } }
 .illuminate-layout { position: relative; max-width: 1120px; margin: 70px auto 16px; }
-.about h2.about-outline { font-size: clamp(48px, 9vw, 128px); text-align: center; color: transparent; background: linear-gradient(to bottom, #ffffff 0%, #e2e5e9 30%, var(--brand-primary) 70%, color-mix(in srgb, var(--brand-primary) 50%, transparent) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.45); margin-bottom: -20px; position: relative; z-index: 1; filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.12)); }
+.about h2.about-outline {
+  font-size: clamp(48px, 9vw, 128px);
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 45%, #cbd5e1 80%, #94a3b8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  margin-bottom: -20px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 14px rgba(255, 255, 255, 0.2));
+}
 .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .mission-grid article { padding: 65px 48px 145px; background: linear-gradient(to bottom, color-mix(in srgb, var(--brand-bright) 0.0%, transparent), color-mix(in srgb, var(--brand-light-25) 50.2%, transparent) 20%, var(--brand-light-40) 100%); text-align: center; }
 .mission-grid h3 { font: 400 clamp(30px, 3vw, 46px)/1.15 var(--display); margin: 22px 0; }
@@ -22,6 +34,12 @@
 .impact-facts strong { display: block; font: 400 clamp(32px, 4vw, 58px)/1.2 var(--display); }
 .impact-facts span { display: block; margin-top: 12px; font-size: 12px; line-height: 1.6; }
 @media (max-width: 760px) {
+  .about h2.about-outline {
+    color: #ffffff;
+    background: none;
+    -webkit-text-stroke: 0;
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
+  }
   .illuminate-layout { margin-block: 40px 12px; }
   .mission-grid { grid-template-columns: 1fr; gap: 12px; }
   .mission-grid article { padding: 32px; }

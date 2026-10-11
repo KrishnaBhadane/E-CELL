@@ -1,5 +1,43 @@
 .members { position: relative; background: var(--paper); padding: 32px var(--gutter) 48px; }
-.team-page-link { display: table; margin: 28px auto 0; padding: 12px 22px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+.members-teaser {
+  text-align: center;
+  padding: 64px var(--gutter);
+  background: var(--theme-paper, #07090e);
+}
+.members-teaser-card {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.45) 0%, rgba(10, 15, 28, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.members-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font: 700 11px var(--mono, monospace);
+  letter-spacing: 0.2em;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  margin-bottom: 16px;
+}
+.members-title {
+  font: 400 clamp(32px, 5.5vw, 56px) var(--display, 'Anton', Impact, sans-serif);
+  color: #ffffff;
+  margin: 0 0 12px;
+  letter-spacing: 0.02em;
+}
+.members-desc {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(14px, 1.4vw, 16px);
+  max-width: 580px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+.team-page-link { display: inline-flex; align-items: center; justify-content: center; margin: 0 auto; padding: 12px 28px; border-radius: 99px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
 .team-page { background: var(--paper); }
 .member-links { display: flex; gap: 10px; margin-top: 10px; color: var(--brand-dark-25); }
 .member-links svg { width: 18px; height: 18px; }
