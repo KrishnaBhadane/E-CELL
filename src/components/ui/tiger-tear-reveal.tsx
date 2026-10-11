@@ -329,7 +329,15 @@ export default function TigerTearReveal({
           fill={taglineColor}
           style={{ font: '600 27px "Manrope Variable", Arial, sans-serif', letterSpacing: "0.32em" }}
         >
-          {tagline}
+          {tagline.includes("ENTREPRENEURSHIP CELL") ? (
+            <>
+              <tspan fill={taglineColor}>ENTRE</tspan>
+              <tspan fill="var(--blue-bright)">PRENEUR</tspan>
+              <tspan fill={taglineColor}>SHIP CELL</tspan>
+            </>
+          ) : (
+            tagline
+          )}
         </text>
       ) : null}
       <text
@@ -367,7 +375,13 @@ export default function TigerTearReveal({
         >
           <defs>
             <linearGradient id={`${id}-mobile-paper`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="var(--neutral-light-10)" /><stop offset=".6" stopColor={paper} /><stop offset="1" stopColor="var(--brand-dark-80)" /></linearGradient>
-            {inkGradient && <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={inkGradient[0]} /><stop offset="1" stopColor={inkGradient[1]} /></linearGradient>}
+            {inkGradient && (
+              <linearGradient id={`${id}-ink`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={inkGradient[0]} />
+                <stop offset="38%" stopColor={inkGradient[0]} />
+                <stop offset="100%" stopColor={inkGradient[1]} />
+              </linearGradient>
+            )}
             <linearGradient id={id + "-curl-top"} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="var(--theme-white)" />
               <stop offset="1" stopColor="var(--brand-light-75)" />

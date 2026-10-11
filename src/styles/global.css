@@ -44,6 +44,13 @@
   --primary-foreground: var(--paper);
   --muted-background: var(--brand-light-85);
   --radius: .625rem;
+  --highlight: var(--highlight-primary);
+  --highlight-bright: var(--highlight-bright);
+  --highlight-spark: var(--highlight-spark);
+  --highlight-glow: var(--highlight-glow);
+  --highlight-subtle: var(--highlight-subtle);
+  --highlight-border: var(--highlight-border);
+  --highlight-text: var(--highlight-text);
   --display: 'Anton', Impact, sans-serif;
   --note: Georgia, 'Times New Roman', serif;
   --sans: 'Manrope Variable', Arial, sans-serif;
@@ -63,8 +70,8 @@ button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation
 button { font: inherit; cursor: pointer; color: inherit; }
 a { color: inherit; text-decoration: none; }
 button:disabled { cursor: default; }
-button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
-::selection { background: var(--accent); color: var(--paper); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--highlight-bright); outline-offset: 4px; }
+::selection { background: var(--highlight-primary); color: #ffffff; }
 h1, h2, h3, p { margin: 0; }
 .eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 1.7px; line-height: 1.5; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }

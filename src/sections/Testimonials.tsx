@@ -75,7 +75,7 @@ export default function Testimonials() {
         if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false);
       }}
     >
-      <h2 id="testimonial-title">TESTIMONIALS</h2>
+      <h2 id="testimonial-title" className="testimonials-outline">TESTIMONIALS</h2>
       <div className="testimonial-frame" role="region" aria-roledescription="carousel" aria-label="Student testimonials">
         <div className="testimonial-track" style={{ transform: `translateX(-${selected * 100}%)` }}>
           {items.map((item, index) => (

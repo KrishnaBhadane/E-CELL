@@ -10,6 +10,3 @@ export interface BlogPost {
   imageAlt?: string;
   paragraphs: string[];
 }
-
-// Only approved articles published through the admin panel are shown.
-export const blogPosts: BlogPost[] = [];

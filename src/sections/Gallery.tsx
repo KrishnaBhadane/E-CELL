@@ -43,8 +43,8 @@ export default function Gallery() {
 
   return (
     <section id="gallery" className="space-gallery" data-nav-tone="dark" aria-labelledby="gallery-title">
-      <h2 id="gallery-title">
-        Our <span>Gallery</span>
+      <h2 id="gallery-title" className="gallery-outline">
+        OUR GALLERY
       </h2>
       <div className="gallery-tabs" role="tablist" aria-label="Gallery events">
         {eventsList.map((item, index) => (

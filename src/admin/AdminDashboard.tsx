@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { supabase, logoutUser, getCurrentUser } from '@/lib/supabase';
 import ClubLogo from '@/components/ClubLogo';
 import AdminLogin from './AdminLogin';
-import ManageBlogs from './ManageBlogs';
-import ManageMembers from './ManageMembers';
-import ManageGallery from './ManageGallery';
-import ManageTestimonials from './ManageTestimonials';
-import ManageLeadership from './ManageLeadership';
-import ManageSocialLinks from './ManageSocialLinks';
 import '@/styles/admin.css';
+
+const ManageBlogs = lazy(() => import('./ManageBlogs'));
+const ManageMembers = lazy(() => import('./ManageMembers'));
+const ManageGallery = lazy(() => import('./ManageGallery'));
+const ManageTestimonials = lazy(() => import('./ManageTestimonials'));
+const ManageLeadership = lazy(() => import('./ManageLeadership'));
+const ManageSocialLinks = lazy(() => import('./ManageSocialLinks'));
 
 type AdminTab = 'blogs' | 'members' | 'gallery' | 'testimonials' | 'leadership' | 'socials';
 
@@ -17,6 +18,8 @@ export default function AdminDashboard() {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [activeTab, setActiveTab] = useState<AdminTab>('blogs');
   const [toast, setToast] = useState<string | null>(null);
+
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     checkUser();
@@ -27,6 +30,7 @@ export default function AdminDashboard() {
 
     return () => {
       subscription.unsubscribe();
+      clearTimeout(toastTimer.current);
     };
   }, []);
 
@@ -43,7 +47,8 @@ export default function AdminDashboard() {
 
   function showToast(message: string) {
     setToast(message);
-    setTimeout(() => {
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => {
       setToast(null);
     }, 3500);
   }
@@ -141,12 +146,14 @@ export default function AdminDashboard() {
 
         {/* MAIN BODY CONTENT */}
         <main className="admin-container">
-          {activeTab === 'blogs' && <ManageBlogs onNotify={showToast} />}
-          {activeTab === 'members' && <ManageMembers onNotify={showToast} />}
-          {activeTab === 'gallery' && <ManageGallery onNotify={showToast} />}
-          {activeTab === 'testimonials' && <ManageTestimonials onNotify={showToast} />}
-          {activeTab === 'leadership' && <ManageLeadership onNotify={showToast} />}
-          {activeTab === 'socials' && <ManageSocialLinks onNotify={showToast} />}
+          <Suspense fallback={<p role="status">Loading editor...</p>}>
+            {activeTab === 'blogs' && <ManageBlogs onNotify={showToast} />}
+            {activeTab === 'members' && <ManageMembers onNotify={showToast} />}
+            {activeTab === 'gallery' && <ManageGallery onNotify={showToast} />}
+            {activeTab === 'testimonials' && <ManageTestimonials onNotify={showToast} />}
+            {activeTab === 'leadership' && <ManageLeadership onNotify={showToast} />}
+            {activeTab === 'socials' && <ManageSocialLinks onNotify={showToast} />}
+          </Suspense>
         </main>
 
         {/* TOAST NOTIFICATION */}

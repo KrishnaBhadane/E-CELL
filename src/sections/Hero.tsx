@@ -2,7 +2,6 @@ import { useState } from 'react';
 import TigerTearReveal from '@/components/ui/tiger-tear-reveal';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { DarkGradientBg } from '@/components/ui/elegant-dark-pattern';
-import ClubLogo from '@/components/ClubLogo';
 import UpcomingEvent from '@/components/UpcomingEvent';
 import { upcomingEvent } from '@/data/upcoming-event';
 
@@ -12,14 +11,13 @@ export default function Hero() {
 
   return (
     <section className="tear-hero" aria-labelledby="hero-title" data-nav-tone="dark">
-      <a className="hero-club-logo" href="#top" aria-label="E-Cell RCPIT home"><ClubLogo /></a>
       <h1 id="hero-title" className="sr-only">Entrepreneurship Cell RCPIT</h1>
       <TigerTearReveal
         word="RCPIT"
         tagline="ENTREPRENEURSHIP CELL"
         paperArtwork={<DarkGradientBg />}
-        ink="var(--brand-primary)"
-        inkGradient={["var(--brand-light-50)", "var(--brand-light-75)"]}
+        ink="#ffffff"
+        inkGradient={["#ffffff", "var(--blue-bright)"]}
         paper="var(--neutral-dark-55)"
         taglineColor="var(--theme-white)"
         fontFamily="Anton, Impact, sans-serif"

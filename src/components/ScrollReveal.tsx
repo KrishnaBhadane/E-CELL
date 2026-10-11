@@ -3,7 +3,9 @@ import { useEffect, useRef, type ReactNode } from 'react';
 export default function ScrollReveal({ children }: { children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const nodes = root.current?.querySelectorAll('h2, h3, p:not([data-scroll-word-line]), figcaption, blockquote');
+    const nodes = root.current?.querySelectorAll(
+      'h2:not(.community-poster *), h3:not(.community-poster *), p:not([data-scroll-word-line]):not(.community-poster *), figcaption, blockquote'
+    );
     if (!nodes || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) {

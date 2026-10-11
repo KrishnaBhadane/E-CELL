@@ -15,7 +15,18 @@
 .upcoming-event .event-outline { stroke: var(--brand-light-25); paint-order: stroke fill; }
 .upcoming-event .event-reveal p { font-size: 12px; letter-spacing: .14em; }
 .upcoming-event .event-coming { font-size: 10px; }
-.event-edition { display: inline-block; margin-top: 7px; padding: 4px 10px; border: 1px solid var(--brand-light-40); border-radius: 3px; background: color-mix(in srgb, var(--brand-dark-15) 33.33%, transparent); font: 700 10px var(--sans); letter-spacing: .14em; color: var(--brand-light-95); }
+.event-edition {
+  display: inline-block;
+  margin-top: 7px;
+  padding: 4px 12px;
+  border: 1px solid var(--highlight-border);
+  border-radius: 4px;
+  background: var(--highlight-subtle);
+  font: 700 10px var(--sans);
+  letter-spacing: .14em;
+  color: var(--highlight-text);
+  box-shadow: 0 0 14px var(--highlight-glow);
+}
 @keyframes ship-arrive { from { transform: translateY(15px) rotate(-4deg); opacity: 0; } to { transform: none; opacity: 1; } }
 .tear-hero .hero-lite::after { animation: none; }
 .hero-club-logo { position: absolute; top: 20px; left: var(--gutter); z-index: 5; }

@@ -1,12 +1,57 @@
-/* Edit these colors to recolor the interface on all three pages.
-   Photos, club logos and event illustrations retain their original artwork. */
+/* ==========================================================================
+   E-CELL RCPIT — DESIGN SYSTEM COLOR PALETTE
+   Primary Identity: Royal Blue & Executive Navy on Obsidian & White
+   ========================================================================== */
+
 :root {
-  --brand-primary: #aeb4bd;
-  --brand-bright: #e2e5e9;
-  --theme-paper: #0c0d10;
-  --theme-white: #ffffff;
-  --theme-ink: #e2e5e9;
-  --theme-black: #000000;
-  --event-blue: #d1d6df;
-  --event-red: #9da5b1;
+  /* ------------------------------------------------------------------------
+     1. BASE CANVAS & BACKGROUND FOUNDATIONS
+     ------------------------------------------------------------------------ */
+  --theme-paper: #07090e;              /* Deepest obsidian canvas with subtle navy undertone (Main page background) */
+  --theme-black: #000000;              /* True void black (Used for poster shadows, dark borders, and contrast) */
+  --theme-white: #ffffff;              /* Absolute crisp white (Used for high-priority headings and illuminated text) */
+  --theme-ink: #f0f4f8;                /* Platinum-white text (Used for body copy, paragraphs, and high-readability labels) */
+  
+  --brand-primary: #94a3b8;            /* Brushed titanium slate (Used for subtle borders, secondary metadata, icons) */
+  --brand-bright: #e2e8f0;             /* Liquid silver bright (Used for card outlines and crisp borders) */
+
+  /* Surface layers & card depth */
+  --mono-canvas-deep: #05070c;        /* Deepest background shade (Used for section separation) */
+  --mono-canvas-card: #0d121d;        /* Elevated card background (Used for team cards, blog cards, event cards) */
+  --mono-canvas-glass: #111827;       /* Glass surface base (Used for floating glass navigation) */
+  --mono-border-subtle: rgba(255, 255, 255, 0.08); /* Precision rim (Used for card borders and line separators) */
+  --mono-border-bright: rgba(255, 255, 255, 0.18); /* Hover rim (Used for card hover states) */
+  --mono-text-muted: #8b9bb4;          /* Secondary metadata (Used for timestamps, dates, and subtle descriptions) */
+
+  /* ------------------------------------------------------------------------
+     2. PRIMARY THEME: NAVY & ROYAL BLUE PALETTE
+     ------------------------------------------------------------------------ */
+  --navy-deep: #050b18;                /* Deep midnight navy (Used for deepest poster shadows and dark section glows) */
+  --navy-primary: #0a1628;             /* Executive dark navy (Used for 3D poster backdrops and elevated panels) */
+  --navy-surface: #10223e;             /* Midnight surface navy (Used for card hover fills and subtle panel borders) */
+
+  --blue-royal: #1d4ed8;               /* Rich royal blue (Used for primary CTA buttons, badges, active tabs, and highlights) */
+  --blue-bright: #2563eb;              /* Vivid royal blue (Used for interactive hovers, glowing rims, and accent borders) */
+  --blue-electric: #3b82f6;            /* Luminous electric blue (Used for glowing sparks, title accents, and animated trails) */
+  --blue-sky-spark: #60a5fa;           /* Neon sky blue (Used for text selection, cursor glow, and illuminated dots) */
+  --blue-ice-text: #bfdbfe;            /* Crisp icy blue (Used for highlighted subtitles, role badges, and tag copy) */
+
+  --blue-glow: rgba(37, 99, 235, 0.45);   /* Ambient blue glow (Used for hardware-accelerated shadows and 3D lighting) */
+  --blue-subtle: rgba(29, 78, 216, 0.16); /* Translucent blue fill (Used for pill tags, glass badges, and button backdrops) */
+  --blue-border: rgba(59, 130, 246, 0.38); /* Blue glass rim border (Used for glowing borders and card dividers) */
+
+  /* Legacy event tone bridges */
+  --event-blue: #60a5fa;               /* Used for upcoming event announce highlights */
+  --event-red: #3b82f6;                /* Used for event date badges */
+
+  /* ------------------------------------------------------------------------
+     3. ACTIVE HIGHLIGHT SYSTEM (APPLIED ACROSS THE WHOLE WEBSITE)
+     ------------------------------------------------------------------------ */
+  --highlight-primary: var(--blue-royal);      /* Primary highlight (Used for buttons, main badges, active tabs) */
+  --highlight-bright:  var(--blue-bright);     /* Bright highlight (Used for hover states, glowing rims, links) */
+  --highlight-spark:   var(--blue-electric);   /* Electric spark (Used for neon text accents and active indicators) */
+  --highlight-glow:    var(--blue-glow);       /* Glow shadow (Used for 3D poster illumination and button glow) */
+  --highlight-subtle:  var(--blue-subtle);     /* Soft translucent fill (Used for badge pills and glass hover chips) */
+  --highlight-border:  var(--blue-border);     /* Accent stroke (Used for glass rims, card outlines, focus rings) */
+  --highlight-text:    var(--blue-ice-text);   /* Tinted legible copy (Used for role badges, categories, and tags) */
 }

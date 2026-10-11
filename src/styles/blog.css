@@ -7,13 +7,14 @@
 .blog-results-heading h2, .latest-posts > h2 { font: 400 26px var(--display); }
 .blog-results-heading > span { font-size: 11px; }
 .latest-post { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 4vw, 60px); align-items: center; padding: 20px 0 32px; border-bottom: 1px solid var(--line); }
-.latest-post img, .blog-card img { display: block; width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: contain; background: var(--theme-paper); }
+.latest-post img, .blog-card img { display: block; width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; background: var(--theme-paper); border-radius: 16px; overflow: hidden; border: 1px solid var(--highlight-border); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.blog-card:hover img, .latest-post:hover img { transform: scale(1.02); box-shadow: 0 8px 24px var(--highlight-glow); }
 .latest-post h3 { font: 400 clamp(20px, 3.6vw, 52px)/1.1 var(--display); margin: 12px 0; }
 .latest-post p { font-size: 14px; line-height: 1.7; margin-bottom: 18px; }
 .blog-category, .blog-meta { display: block; font-size: 10px; line-height: 1.4; }
 .blog-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .blog-tabs button { font: inherit; font-size: 11px; border: 1px solid var(--line); border-radius: 30px; background: transparent; padding: 10px 14px; cursor: pointer; }
-.blog-tabs button[aria-pressed="true"] { background: var(--theme-ink); color: var(--theme-white); }
+.blog-tabs button[aria-pressed="true"] { background: var(--highlight-primary); color: var(--theme-white); border-color: var(--highlight-border); box-shadow: 0 0 12px var(--highlight-glow); }
 .blog-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 20px; }
 .blog-card { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; overflow-wrap: anywhere; }
 .blog-card h3 { font: 400 clamp(12px, 1.8vw, 25px)/1.25 var(--display); }
@@ -35,4 +36,4 @@
   .latest-post { align-items: start; }
 }
 
-.blog-card img, .latest-post img, .blog-reader-image { border-radius: 12px; }
+.blog-card img, .latest-post img, .blog-reader-image { border-radius: 16px; }

@@ -5,10 +5,27 @@
 .social-icon svg { width: 18px; height: 18px; }
 .header > .social-links { position: absolute; right: 20px; pointer-events: auto; color: var(--ink); }
 .header[data-tone="dark"] > .social-links { color: var(--brand-light-95); }
+
 @media (max-width: 900px) {
-  .header.header { height: 108px; flex-direction: column; justify-content: flex-start; }
-  .header > .social-links { position: static; margin-top: 3px; }
-  .social-icon { width: 32px; height: 32px; }
-  .pill-link { padding-inline: 9px; font-size: 9px; }
+  .header.header {
+    height: var(--header-height, 60px);
+    flex-direction: row;
+    justify-content: center;
+    padding: 8px 46px 8px 10px;
+  }
+  .header > .social-links {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    flex-direction: column;
+    gap: 3px;
+    border-radius: 999px;
+    padding: 3px;
+    z-index: 100;
+  }
+  .social-icon { width: 28px; height: 28px; }
+  .social-icon svg { width: 14px; height: 14px; }
+  .pill-link { padding-inline: 8px; font-size: 8.5px; }
 }
+
 @media (prefers-reduced-motion: reduce) { .text-reveal { opacity: 1; transform: none; transition: none; } }

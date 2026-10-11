@@ -33,7 +33,8 @@
 
 .team-page .team-card:hover img {
   transform: scale(1.05);
-  border-color: var(--brand-bright);
+  border-color: var(--highlight-bright);
+  box-shadow: 0 0 16px var(--highlight-glow);
 }
 
 .team-page .team-card img[src$="portrait-placeholder.svg"] {

@@ -1,12 +1,421 @@
-.community-poster { position: relative; overflow: hidden; isolation: isolate; width: calc(100% - var(--gutter) * 2); max-width: 1120px; margin: 20px auto; padding: clamp(16px, 3vw, 40px); background: var(--theme-black); color: var(--theme-white); }
-.community-poster::before { content: ''; position: absolute; z-index: -1; inset: 0; background: linear-gradient(135deg, transparent 45%, color-mix(in srgb, var(--theme-white) 12%, transparent) 45% 55%, transparent 55%); }
-.poster-caption, .poster-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 10px; letter-spacing: .06em; }
-.community-poster h2 { font: 400 clamp(48px, 7.2vw, 100px)/.9 var(--display); letter-spacing: -.04em; margin: 24px 0; }
-.community-poster h2 span { background: linear-gradient(165deg, var(--theme-white) 8%, var(--muted) 28%, var(--theme-white) 45%, var(--muted) 60%, var(--theme-white) 82%); background-clip: text; color: transparent; }
-.poster-bottom p { line-height: 1.6; }
-.poster-bottom a { border-bottom: 1px solid currentColor; padding: 12px 0; font-weight: 700; }
-@media (max-width: 600px) { .community-poster { margin: 12px auto; } .poster-caption { font-size: 8px; } }
+/* ==========================================================================
+   COMMUNITY POSTER — CINEMATIC 3D VAULT GATE & OBSIDIAN BLACK THEME
+   Zero-Lag Pure CSS 3D Mechanical Doors with Illuminated Metallic Typography
+   ========================================================================== */
 
-.poster-content { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
-.community-poster { border: 1px solid var(--line); border-radius: 24px; }
-@media(max-width:600px) { .community-poster h2 { font-size: clamp(28px, 7.5vw, 44px); } }
+.community-poster {
+  position: relative;
+  width: calc(100% - var(--gutter) * 2);
+  max-width: 1240px;
+  margin: 60px auto;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.poster-scroll-track {
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #000000;
+  color: var(--theme-white);
+  overflow: hidden;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.95),
+    0 0 50px rgba(0, 0, 0, 0.85),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
+}
+
+/* Ambient Obsidian Core Glow (Zero CPU Overhead) */
+.poster-core-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 50% 50%, #060912 0%, #020306 55%, #000000 100%),
+    radial-gradient(ellipse at 50% 50%, rgba(37, 99, 235, 0.12) 0%, rgba(29, 78, 216, 0.04) 40%, transparent 70%);
+  z-index: 1;
+}
+
+/* Subtle Obsidian Matrix Grid */
+.poster-matrix-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 45%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 45%, transparent 80%);
+  z-index: 2;
+}
+
+/* ==========================================================================
+   CINEMATIC 3D VAULT GATE DOORS
+   Deep 3D perspective, cybernetic panel lines, corner rivets, and neon laser beam
+   ========================================================================== */
+
+.poster-3d-gate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8;
+  overflow: hidden;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.gate-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: 
+    linear-gradient(135deg, #10141f 0%, #080c14 40%, #04060a 75%, #020306 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  will-change: transform, opacity, filter;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255, 255, 255, 0.12),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.9),
+    inset 0 0 35px rgba(0, 0, 0, 0.85);
+  transform-style: preserve-3d;
+}
+
+.gate-left {
+  left: 0;
+  transform-origin: left center;
+  border-right: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.gate-right {
+  right: 0;
+  transform-origin: right center;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+/* Door Cybernetic Etched Grid & Panel Lines */
+.gate-door-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(180deg, transparent 5%, black 25%, black 75%, transparent 95%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 5%, black 25%, black 75%, transparent 95%);
+}
+
+/* Diagonal Specular Sheen across the Door Face */
+.gate-surface-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.04) 48%, transparent 62%);
+  pointer-events: none;
+}
+
+/* Neon Laser Seam Along the Parting Edge */
+.gate-edge-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2.5px;
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.3) 0%, #ffffff 30%, #93c5fd 50%, #ffffff 70%, rgba(96, 165, 250, 0.3) 100%);
+  box-shadow: 
+    0 0 8px #93c5fd,
+    0 0 16px #3b82f6,
+    0 0 32px rgba(37, 99, 235, 0.5);
+}
+
+.beam-right {
+  right: 0;
+}
+
+.beam-left {
+  left: 0;
+}
+
+/* Industrial Corner Rivets on Vault Doors */
+.door-rivet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #94a3b8 50%, #1e293b 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), inset 0 0 1px #ffffff;
+}
+
+.rivet-tl { top: 16px; left: 16px; }
+.rivet-tr { top: 16px; right: 16px; }
+.rivet-bl { bottom: 16px; left: 16px; }
+.rivet-br { bottom: 16px; right: 16px; }
+
+/* Futuristic Vault Center Badge */
+.gate-door-badge {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(3, 5, 10, 0.75);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.gate-badge-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gate-beacon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8, 0 0 14px #2563eb;
+  animation: beacon-pulse 2s infinite ease-in-out;
+}
+
+@keyframes beacon-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.gate-label {
+  font: 700 11px var(--sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.gate-sublabel {
+  font: 600 8.5px var(--mono, monospace);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--highlight-text, #93c5fd);
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   VAULT CONTENT & CENTERPIECE COMPOSITION
+   ========================================================================== */
+
+.poster-vault-content {
+  position: relative;
+  z-index: 5;
+  padding: clamp(32px, 5vw, 64px) clamp(16px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  min-height: 580px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Centered Lockup: Headline + Author Citation + CTA all in dead center */
+.poster-centerpiece {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  transition: opacity 0.3s ease-out;
+  will-change: opacity;
+}
+
+.poster-title-centered {
+  font-family: var(--display, 'Anton', Impact, sans-serif);
+  font-size: clamp(36px, 7.5vw, 102px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 auto clamp(16px, 2.5vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(8px, 1.8vw, 24px);
+  white-space: nowrap;
+}
+
+.scroll-word {
+  display: inline-block;
+  will-change: opacity, filter, -webkit-text-stroke;
+  transition: opacity 0.35s ease, filter 0.35s ease, -webkit-text-stroke 0.35s ease;
+}
+
+/* "STAY": Exact E-CELL RCPIT / Metallic outline */
+.word-stay,
+.word-stay-2 {
+  color: transparent;
+  background: linear-gradient(to bottom, #ffffff 0%, #e2e5e9 30%, var(--brand-primary, #94a3b8) 70%, rgba(148, 163, 184, 0.4) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
+  opacity: 0.4;
+  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.08));
+}
+
+.word-stay.is-active,
+.word-stay-2.is-active {
+  opacity: 1;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 4px 18px rgba(255, 255, 255, 0.3));
+}
+
+/* "HUNGRY": Vibrant Royal Blue gradient illuminated text */
+.word-hungry {
+  color: transparent;
+  background: linear-gradient(180deg, #ffffff 15%, #93c5fd 45%, #2563eb 85%, #1d4ed8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1.2px rgba(147, 197, 253, 0.4);
+  opacity: 0.4;
+  filter: drop-shadow(0 2px 10px rgba(37, 99, 235, 0.15));
+}
+
+.word-hungry.is-active {
+  opacity: 1;
+  -webkit-text-stroke: 1.5px #93c5fd;
+  filter: drop-shadow(0 4px 22px rgba(37, 99, 235, 0.5));
+}
+
+/* "FOOLISH": Polished silver chrome text with deep metallic contrast */
+.word-foolish {
+  color: transparent;
+  background: linear-gradient(180deg, #94a3b8 0%, #64748b 50%, #475569 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.3);
+  opacity: 0.4;
+  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.1));
+}
+
+.word-foolish.is-active {
+  opacity: 1;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 25%, #e2e8f0 50%, #ffffff 75%, #cbd5e1 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 1.6px rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 4px 22px rgba(255, 255, 255, 0.45));
+}
+
+/* Steve Jobs Citation — Positioned Inside Poster */
+.poster-author {
+  margin: 0 0 clamp(16px, 2.5vw, 24px);
+  font: 600 clamp(11px, 1.5vw, 13px) var(--sans);
+  color: var(--highlight-text, #bfdbfe);
+  letter-spacing: 0.06em;
+}
+
+.poster-author span {
+  color: var(--mono-text-muted, #8b9bb4);
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+/* CTA Button — Positioned Inside Poster */
+.poster-meet-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-white);
+  border: 1px solid var(--highlight-border, rgba(59, 130, 246, 0.38));
+  background: linear-gradient(135deg, rgba(29, 78, 216, 0.45) 0%, rgba(10, 22, 42, 0.85) 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border-radius: 999px;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.poster-meet-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.7) 0%, rgba(29, 78, 216, 0.55) 100%);
+  box-shadow: 0 6px 20px var(--highlight-glow, rgba(37, 99, 235, 0.45));
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & PHONES)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .community-poster {
+    width: calc(100% - 24px);
+    margin: 36px auto;
+  }
+
+  .poster-scroll-track {
+    min-height: 480px;
+    border-radius: 20px;
+  }
+
+  .poster-vault-content {
+    min-height: 480px;
+    padding: 32px 14px;
+  }
+
+  .poster-title-centered {
+    font-size: clamp(30px, 8.5vw, 48px);
+    margin-bottom: 14px;
+  }
+
+  .title-line {
+    gap: 8px;
+  }
+
+  .gate-door-badge {
+    padding: 6px 14px;
+  }
+
+  .gate-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+  }
+
+  .gate-sublabel {
+    font-size: 7.5px;
+  }
+
+  .poster-author {
+    font-size: 11px;
+    margin-bottom: 16px;
+  }
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .gate-door, .scroll-word {
+    transform: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+  }
+}

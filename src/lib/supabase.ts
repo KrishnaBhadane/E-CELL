@@ -106,12 +106,6 @@ export async function logoutUser() {
   return await supabase.auth.signOut();
 }
 
-export async function getAuthSession() {
-  const { data: { session }, error } = await supabase.auth.getSession();
-  if (error) return null;
-  return session;
-}
-
 export async function getCurrentUser() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error) return null;
@@ -148,7 +142,7 @@ export async function uploadMedia(file: File, folder = 'uploads'): Promise<strin
 // DATA API: BLOGS
 // ============================================================================
 
-export async function fetchBlogs(includeDrafts = false): Promise<DbBlog[]> {
+async function loadBlogs(includeDrafts = false): Promise<DbBlog[]> {
   try {
     let query = supabase
       .from('blogs')
@@ -208,7 +202,7 @@ export async function deleteBlog(id: string): Promise<void> {
 // DATA API: MEMBERS
 // ============================================================================
 
-export async function fetchMembers(): Promise<DbMember[]> {
+async function loadMembers(): Promise<DbMember[]> {
   try {
     const { data, error } = await supabase
       .from('members')
@@ -257,7 +251,7 @@ export async function deleteMember(id: string): Promise<void> {
 // DATA API: LEADERSHIP (Two fixed slots: Head & Co-head)
 // ============================================================================
 
-export async function fetchLeadership(): Promise<Record<'head' | 'co_head', DbLeadership | null>> {
+async function loadLeadership(): Promise<Record<'head' | 'co_head', DbLeadership | null>> {
   try {
     const { data, error } = await supabase.from('leadership').select('*');
     if (error) {
@@ -301,7 +295,7 @@ export async function saveLeadershipSlot(
 // DATA API: GALLERY EVENTS
 // ============================================================================
 
-export async function fetchGalleryEvents(): Promise<DbGalleryEvent[]> {
+async function loadGalleryEvents(): Promise<DbGalleryEvent[]> {
   try {
     const { data, error } = await supabase
       .from('gallery_events')
@@ -352,7 +346,7 @@ export async function deleteGalleryEvent(id: string): Promise<void> {
 // DATA API: TESTIMONIALS
 // ============================================================================
 
-export async function fetchTestimonials(): Promise<DbTestimonial[]> {
+async function loadTestimonials(): Promise<DbTestimonial[]> {
   try {
     const { data, error } = await supabase
       .from('testimonials')
@@ -415,7 +409,7 @@ export async function deleteTestimonial(id: string): Promise<void> {
 // DATA API: SITE SETTINGS (Social Links)
 // ============================================================================
 
-export async function fetchSiteSettings(): Promise<DbSiteSettings | null> {
+async function loadSiteSettings(): Promise<DbSiteSettings | null> {
   try {
     const { data, error } = await supabase
       .from('site_settings')
@@ -452,3 +446,23 @@ export async function saveSiteSettings(
   if (error) throw error;
   return data;
 }
+
+// Share simultaneous reads only; settled results are never cached.
+function deduplicateRead<Args extends unknown[], Result>(read: (...args: Args) => Promise<Result>) {
+  const pending = new Map<string, Promise<Result>>();
+  return (...args: Args): Promise<Result> => {
+    const key = JSON.stringify(args);
+    const existing = pending.get(key);
+    if (existing) return existing;
+    const request = read(...args).finally(() => pending.delete(key));
+    pending.set(key, request);
+    return request;
+  };
+}
+
+export const fetchBlogs = deduplicateRead(loadBlogs);
+export const fetchMembers = deduplicateRead(loadMembers);
+export const fetchLeadership = deduplicateRead(loadLeadership);
+export const fetchGalleryEvents = deduplicateRead(loadGalleryEvents);
+export const fetchTestimonials = deduplicateRead(loadTestimonials);
+export const fetchSiteSettings = deduplicateRead(loadSiteSettings);

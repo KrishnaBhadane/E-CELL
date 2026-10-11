@@ -1,35 +1,7 @@
-import { useEffect, useState } from 'react';
 import type { BlogPost } from '@/data/blog';
-import { fetchBlogs } from '@/lib/supabase';
 
-/** Keep data newest first: the latest published entry appears here. */
-export default function LatestPosts({ post: propPost }: { post?: BlogPost }) {
-  const [featured, setFeatured] = useState<BlogPost | null>(propPost || null);
-
-  useEffect(() => {
-    if (propPost) {
-      setFeatured(propPost);
-      return;
-    }
-
-    fetchBlogs(false).then(dbBlogs => {
-      if (dbBlogs.length > 0) {
-        const top = dbBlogs[0];
-        setFeatured({
-          slug: top.slug,
-          title: top.title,
-          category: top.category as BlogPost['category'],
-          excerpt: top.excerpt,
-          image: top.cover_image || '/assets/blog/editorial-0.svg',
-          imageAlt: top.image_alt || top.title,
-          paragraphs: Array.isArray(top.paragraphs) ? top.paragraphs : [top.excerpt],
-        });
-      } else {
-        setFeatured(null);
-      }
-    });
-  }, [propPost]);
-
+/** The parent owns fetching; this component only renders the latest entry. */
+export default function LatestPosts({ post: featured }: { post?: BlogPost }) {
   if (!featured) return null;
 
   return (
