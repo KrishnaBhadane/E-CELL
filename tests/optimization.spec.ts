@@ -22,7 +22,7 @@ test('blog shares pending reads and fetches fresh data afterward', async ({ page
   expect(blogs).toBe(2);
 });
 
-for (const width of [390, 1440]) {
+for (const width of [320, 390, 768, 1440]) {
   test(`public routes and admin login render without runtime errors (${width})`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     const errors: string[] = [];
@@ -43,3 +43,14 @@ for (const width of [390, 1440]) {
     expect(errors).toEqual([]);
   });
 }
+
+
+test('profile URLs reject executable schemes but preserve web links', async ({ page }) => {
+  await page.goto('/blog.html');
+  const results = await page.evaluate(async () => {
+    const path = '/src/lib/safe-url.ts';
+    const { safeWebUrl } = await import(/* @vite-ignore */ path);
+    return ['javascript:alert(1)', 'data:text/html,test', '//example.com', '', 'https://github.com/example'].map(safeWebUrl);
+  });
+  expect(results).toEqual([undefined, undefined, undefined, undefined, 'https://github.com/example']);
+});

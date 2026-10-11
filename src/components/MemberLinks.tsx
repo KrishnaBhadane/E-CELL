@@ -1,3 +1,4 @@
+import { safeWebUrl } from '@/lib/safe-url';
 import type { Member } from '@/data/members';
 
 const icons = {
@@ -8,7 +9,8 @@ export default function MemberLinks({ member }: { member: Pick<Member, 'name' | 
   return <div className="member-links">{(['linkedin', 'github'] as const).map(platform => {
     const label = platform === 'linkedin' ? 'LinkedIn' : 'GitHub';
     const icon = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={icons[platform]} /></svg>;
-    return member[platform] ? <a key={platform} href={member[platform]} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${label}`}>{icon}</a>
+    const url = safeWebUrl(member[platform]);
+    return url ? <a key={platform} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on ${label}`}>{icon}</a>
       : <span key={platform} role="img" aria-label={`${member.name}: ${label} not provided`} title={`${label} link coming soon`}>{icon}</span>;
   })}</div>;
 }

@@ -173,7 +173,7 @@ export default function CommunityPoster() {
     }
 
     function onScroll() {
-      if (!container || hasFullyOpened) return;
+      if (!container || hasFullyOpened || !isVisible || document.hidden) return;
       const rect = container.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const totalDistance = windowHeight + rect.height;

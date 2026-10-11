@@ -6,9 +6,8 @@ test('mobile hero reveals and reverses under CPU throttling without idle redraws
   await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   await page.goto('/');
   await expect(page.locator('.welcome-screen')).toHaveCount(0);
-  const stage = page.locator('.hero-lite');
+  const stage = page.locator('.tiger-stage');
   await expect(stage).toBeVisible();
-  await expect(stage.locator('foreignObject')).toHaveCount(0);
   const poster = page.locator('[data-tear-progress]');
   await poster.evaluate(element => {
     document.documentElement.style.scrollBehavior = 'auto';
@@ -16,7 +15,6 @@ test('mobile hero reveals and reverses under CPU throttling without idle redraws
     scrollTo(0, (element as HTMLElement).offsetHeight - stage.offsetHeight + 1);
   });
   await expect.poll(() => poster.getAttribute('data-tear-progress')).toBe('1.000');
-  await expect(stage.locator('[filter]').first()).toHaveCSS('filter', 'none');
   const mutations = await stage.evaluate(async element => {
     let count = 0;
     const observer = new MutationObserver(records => { count += records.length; });

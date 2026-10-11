@@ -1,3 +1,4 @@
+import { safeWebUrl } from '@/lib/safe-url';
 import { useEffect, useState } from 'react';
 import { fetchSiteSettings, type DbSiteSettings } from '@/lib/supabase';
 
@@ -19,7 +20,7 @@ export default function SocialLinks() {
   return (
     <div className="social-links glass-control nav-glass" aria-label="Social profiles">
       {profiles.map(profile => {
-        const url = settings?.[profile.key];
+        const url = safeWebUrl(settings?.[profile.key]);
         const hasUrl = Boolean(url && url.trim().length > 0);
 
         if (hasUrl) {
