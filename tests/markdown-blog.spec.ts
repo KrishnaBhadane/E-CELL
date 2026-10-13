@@ -293,17 +293,18 @@ Visit [Google](https://google.com) for more information.
 
     // 2. Click + New Article and enter markdown
     await page.getByRole('button', { name: '+ New Article' }).click();
-    await page.locator('input[placeholder*="Find your people"]').fill('Future of Quantum Computing');
-    await page.locator('textarea[placeholder*="Brief summary"]').fill('A primer on quantum algorithms.');
+    await page.locator('input[placeholder*="Campus Gates"]').fill('Future of Quantum Computing');
+    await page.locator('textarea.form-textarea').first().fill('A primer on quantum algorithms.');
 
     const sampleMarkdown = `# Quantum Supremacy\n\nQuantum algorithms are **transformative**.\n\n> Physics is fascinating.\n\n- Superposition\n- Entanglement`;
     await page.locator('textarea[placeholder*="Write your article in Markdown"]').fill(sampleMarkdown);
 
     await page.getByRole('button', { name: 'Publish Article' }).click();
 
-    // Verify payload preserved markdown
+    // Verify payload preserved markdown and publication date
     expect(capturedSavePayload).not.toBeNull();
     expect(capturedSavePayload.paragraphs).toEqual([sampleMarkdown]);
+    expect(capturedSavePayload.published_at).toBeDefined();
   });
 });
 

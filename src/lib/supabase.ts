@@ -31,6 +31,7 @@ export interface DbBlog {
   cover_image?: string;
   image_alt?: string;
   status: 'draft' | 'published';
+  published_at?: string;
   created_at: string;
   updated_at: string;
 }
@@ -149,8 +150,7 @@ async function loadBlogs(includeDrafts = false): Promise<DbBlog[]> {
   try {
     let query = supabase
       .from('blogs')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select('*');
 
     if (!includeDrafts) {
       query = query.eq('status', 'published');
@@ -161,7 +161,17 @@ async function loadBlogs(includeDrafts = false): Promise<DbBlog[]> {
       console.warn('Supabase fetchBlogs warning:', error.message);
       return [];
     }
-    return (data || []) as DbBlog[];
+    const list = (data || []) as DbBlog[];
+
+    // Sort published articles by publication date, newest first (stable secondary sort on created_at)
+    list.sort((a, b) => {
+      const timeA = new Date(a.published_at || a.created_at).getTime();
+      const timeB = new Date(b.published_at || b.created_at).getTime();
+      if (timeB !== timeA) return timeB - timeA;
+      return (b.created_at || '').localeCompare(a.created_at || '');
+    });
+
+    return list;
   } catch (err) {
     console.warn('Supabase fetchBlogs error:', err);
     return [];
@@ -170,29 +180,45 @@ async function loadBlogs(includeDrafts = false): Promise<DbBlog[]> {
 
 export async function saveBlog(blog: Partial<DbBlog> & { title: string; excerpt: string }): Promise<DbBlog> {
   const slug = blog.slug || blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  const payload = {
+  const payload: Record<string, unknown> = {
     ...blog,
     slug,
     updated_at: new Date().toISOString(),
   };
 
-  if (blog.id) {
-    const { data, error } = await supabase
-      .from('blogs')
-      .update(payload)
-      .eq('id', blog.id)
-      .select()
-      .single();
-    if (error) throw error;
-    return data;
-  } else {
-    const { data, error } = await supabase
-      .from('blogs')
-      .insert(payload)
-      .select()
-      .single();
-    if (error) throw error;
-    return data;
+  const executeSave = async (dataPayload: Record<string, unknown>) => {
+    if (blog.id) {
+      const { data, error } = await supabase
+        .from('blogs')
+        .update(dataPayload)
+        .eq('id', blog.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as DbBlog;
+    } else {
+      const { data, error } = await supabase
+        .from('blogs')
+        .insert(dataPayload)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as DbBlog;
+    }
+  };
+
+  try {
+    return await executeSave(payload);
+  } catch (err: unknown) {
+    const errorObj = err as { message?: string };
+    // Graceful fallback if published_at column does not exist on PostgreSQL table yet
+    if (errorObj?.message?.includes('published_at')) {
+      console.warn('Notice: published_at column does not exist in Supabase table yet. Saving without published_at until SQL migration is executed.');
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.published_at;
+      return await executeSave(fallbackPayload);
+    }
+    throw err;
   }
 }
 
