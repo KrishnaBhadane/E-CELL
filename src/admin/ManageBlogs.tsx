@@ -66,10 +66,7 @@ export default function ManageBlogs({ onNotify }: ManageBlogsProps) {
 
     setSubmitting(true);
     try {
-      const paragraphs = content
-        .split('\n\n')
-        .map(p => p.trim())
-        .filter(Boolean);
+      const paragraphs = content.trim() ? [content.trim()] : [];
 
       await saveBlog({
         id: editingBlog?.id,
@@ -250,15 +247,15 @@ export default function ManageBlogs({ onNotify }: ManageBlogsProps) {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Full Article Content</label>
+                <label className="form-label">Full Article Content (Markdown Supported)</label>
                 <textarea
                   className="form-textarea"
-                  style={{ minHeight: '160px' }}
-                  placeholder="Type article paragraphs here. Separate each paragraph with a blank line (double enter)."
+                  style={{ minHeight: '200px', fontFamily: 'monospace', fontSize: '0.88rem' }}
+                  placeholder="Write your article in Markdown or plain text. Supports # Headings, **bold**, *italic*, - lists, > quotes, [links](url), ![images](url), ```code```, and tables."
                   value={content}
                   onChange={e => setContent(e.target.value)}
                 />
-                <div className="form-hint">Tip: Double enter (blank line) creates a separate paragraph block on the blog post page.</div>
+                <div className="form-hint">Tip: Supports full GitHub Flavored Markdown (headings, lists, code blocks with syntax highlighting, tables, blockquotes).</div>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>

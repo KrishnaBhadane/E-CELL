@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { blogCategories, type BlogPost } from '@/data/blog';
 import { fetchBlogs } from '@/lib/supabase';
 import LatestPosts from '@/components/LatestPosts';
+import MarkdownRenderer from '@/components/MarkdownRenderer';
 import '@/styles/blog.css';
 
 export default function BlogPage() {
@@ -55,9 +56,7 @@ export default function BlogPage() {
                 )}
                 <p className="blog-standfirst">{post.excerpt}</p>
                 <div className="blog-prose">
-                  {post.paragraphs.map(text => (
-                    <p key={text}>{text}</p>
-                  ))}
+                  <MarkdownRenderer content={post.paragraphs.join('\n\n')} />
                 </div>
               </article>
             ) : (
