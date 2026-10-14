@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function Header() {
   const header = useRef<HTMLElement>(null);
-  const [tone, setTone] = useState('dark');
+  const [tone, setTone] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.pathname.includes('blog')) {
+      return 'light';
+    }
+    return 'dark';
+  });
   useEffect(() => {
     let frame = 0;
     const navigation = header.current?.querySelector('nav');

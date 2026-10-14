@@ -193,17 +193,43 @@ export default function BlogPage() {
                       <h3>Share this article</h3>
                       <p>Spread insights with fellow student builders and innovators.</p>
                     </div>
-                    <button
-                      type="button"
-                      className="blog-share-pill-btn"
-                      onClick={handleCopyLink}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                      </svg>
-                      {copied ? '✓ Link Copied to Clipboard' : 'Copy Article Link'}
-                    </button>
+                    <div className="blog-share-actions">
+                      <a
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="blog-social-share-btn"
+                        aria-label="Share on X"
+                        title="Share on X"
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                          <path d="M3 3l18 18h-5L3 3h5l13 18M21 3 3 21" />
+                        </svg>
+                      </a>
+                      <a
+                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="blog-social-share-btn"
+                        aria-label="Share on LinkedIn"
+                        title="Share on LinkedIn"
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                          <path d="M4 9v12M4 3v.01M10 21V9m0 5a5 5 0 0 1 10 0v7" />
+                        </svg>
+                      </a>
+                      <button
+                        type="button"
+                        className="blog-share-pill-btn"
+                        onClick={handleCopyLink}
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                        {copied ? '✓ Link Copied to Clipboard' : 'Copy Article Link'}
+                      </button>
+                    </div>
                   </div>
                 </footer>
 

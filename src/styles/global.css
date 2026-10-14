@@ -112,6 +112,7 @@ h1, h2, h3, p { margin: 0; }
 }
 /* Only the glass navigation floats above the scrolling page. */
 :root { --header-height: 80px; }
-.header { position: fixed; inset: 0 0 auto; height: var(--header-height); display: flex; justify-content: center; align-items: center; padding: 12px; gap: 0; border: 0; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; pointer-events: none; }
+.header { position: fixed; inset: 0 0 auto; height: var(--header-height); display: flex; justify-content: center; align-items: center; padding: 12px; gap: 0; border: 0; background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; pointer-events: none; z-index: 100; }
 .header .pill-navigation { pointer-events: auto; }
+.header > .social-links { pointer-events: auto; }
 .header::after { display: none; }

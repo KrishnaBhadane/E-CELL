@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { BLOG_PUBLISHED_DATES } from '@/data/blog';
 
 const supabaseUrl =
   import.meta.env.VITE_SUPABASE_URL ||
@@ -161,7 +162,16 @@ async function loadBlogs(includeDrafts = false): Promise<DbBlog[]> {
       console.warn('Supabase fetchBlogs warning:', error.message);
       return [];
     }
-    const list = (data || []) as DbBlog[];
+    const list = ((data || []) as DbBlog[]).map(b => {
+      const canonicalDate = BLOG_PUBLISHED_DATES[b.slug];
+      if (canonicalDate) {
+        return {
+          ...b,
+          published_at: canonicalDate,
+        };
+      }
+      return b;
+    });
 
     // Sort published articles by publication date, newest first (stable secondary sort on created_at)
     list.sort((a, b) => {

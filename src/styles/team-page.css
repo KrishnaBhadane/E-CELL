@@ -1,6 +1,82 @@
 /* ==========================================================================
-   MEMBERS DIRECTORY — 4 COLUMNS DESKTOP & MOBILE, EQUAL SIZED CARDS
+   MEMBERS DIRECTORY — PAGE CONTAINER & DARK PALETTE RESTORATION
    ========================================================================== */
+
+.team-page {
+  background: var(--theme-paper, #080c14);
+  color: var(--theme-ink, #f0f4f8);
+  min-height: 80svh;
+  padding: 125px clamp(12px, 4vw, 64px) 56px;
+  font-family: var(--font-sans);
+}
+
+.team-page .directory-heading,
+.team-page .team-directory {
+  max-width: 1400px;
+  margin-inline: auto;
+}
+
+.team-page .directory-heading {
+  position: relative;
+  isolation: isolate;
+  text-align: center;
+  overflow: hidden;
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 70%, var(--brand-dark-70), var(--theme-black) 70%);
+  margin-bottom: 32px;
+  animation: directory-enter .65s ease both;
+}
+
+.team-page .directory-heading > span {
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: var(--theme-white);
+  text-transform: uppercase;
+}
+
+.team-page .directory-heading h1 {
+  font: 400 clamp(52px, 10vw, 140px)/1 var(--display, 'Anton', sans-serif);
+  letter-spacing: -.025em;
+  margin-top: 12px;
+  background: linear-gradient(175deg, var(--theme-white) 20%, var(--brand-primary) 35%, var(--theme-white) 48%, var(--brand-dark-40) 65%, var(--theme-white) 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 15px #0003;
+}
+
+.team-page .blog-results-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 28px 0 18px;
+}
+
+.team-page .blog-results-heading h2 {
+  font: 400 26px var(--display, 'Anton', sans-serif);
+  color: var(--theme-ink);
+  letter-spacing: -0.01em;
+}
+
+.team-page .blog-results-heading > span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.team-page .team-preview-note {
+  max-width: 1400px;
+  margin: 32px auto 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
 
 .team-grid {
   display: grid;
@@ -86,34 +162,48 @@
 }
 
 .team-page .member-links {
-  color: var(--theme-ink);
+  display: flex;
+  align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
+  gap: 8px;
   margin-top: auto;
-  padding-top: 4px;
-  gap: 6px;
+  padding-top: 6px;
+  color: #cbd5e1;
 }
 
 .team-page .member-links svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
 .team-page .member-links a,
 .team-page .member-links span {
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  min-height: 26px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .team-page .member-links a:hover {
-  background: var(--highlight-subtle);
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(96, 165, 250, 0.5);
   color: #ffffff;
+  transform: translateY(-1.5px);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+}
+
+.team-page .member-links span {
+  opacity: 0.35;
+  cursor: default;
 }
 
 /* ==========================================================================

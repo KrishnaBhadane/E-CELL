@@ -7,7 +7,6 @@ import MemberLinks from './components/MemberLinks';
 import { members, type Member } from './data/members';
 import { fetchMembers, fetchLeadership } from './lib/supabase';
 import './styles/global.css';
-import './styles/blog.css';
 import './styles/members.css';
 import './styles/team-page.css';
 
@@ -77,7 +76,7 @@ function MembersPage() {
     <>
       <a className="skip-link" href="#team-roster">Skip to members</a>
       <Header />
-      <main className="team-page blog-page" data-nav-tone="dark">
+      <main className="team-page" data-nav-tone="dark">
         <header className="directory-heading">
           <span>E-CELL RCPIT / OUR PEOPLE</span>
           <h1 id="members-title">MEMBERS</h1>

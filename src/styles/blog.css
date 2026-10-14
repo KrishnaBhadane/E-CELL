@@ -23,7 +23,7 @@
    PAGE CONTAINER & GLOBAL OVERRIDES FOR BLOG
    ========================================================================== */
 
-.blog-page {
+.blog-page:not(.team-page) {
   background: var(--blog-bg, #FFFFFF) !important;
   color: var(--blog-text, #111111) !important;
   min-height: 100vh;
@@ -634,6 +634,35 @@
   margin: 0;
 }
 
+.blog-share-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blog-social-share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--blog-border);
+  color: var(--blog-muted);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.blog-social-share-btn:hover {
+  color: var(--blog-accent);
+  border-color: var(--blog-accent-border);
+  background: var(--blog-accent-light);
+  transform: translateY(-1px);
+}
+
 .blog-share-pill-btn {
   font-family: var(--blog-font-sans);
   display: inline-flex;
@@ -1077,7 +1106,7 @@
 }
 
 @media (max-width: 640px) {
-  .blog-page {
+  .blog-page:not(.team-page) {
     padding-top: 96px;
     padding-bottom: 56px;
   }
